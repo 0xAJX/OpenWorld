@@ -40,7 +40,7 @@ import java.util.Calendar;
 import static android.app.Activity.RESULT_OK;
 import static android.media.MediaRecorder.VideoSource.CAMERA;
 
-public class NewStoryFragment extends Fragment {
+public class NewStoryFragment extends Fragment implements RotationGestureDetector.OnRotationGestureListener{
 
     TouchImageView img;
     private static int RESULT_LOAD_IMAGE = 1;
@@ -179,6 +179,13 @@ public class NewStoryFragment extends Fragment {
             Toast.makeText(getActivity(), "Image Saved!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void OnRotation(RotationGestureDetector rotationDetector) {
+        float angle = rotationDetector.getAngle();
+        Log.d("RotationGestureDetector", "Rotation: " + Float.toString(angle));
+    }
+
 
     /*private void selectImage() {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
