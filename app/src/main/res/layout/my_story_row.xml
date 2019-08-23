@@ -16,6 +16,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/mystoryimage"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
@@ -27,16 +28,18 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/mystorytitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="card_title"
+                    android:text="CARD TITLE"
                     android:textColor="#000"
                     android:textSize="18sp" />
                 <TextView
+                    android:id="@+id/mystorydescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="card_content"
+                    android:text="CARD DESCRIPTION"
                     android:textColor="#555" />
             </LinearLayout>
             <LinearLayout
@@ -44,13 +47,14 @@
                 android:layout_height="wrap_content">
 
                 <Button
+                    android:id="@+id/mystoryshare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SHARE"
                     android:background="@color/white"
-                    android:theme="@style/PrimaryButton" />
+                    android:theme="@style/PrimaryFlatButton" />
                 <Button
-
+                    android:id="@+id/mystoryexplore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="EXPLORE"

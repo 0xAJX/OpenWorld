@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
     //private TextView mTextMessage;
@@ -22,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
             Fragment fragment = null;
 
             switch (item.getItemId()) {
-                case R.id.navigation_new_story:
+                case R.id.navigation_select_template:
                     fragment = new NewStoryFragment();
+                    //fragment = new SelectTemplateFragment();
                     break;
                     //mTextMessage.setText(R.string.title_home);
                     //return true;
@@ -58,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         //mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.bringToFront();
 
         loadFragment(new AllStoriesFragment());
     }

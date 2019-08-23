@@ -1,9 +1,26 @@
 package com.example.myapplication;
 
-public class ListItem {
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.widget.ImageView;
+
+public class My_Story_List_Items {
 
     private String title;
     private String description;
+
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    private Bitmap image;
+
+
 
     public String getInformation() {
         return information;
@@ -42,11 +59,12 @@ public class ListItem {
 
 
 
-    public ListItem(String title, String description, String information, String location)
+    public My_Story_List_Items(String title, String description ,Bitmap image)
     {
+        this.image = image;
         this.title = title;
         this.description = description;
-        this.information = information;
-        this.location = location;
+        //this.information = information;
+        //this.location = location;
     }
 }
