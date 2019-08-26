@@ -45,25 +45,6 @@ public class AllStoriesFragment extends Fragment {
 
         bottomNavigationMenu = getActivity().findViewById(R.id.nav_view);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && bottomNavigationMenu.isShown()) {
-                    bottomNavigationMenu.setVisibility(View.GONE);
-                } else if (dy < 0 ) {
-                    bottomNavigationMenu.setVisibility(View.VISIBLE);
-
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-
-
         myStoryListItems = new ArrayList<>();
 
 

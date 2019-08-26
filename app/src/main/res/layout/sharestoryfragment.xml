@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/bmimage"
+            android:id="@+id/collageimage"
             android:src="@drawable/ic_dashboard_black_24dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
@@ -25,9 +25,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:background="@color/white"
-            android:onClick="onShare"
             android:src="@drawable/ic_share_black_24dp" />
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

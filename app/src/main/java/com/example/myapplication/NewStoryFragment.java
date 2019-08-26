@@ -7,7 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,13 +20,18 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -40,10 +48,13 @@ import java.util.Calendar;
 import static android.app.Activity.RESULT_OK;
 import static android.media.MediaRecorder.VideoSource.CAMERA;
 
-public class NewStoryFragment extends Fragment implements RotationGestureDetector.OnRotationGestureListener{
+public class NewStoryFragment extends Fragment implements View.OnTouchListener {
 
-    TouchImageView img;
+    ImageView img;
+    ImageView addImage;
     private static int RESULT_LOAD_IMAGE = 1;
+    View template;
+    ImageView bmImage;
 
     @Nullable
     @Override
@@ -54,36 +65,98 @@ public class NewStoryFragment extends Fragment implements RotationGestureDetecto
         toolbar.setTitle("Create New Story");
 
         img = view.findViewById(R.id.myimageview);
-        img.setMaxZoom(4f);
+        //img.setMaxZoom(4f);
 
-        img.setOnClickListener(new View.OnClickListener() {
+        addImage = view.findViewById(R.id.addimage);
+
+        addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);*/
-
-                //selectImage();
                 showPictureDialog();
             }
         });
+        img.setOnTouchListener(this);
+
 
         //View tempelate = getActivity().findViewById(R.id.);
-        //bmImage = findViewById(R.id.bmimage);
+        //bmImage = view.findViewById(R.id.bmimage);
 
-        /*view.post(new Runnable() {
-        @Override
-        public void run() {
-            Log.d("canvas0", Integer.toString(view.getWidth()));
-            Log.d("canvas0", Integer.toString(view.getHeight()));
-            //bmImage.setImageBitmap(getBitmapFromView(view));
-        }
-        });*/
+        template = view.findViewById(R.id.imagelayout);
+
+        Button save = view.findViewById(R.id.savebutton);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                template.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Bitmap b = getBitmapFromView(template);
+
+                        //bmImage.setImageBitmap(getBitmapFromView(template));
+
+                        //Bundle bundle = new Bundle();
+                        //bundle.putParcelable("BitmapImage",b);
+
+                        //bundle.putBundle("bitmap", bundle);
+                        //Fragment f = new NewStoryFragment();
+                        //f.setArguments(bundle);
+
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        b.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putByteArray("image",byteArray);
+
+                        Fragment f = new NewStoryFragment();
+                        f.setArguments(bundle);
+
+                        getActivity().getIntent().putExtra("image", byteArray);
+
+                        Fragment fragment = new ShareStoryFragment();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container , fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+
+                    }
+                });
+
+            }
+        });
+
+
+
+
 
 
         return view;
+    }
+
+    private Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
+
+        Log.d("canvas", Integer.toString(view.getWidth()));
+        Log.d("canvas", Integer.toString(view.getHeight()));
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null) {
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        }   else{
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        }
+        // draw the view on the canvas
+        view.draw(canvas);
+        //return the bitmap
+        return returnedBitmap;
     }
 
     private void showPictureDialog(){
@@ -180,123 +253,156 @@ public class NewStoryFragment extends Fragment implements RotationGestureDetecto
         }
     }
 
+    float[] lastEvent = null;
+    float d = 0f;
+    float newRot = 0f;
+    private Matrix matrix = new Matrix();
+    private Matrix savedMatrix = new Matrix();
+    public static String fileNAME;
+    public static int framePos = 0;
+
+    private float scale = 0;
+    private float newDist = 0;
+
+    // Fields
+    private String TAG = this.getClass().getSimpleName();
+
+    // We can be in one of these 3 states
+    private static final int NONE = 0;
+    private static final int DRAG = 1;
+    private static final int ZOOM = 2;
+    private int mode = NONE;
+
+    // Remember some things for zooming
+    private PointF start = new PointF();
+    private PointF mid = new PointF();
+    float oldDist = 1f;
+
     @Override
-    public void OnRotation(RotationGestureDetector rotationDetector) {
-        float angle = rotationDetector.getAngle();
-        Log.d("RotationGestureDetector", "Rotation: " + Float.toString(angle));
-    }
+    public boolean onTouch(View v, MotionEvent event) {
+
+        ImageView view = (ImageView) v;
+        view.setScaleType(ImageView.ScaleType.MATRIX);
+        float scale;
+
+        // Dump touch event to log
+        dumpEvent(event);
+
+        // Handle touch events here...
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN: //first finger down only
+                savedMatrix.set(matrix);
+                start.set(event.getX(), event.getY());
+                Log.d(TAG, "mode=DRAG" );
+                mode = DRAG;
+                break;
+
+            case MotionEvent.ACTION_POINTER_DOWN:
+                oldDist = spacing(event);
+                if (oldDist > 10f) {
+                    savedMatrix.set(matrix);
+                    midPoint(mid, event);
+                    mode = ZOOM;
+                }
+                lastEvent = new float[4];
+                lastEvent[0] = event.getX(0);
+                lastEvent[1] = event.getX(1);
+                lastEvent[2] = event.getY(0);
+                lastEvent[3] = event.getY(1);
+                d = rotation(event);
+                break;
+
+            case MotionEvent.ACTION_UP: //first finger lifted
+            case MotionEvent.ACTION_POINTER_UP: //second finger lifted
+                mode = NONE;
+                Log.d(TAG, "mode=NONE" );
+                break;
 
 
-    /*private void selectImage() {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Add Photo!");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
-                    //StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    //StrictMode.setVmPolicy(builder.build());
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, 1);
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    //StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    //StrictMode.setVmPolicy(builder.build());
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);
-                }
-                else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-                for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
-                        f = temp;
-                        break;
+            case MotionEvent.ACTION_MOVE:
+                if (mode == DRAG) {
+                    // ...
+                    matrix.set(savedMatrix);
+                    matrix.postTranslate(event.getX() - start.x, event.getY()
+                            - start.y);
+                } else if (mode == ZOOM && event.getPointerCount() == 2) {
+                    float newDist = spacing(event);
+                    matrix.set(savedMatrix);
+                    if (newDist > 10f) {
+                        scale = newDist / oldDist;
+                        matrix.postScale(scale, scale, mid.x, mid.y);
+                    }
+                    if (lastEvent != null) {
+                        newRot = rotation(event);
+                        float r = newRot - d;
+                        matrix.postRotate(r, view.getMeasuredWidth() / 2,
+                                view.getMeasuredHeight() / 2);
                     }
                 }
-                try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
-                    img.setImageBitmap(bitmap);
-                    String path = android.os.Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + "Phoenix" + File.separator + "default";
-                    f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-                    try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == 2) {
-                Uri selectedImage = data.getData();
-                String[] filePath = { MediaStore.Images.Media.DATA };
-                Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                //Log.w("path of image from gallery......******************.........", picturePath+"");
-                img.setImageBitmap(thumbnail);
-            }
+                break;
+
         }
+        // Perform the transformation
+        view.setImageMatrix(matrix);
+
+        return true; // indicate event was handled
+
+    }
+    private float rotation(MotionEvent event) {
+        double delta_x = (event.getX(0) - event.getX(1));
+        double delta_y = (event.getY(0) - event.getY(1));
+        double radians = Math.atan2(delta_y, delta_x);
+
+        return (float) Math.toDegrees(radians);
     }
 
-    public void onSave(View view)
-    {
-        //getBitmapFromView()
+    private float spacing(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float) Math.sqrt(x * x + y * y);
+
     }
 
-    private Bitmap getBitmapFromView(View view) {
-        //Define a bitmap with the same size as the view
+    private void midPoint(PointF point, MotionEvent event) {
+        float x = event.getX(0) + event.getX(1);
+        float y = event.getY(0) + event.getY(1);
+        point.set(x/2, y/2);
 
-        Log.d("canvas", Integer.toString(view.getWidth()));
-        Log.d("canvas", Integer.toString(view.getHeight()));
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(returnedBitmap);
-        //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null) {
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        }   else{
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
+    }
+
+
+    /** Show an event in the LogCat view, for debugging */
+
+    private void dumpEvent(MotionEvent event) {
+        String names[] = { "DOWN" , "UP" , "MOVE" , "CANCEL" , "OUTSIDE" ,
+                "POINTER_DOWN" , "POINTER_UP" , "7?" , "8?" , "9?" };
+        StringBuilder sb = new StringBuilder();
+        int action = event.getAction();
+        int actionCode = action & MotionEvent.ACTION_MASK;
+        sb.append("event ACTION_" ).append(names[actionCode]);
+        if (actionCode == MotionEvent.ACTION_POINTER_DOWN
+                || actionCode == MotionEvent.ACTION_POINTER_UP) {
+            sb.append("(pid " ).append(
+                    action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
+            sb.append(")" );
         }
-        // draw the view on the canvas
-        view.draw(canvas);
-        //return the bitmap
-        return returnedBitmap;
-    }*/
+
+        sb.append("[" );
+
+        for (int i = 0; i < event.getPointerCount(); i++) {
+            sb.append("#" ).append(i);
+            sb.append("(pid " ).append(event.getPointerId(i));
+            sb.append(")=" ).append((int) event.getX(i));
+            sb.append("," ).append((int) event.getY(i));
+            if (i + 1 < event.getPointerCount())
+
+                sb.append(";" );
+        }
+
+        sb.append("]" );
+        Log.d(TAG, sb.toString());
+
+    }
+
+
 }
