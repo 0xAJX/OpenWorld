@@ -31,6 +31,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -55,6 +56,7 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
     private static int RESULT_LOAD_IMAGE = 1;
     View template;
     ImageView bmImage;
+    EditText ed1,ed2;
 
     @Nullable
     @Override
@@ -77,7 +79,8 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         });
         img.setOnTouchListener(this);
 
-
+        ed1 = view.findViewById(R.id.titletext);
+        ed2 = view.findViewById(R.id.desctext);
         //View tempelate = getActivity().findViewById(R.id.);
         //bmImage = view.findViewById(R.id.bmimage);
 
@@ -91,6 +94,9 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
                 template.post(new Runnable() {
                     @Override
                     public void run() {
+
+                        ed1.setCursorVisible(false);
+                        ed2.setCursorVisible(false);
 
                         Bitmap b = getBitmapFromView(template);
 
@@ -215,11 +221,13 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+        //addImage.setImageAlpha(0);
         startActivityForResult(galleryIntent, 2);
     }
 
     private void takePhotoFromCamera() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        //addImage.setImageAlpha(0);
         startActivityForResult(intent, CAMERA);
         //getActivity().startActivityForResult(intent, 100);
     }
@@ -235,7 +243,7 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
                 Uri contentURI = data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
+                    //String path = saveImage(bitmap);
                     //Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
                     img.setImageBitmap(bitmap);
 
@@ -251,6 +259,8 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
             saveImage(thumbnail);
             Toast.makeText(getActivity(), "Image Saved!", Toast.LENGTH_SHORT).show();
         }
+
+        addImage.setImageAlpha(0);
     }
 
     float[] lastEvent = null;

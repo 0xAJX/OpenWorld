@@ -31,6 +31,7 @@
 
 
                     <ImageView
+
                         android:id="@+id/myimageview"
                         android:layout_width="300dp"
                         android:layout_height="300dp"
@@ -38,16 +39,15 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_dashboard_black_24dp"/>
+                        android:scaleType="centerInside"
+                        android:src="@color/white"/>
 
                     <ImageView
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="50dp"
+
+                        android:layout_centerInParent="true"
                         android:id="@+id/addimage"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center_horizontal"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_add_black_24dp">
@@ -101,6 +101,7 @@
                 android:textColor="@color/white">
 
             </Button>
+
         </LinearLayout>
 
 </ScrollView>
