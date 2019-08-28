@@ -68,12 +68,18 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         toolbar.setTitle("Create New Story");
 
 
-        LinearLayout templateloader = view.findViewById(R.id.templateloader);
-        View template1 = getLayoutInflater()
-                .inflate(R.layout.template, templateloader, false);
+        int templateLayout = getResources().getIdentifier(
+                "template",
+                "layout",
+                this.getContext().getPackageName());
 
-        templateloader.addView(template1);
-        
+
+        LinearLayout templateloader = view.findViewById(R.id.templateloader);
+        template = getLayoutInflater()
+                .inflate(templateLayout, templateloader, false);
+
+        templateloader.addView(template);
+
 
         img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
@@ -101,7 +107,7 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
 
         ed2 = view.findViewById(ressourceId);
 
-        template = view.findViewById(R.id.imagelayout);
+        //template = view.findViewById(R.id.imagelayout);
 
         Button save = view.findViewById(R.id.savebutton);
         save.setOnClickListener(new View.OnClickListener() {
