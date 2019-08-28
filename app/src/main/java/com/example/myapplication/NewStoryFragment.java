@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -66,6 +67,14 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Create New Story");
 
+
+        LinearLayout templateloader = view.findViewById(R.id.templateloader);
+        View template1 = getLayoutInflater()
+                .inflate(R.layout.template, templateloader, false);
+
+        templateloader.addView(template1);
+        
+
         img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
 
@@ -80,9 +89,17 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         img.setOnTouchListener(this);
 
         ed1 = view.findViewById(R.id.titletext);
-        ed2 = view.findViewById(R.id.desctext);
-        //View tempelate = getActivity().findViewById(R.id.);
-        //bmImage = view.findViewById(R.id.bmimage);
+        //ed2 = view.findViewById(R.id.desctext);
+
+
+
+        int ressourceId = getResources().getIdentifier(
+                "desctext",
+                "id",
+                this.getContext().getPackageName());
+
+
+        ed2 = view.findViewById(ressourceId);
 
         template = view.findViewById(R.id.imagelayout);
 
@@ -95,19 +112,12 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
                     @Override
                     public void run() {
 
+
+
                         ed1.setCursorVisible(false);
                         ed2.setCursorVisible(false);
 
                         Bitmap b = getBitmapFromView(template);
-
-                        //bmImage.setImageBitmap(getBitmapFromView(template));
-
-                        //Bundle bundle = new Bundle();
-                        //bundle.putParcelable("BitmapImage",b);
-
-                        //bundle.putBundle("bitmap", bundle);
-                        //Fragment f = new NewStoryFragment();
-                        //f.setArguments(bundle);
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         b.compress(Bitmap.CompressFormat.PNG, 100, stream);
