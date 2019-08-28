@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_select_template:
-                    fragment = new NewStoryFragment();
+                    fragment = new SelectTemplateFragment();
                     //fragment = new SelectTemplateFragment();
                     break;
                     //mTextMessage.setText(R.string.title_home);

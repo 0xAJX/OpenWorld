@@ -67,9 +67,10 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Create New Story");
 
+        String id = getActivity().getIntent().getStringExtra("template_id");
 
         int templateLayout = getResources().getIdentifier(
-                "template",
+                "template" + id,
                 "layout",
                 this.getContext().getPackageName());
 
@@ -81,10 +82,25 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         templateloader.addView(template);
 
 
-        img = view.findViewById(R.id.myimageview);
+        for(int i = 1; i <= Integer.parseInt(id); i++)
+        {
+             img = view.findViewById(getResources().getIdentifier(
+                    "displayimage" + i,
+                    "id",
+                    this.getContext().getPackageName()));
+
+            addImage = view.findViewById(getResources().getIdentifier(
+                    "addimage" + i,
+                    "id",
+                    this.getContext().getPackageName()));
+
+        }
+
+
+        //img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
 
-        addImage = view.findViewById(R.id.addimage);
+
 
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
