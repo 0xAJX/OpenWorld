@@ -50,14 +50,16 @@ import java.util.Calendar;
 import static android.app.Activity.RESULT_OK;
 import static android.media.MediaRecorder.VideoSource.CAMERA;
 
-public class NewStoryFragment extends Fragment implements View.OnTouchListener {
+public class NewStoryFragment extends Fragment implements View.OnTouchListener, View.OnClickListener {
 
-    ImageView img;
-    ImageView addImage;
+    ImageView img[];
+    ImageView addImage[];
     private static int RESULT_LOAD_IMAGE = 1;
     View template;
-    ImageView bmImage;
+    ImageView tempimage;
     EditText ed1,ed2;
+
+    int maxid;
 
     @Nullable
     @Override
@@ -68,6 +70,11 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         toolbar.setTitle("Create New Story");
 
         String id = getActivity().getIntent().getStringExtra("template_id");
+
+        maxid = Integer.parseInt(id);
+        img = new ImageView[Integer.parseInt(id)];
+        addImage = new ImageView[Integer.parseInt(id)];
+
 
         int templateLayout = getResources().getIdentifier(
                 "template" + id,
@@ -84,31 +91,25 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
 
         for(int i = 1; i <= Integer.parseInt(id); i++)
         {
-             img = view.findViewById(getResources().getIdentifier(
+
+             img[i-1] = view.findViewById(getResources().getIdentifier(
                     "displayimage" + i,
                     "id",
                     this.getContext().getPackageName()));
 
-            addImage = view.findViewById(getResources().getIdentifier(
+            addImage[i-1] = view.findViewById(getResources().getIdentifier(
                     "addimage" + i,
                     "id",
                     this.getContext().getPackageName()));
 
+            addImage[i-1].setOnClickListener(this);
+            img[i-1].setOnTouchListener(this);
         }
 
 
         //img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
 
-
-
-        addImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPictureDialog();
-            }
-        });
-        img.setOnTouchListener(this);
 
         ed1 = view.findViewById(R.id.titletext);
         //ed2 = view.findViewById(R.id.desctext);
@@ -167,35 +168,29 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         });
 
 
-
-
-
-
         return view;
     }
 
-    private Bitmap getBitmapFromView(View view) {
-        //Define a bitmap with the same size as the view
+    @Override
+    public void onClick(View v) {
 
-        Log.d("canvas", Integer.toString(view.getWidth()));
-        Log.d("canvas", Integer.toString(view.getHeight()));
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(returnedBitmap);
-        //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null) {
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        }   else{
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
+        for(int i = 1 ; i <=maxid ; i++)
+        {
+            if(v.getId() == getResources().getIdentifier(
+                    "addimage" + i,
+                    "id",
+                    this.getContext().getPackageName()))
+            {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), i);
+            }
         }
-        // draw the view on the canvas
-        view.draw(canvas);
-        //return the bitmap
-        return returnedBitmap;
+
     }
+
+
 
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getActivity());
@@ -209,7 +204,7 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                choosePhotoFromGallary();
+                                //choosePhotoFromGallary();
                                 break;
                             case 1:
                                 takePhotoFromCamera();
@@ -249,21 +244,53 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
         return "";
     }
 
-    public void choosePhotoFromGallary() {
+    public void choosePhotoFromGallary(int id) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         //addImage.setImageAlpha(0);
+        galleryIntent.putExtra("imageid", id);
         startActivityForResult(galleryIntent, 2);
     }
 
     private void takePhotoFromCamera() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         //addImage.setImageAlpha(0);
+
+        //intent.putExtra("imageid", imageid);
         startActivityForResult(intent, CAMERA);
+
         //getActivity().startActivityForResult(intent, 100);
     }
+
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+
+            for(int i = 1; i <= maxid; i++)
+            {
+                if (requestCode == i) {
+                    Uri selectedImageUri = data.getData();
+                    if (null != selectedImageUri) {
+                        String path = selectedImageUri.getPath();
+                        Log.e("image path", path + "");
+
+                        tempimage = getView().findViewById(getResources().getIdentifier(
+                                "displayimage" + requestCode,
+                                "id",
+                                this.getContext().getPackageName()));
+
+                        tempimage.setImageURI(selectedImageUri);
+                        addImage[requestCode-1].setImageAlpha(0);
+                    }
+                }
+            }
+
+        }
+    }
+
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -274,10 +301,22 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
+
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
                     //String path = saveImage(bitmap);
                     //Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    img.setImageBitmap(bitmap);
+                    //img[data.getIntExtra("imageid", '0')].setImageBitmap(bitmap);
+                    //img[imageid].setImageBitmap(bitmap);
+
+
+                    //Log.v("imageid",Integer.toString(imageid));
+
+                    tempimage = getView().findViewById(getResources().getIdentifier(
+                            "displayimage" + data.getIntExtra("imageid", 0),
+                            "id",
+                            this.getContext().getPackageName()));
+
+                    tempimage.setImageBitmap(bitmap);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -287,13 +326,18 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
 
         } else if (requestCode == CAMERA) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            img.setImageBitmap(thumbnail);
-            saveImage(thumbnail);
+            img[data.getIntExtra("imageid", 0)].setImageBitmap(thumbnail);
+            //img.setImageBitmap(thumbnail);
+            //saveImage(thumbnail);
             Toast.makeText(getActivity(), "Image Saved!", Toast.LENGTH_SHORT).show();
         }
 
-        addImage.setImageAlpha(0);
-    }
+        addImage[0].setImageAlpha(0);
+
+        return;
+    }*/
+
+
 
     float[] lastEvent = null;
     float d = 0f;
@@ -446,5 +490,27 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener {
 
     }
 
+    private Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
+
+        Log.d("canvas", Integer.toString(view.getWidth()));
+        Log.d("canvas", Integer.toString(view.getHeight()));
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null) {
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        }   else{
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        }
+        // draw the view on the canvas
+        view.draw(canvas);
+        //return the bitmap
+        return returnedBitmap;
+    }
 
 }
