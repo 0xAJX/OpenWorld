@@ -14,16 +14,13 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -43,9 +40,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     private static int[] REQUEST_IMAGE_ID;
     View template;
     ImageView tempimage;
-    EditText ed1,ed2;
     ImageView img[];
-
+    String id;
     int maxid;
     Bitmap bmp;
 
@@ -53,6 +49,10 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.bringToFront();
 
         /*Fragment fragment = new NewStoryFragment();
 
@@ -67,7 +67,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit(); */
 
-        String id = getIntent().getStringExtra("template_id");
+        id = getIntent().getStringExtra("template_id");
 
         REQUEST_IMAGE_ID = new int[Integer.parseInt(id)];
 
@@ -112,22 +112,32 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         //img.setMaxZoom(4f);
 
 
-        ed1 = findViewById(R.id.titletext);
         //ed2 = view.findViewById(R.id.desctext);
 
 
 
-        int ressourceId = getResources().getIdentifier(
+        /*int ressourceId = getResources().getIdentifier(
                 "desctext",
                 "id",
-                this.getPackageName());
+                this.getPackageName());*/
 
 
-        ed2 = findViewById(ressourceId);
 
         //template = view.findViewById(R.id.imagelayout);
 
         //Button save = findViewById(R.id.savebutton);
+
+        ImageButton demoview = findViewById(R.id.fullscreenbutton);
+        demoview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), FullscreenView.class);
+                i.putExtra("template_id", id);
+                i.putExtra("mode", "view");
+                startActivity(i);
+            }
+        });
+
         ImageButton save = findViewById(R.id.imageshare);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,11 +146,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                 template.post(new Runnable() {
                     @Override
                     public void run() {
-
-                        ed1.setCursorVisible(false);
-                        ed2.setCursorVisible(false);
-
-
 
                         bmp = getBitmapFromView(template);
 
@@ -422,13 +427,42 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent i;
                         switch (which) {
+
                             case 0:
-                                saveImage();
+                                i = new Intent(getBaseContext(), FullscreenView.class);
+                                i.putExtra("template_id", id);
+                                i.putExtra("mode", "device");
+                                for(int x = 1 ; x <= maxid ; x++)
+                                {
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                                    BitmapDrawable drawable = (BitmapDrawable) img[x-1].getDrawable();
+                                    drawable.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                                    //((BitmapDrawable)img[x-1].getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                    byte[] byteArray = stream.toByteArray();
+                                    getIntent().putExtra("image" + i, byteArray);
+                                }
+                                startActivity(i);
+                                //saveImage();
                                 //choosePhotoFromGallary();
                                 break;
                             case 1:
-                                onShare();
+                                i = new Intent(getBaseContext(), FullscreenView.class);
+                                i.putExtra("template_id", id);
+                                i.putExtra("mode", "instagram");
+                                for(int x = 1 ; x <= maxid ; x++)
+                                {
+
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    ((BitmapDrawable)img[x-1].getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                    byte[] byteArray = stream.toByteArray();
+                                    getIntent().putExtra("image" + i, byteArray);
+                                }
+                                startActivity(i);
+                                //onShare();
                                 //takePhotoFromCamera();
                                 break;
                         }
@@ -439,7 +473,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
     public void onShare()
     {
-        ImageView imageView = (ImageView) findViewById(R.id.collageimage);
+        ImageView imageView = findViewById(R.id.collageimage);
         Drawable mDrawable = imageView.getDrawable();
         Bitmap mBitmap = ((BitmapDrawable)mDrawable).getBitmap();
 

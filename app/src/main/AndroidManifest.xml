@@ -19,7 +19,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity2"></activity>
+        <activity
+            android:name=".FullscreenView"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_collage_view"
+            android:theme="@style/FullscreenTheme"></activity>
+        <activity android:name=".MainActivity2" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">

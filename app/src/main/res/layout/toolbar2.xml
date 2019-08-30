@@ -13,6 +13,16 @@
         android:layout_height="match_parent">
 
         <ImageButton
+            android:id="@+id/fullscreenbutton"
+            android:layout_marginRight="10dp"
+            android:scaleType="fitXY"
+            android:background="@color/white"
+            android:src="@drawable/ic_remove_red_eye_black_24dp"
+            android:layout_toLeftOf="@+id/imageshare"
+            android:layout_width="30dp"
+            android:layout_height="30dp"></ImageButton>
+
+        <ImageButton
             android:id="@+id/imageshare"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="15dp"
