@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -72,7 +73,13 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
 
                     String id = select_template_item.getId();
 
-                    Fragment fragment = new NewStoryFragment();
+                    Intent i = new Intent(context, MainActivity2.class);
+
+                    i.putExtra("template_id", id);
+                    context.startActivity(i);
+
+
+                    /*Fragment fragment = new NewStoryFragment();
 
 
                     MainActivity activity = (MainActivity)context;
@@ -83,7 +90,7 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_container , fragment);
                     fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    fragmentTransaction.commit();*/
 
                 }
             });

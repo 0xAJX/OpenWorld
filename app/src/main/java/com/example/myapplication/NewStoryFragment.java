@@ -54,7 +54,8 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener, 
 
     ImageView img[];
     ImageView addImage[];
-    private static int RESULT_LOAD_IMAGE = 1;
+    //private static int RESULT_LOAD_IMAGE = 1;
+    private static int[] REQUEST_IMAGE_ID;
     View template;
     ImageView tempimage;
     EditText ed1,ed2;
@@ -66,10 +67,12 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener, 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.newstoryfragment, null);
 
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Create New Story");
+        //Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        //toolbar.setTitle("Create New Story");
 
         String id = getActivity().getIntent().getStringExtra("template_id");
+
+        REQUEST_IMAGE_ID = new int[Integer.parseInt(id)];
 
         maxid = Integer.parseInt(id);
         img = new ImageView[Integer.parseInt(id)];
@@ -104,6 +107,8 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener, 
 
             addImage[i-1].setOnClickListener(this);
             img[i-1].setOnTouchListener(this);
+
+            REQUEST_IMAGE_ID[i-1] = i;
         }
 
 
@@ -134,8 +139,6 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener, 
                 template.post(new Runnable() {
                     @Override
                     public void run() {
-
-
 
                         ed1.setCursorVisible(false);
                         ed2.setCursorVisible(false);
@@ -181,10 +184,14 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener, 
                     "id",
                     this.getContext().getPackageName()))
             {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                //intent.setType("image/*");
+                //intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), i);
+
+                //showPictureDialog();
             }
         }
 
@@ -270,7 +277,7 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener, 
 
             for(int i = 1; i <= maxid; i++)
             {
-                if (requestCode == i) {
+                if (requestCode == REQUEST_IMAGE_ID[i-1]) {
                     Uri selectedImageUri = data.getData();
                     if (null != selectedImageUri) {
                         String path = selectedImageUri.getPath();
@@ -289,6 +296,8 @@ public class NewStoryFragment extends Fragment implements View.OnTouchListener, 
 
         }
     }
+
+
 
     /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
