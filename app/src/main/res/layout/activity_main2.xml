@@ -8,7 +8,7 @@
 
     <include layout="@layout/toolbar2" />
 
-    <LinearLayout
+    <!--<LinearLayout
 
         android:layout_marginBottom="60dp"
         android:layout_marginRight="60dp"
@@ -16,8 +16,13 @@
         android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical">-->
 
+<LinearLayout
+    android:paddingTop="30dp"
+    android:layout_centerInParent="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"

@@ -134,7 +134,7 @@ public class FullscreenView extends AppCompatActivity {
         else if(getIntent().getStringExtra("mode").equals("device"))
         {
 
-            int templateLayout = getResources().getIdentifier(
+            /*int templateLayout = getResources().getIdentifier(
                     "template" + id,
                     "layout",
                     this.getPackageName());
@@ -152,6 +152,7 @@ public class FullscreenView extends AppCompatActivity {
                 }
             });
 
+            */
 
         }
         else if (getIntent().getStringExtra("mode").equals("instagram"))

@@ -18,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +45,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     String id;
     int maxid;
     Bitmap bmp;
+    LinearLayout templateloader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit(); */
 
+
         id = getIntent().getStringExtra("template_id");
 
         REQUEST_IMAGE_ID = new int[Integer.parseInt(id)];
@@ -82,13 +85,24 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                 this.getPackageName());
 
 
-        LinearLayout templateloader = findViewById(R.id.templateloader);
+        templateloader = findViewById(R.id.templateloader);
         template = getLayoutInflater()
                 .inflate(templateLayout, templateloader, false);
 
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) template.getLayoutParams();
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+
+        double scalingfactor = 0.85;
+        params.height = (int)(height * scalingfactor);
+        params.width = (int)(width * scalingfactor);
+        template.setLayoutParams(params);
+
         templateloader.addView(template);
-
-
+        
         for(int i = 1; i <= Integer.parseInt(id); i++)
         {
             img[i-1] = findViewById(getResources().getIdentifier(
@@ -143,11 +157,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             @Override
             public void onClick(View v) {
 
-                template.post(new Runnable() {
+                templateloader.post(new Runnable() {
                     @Override
                     public void run() {
 
-                        bmp = getBitmapFromView(template);
+                        bmp = getBitmapFromView(templateloader);
 
                         showPictureDialog();
 
@@ -172,7 +186,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
                     }
                 });
-
             }
         });
     }
@@ -384,6 +397,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         Log.d("canvas", Integer.toString(view.getWidth()));
         Log.d("canvas", Integer.toString(view.getHeight()));
         Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+
+
         //Bind a canvas to it
         Canvas canvas = new Canvas(returnedBitmap);
         //Get the view's background
@@ -397,8 +412,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         }
         // draw the view on the canvas
         view.draw(canvas);
+
+        Bitmap resizedbitmap = Bitmap.createScaledBitmap(returnedBitmap, 1080,1920, false);
+
         //return the bitmap
-        return returnedBitmap;
+        //return returnedBitmap;
+        return resizedbitmap;
     }
 
 
@@ -431,26 +450,28 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                         switch (which) {
 
                             case 0:
-                                i = new Intent(getBaseContext(), FullscreenView.class);
+                                /*i = new Intent(getBaseContext(), FullscreenView.class);
                                 i.putExtra("template_id", id);
                                 i.putExtra("mode", "device");
                                 for(int x = 1 ; x <= maxid ; x++)
                                 {
                                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-                                    BitmapDrawable drawable = (BitmapDrawable) img[x-1].getDrawable();
-                                    drawable.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                    Matrix m = img[x-1].getImageMatrix();
+
+                                    //BitmapDrawable drawable = (BitmapDrawable) img[x-1].getDrawable();
+                                    //drawable.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
 
                                     //((BitmapDrawable)img[x-1].getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
                                     byte[] byteArray = stream.toByteArray();
                                     getIntent().putExtra("image" + i, byteArray);
                                 }
-                                startActivity(i);
-                                //saveImage();
+                                startActivity(i);*/
+                                saveImage();
                                 //choosePhotoFromGallary();
                                 break;
                             case 1:
-                                i = new Intent(getBaseContext(), FullscreenView.class);
+                                /*i = new Intent(getBaseContext(), FullscreenView.class);
                                 i.putExtra("template_id", id);
                                 i.putExtra("mode", "instagram");
                                 for(int x = 1 ; x <= maxid ; x++)
@@ -461,7 +482,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                                     byte[] byteArray = stream.toByteArray();
                                     getIntent().putExtra("image" + i, byteArray);
                                 }
-                                startActivity(i);
+                                startActivity(i);*/
                                 //onShare();
                                 //takePhotoFromCamera();
                                 break;
