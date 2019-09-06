@@ -14,6 +14,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -493,7 +495,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                                     getIntent().putExtra("image" + i, byteArray);
                                 }
                                 startActivity(i);*/
-                                //onShare();
+                                onShare();
                                 //takePhotoFromCamera();
                                 break;
                         }
@@ -563,6 +565,19 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                     new String[]{"image/jpeg"}, null);
             fo.close();
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Respond to the click, such as by undoing the modification that caused
+                    // this message to be displayed
+                    Log.d("here" ,"here");
+                }
+            });
+            int snackbarTextId = android.support.design.R.id.snackbar_text;
+            TextView textView = snackbar.getView().findViewById(snackbarTextId);
+            textView.setTextColor(getColor(R.color.colorAccent));
+            snackbar.show();
 
             return f.getAbsolutePath();
         } catch (IOException e1) {
