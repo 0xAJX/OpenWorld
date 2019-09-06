@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationMenu;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,6 +49,11 @@ public class AllStoriesFragment extends Fragment {
 
         myStoryListItems = new ArrayList<>();
 
+        File wallpaperDirectory = new File(
+                Environment.getExternalStorageDirectory() + "/app/image/");
+
+        File directory = new File(String.valueOf(wallpaperDirectory)); //path is the string specifying your directory path.
+        File[] files = directory.listFiles();
 
         My_Story_List_Items listItems = new My_Story_List_Items("Hello World","Wassup world how yall doing!!!!" ,BitmapFactory.decodeResource(getContext().getResources(),
                 R.drawable.ic_launcher_background));

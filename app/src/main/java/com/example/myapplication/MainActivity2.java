@@ -96,9 +96,9 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-        double scalingfactor = 0.85;
-        params.height = (int)(height * scalingfactor);
-        params.width = (int)(width * scalingfactor);
+        double scalingfactor = 0.80;
+        params.height = (int)(1920 * scalingfactor);//(int)(height * scalingfactor);
+        params.width = (int)(1080 * scalingfactor);//(int)(width * scalingfactor);
         template.setLayoutParams(params);
 
         templateloader.addView(template);
@@ -145,10 +145,20 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         demoview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), FullscreenView.class);
-                i.putExtra("template_id", id);
-                i.putExtra("mode", "view");
-                startActivity(i);
+
+                templateloader.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(getBaseContext(), FullscreenView.class);
+
+                        bmp = getBitmapFromView(templateloader);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        i.putExtra("demoimage", byteArray);
+                        startActivity(i);
+                    }
+                });
             }
         });
 
@@ -536,7 +546,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
         File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + "/image/");
+                Environment.getExternalStorageDirectory() + "/app/image/");
         // have the object build the directory structure, if needed.
         if (!wallpaperDirectory.exists()) {
             wallpaperDirectory.mkdirs();

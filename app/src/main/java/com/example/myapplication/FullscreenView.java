@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.io.ByteArrayOutputStream;
@@ -106,60 +109,19 @@ public class FullscreenView extends AppCompatActivity {
 
         setContentView(R.layout.activity_collage_view);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         //mContentView = findViewById(R.id.fullscreen_content);
 
-        templateloader = findViewById(R.id.templateloader);
+        byte[] byteArray = getIntent().getByteArrayExtra("demoimage");
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
-        String id = getIntent().getStringExtra("template_id");
-        if(getIntent().getStringExtra("mode").equals("view"))
-        {
-
-
-            //Log.d("template_id", id);
-
-            int templateLayout = getResources().getIdentifier(
-                    "template" + id,
-                    "layout",
-                    this.getPackageName());
-
-
-
-            template = getLayoutInflater()
-                    .inflate(templateLayout, templateloader, false);
-
-            templateloader.addView(template);
-        }
-        else if(getIntent().getStringExtra("mode").equals("device"))
-        {
-
-            /*int templateLayout = getResources().getIdentifier(
-                    "template" + id,
-                    "layout",
-                    this.getPackageName());
-
-            template = getLayoutInflater()
-                    .inflate(templateLayout, templateloader, false);
-            templateloader.addView(template);
-
-            templateloader.post(new Runnable() {
-                @Override
-                public void run() {
-                    Bitmap bmp = getBitmapFromView(templateloader);
-                    saveImage(bmp);
-
-                }
-            });
-
-            */
-
-        }
-        else if (getIntent().getStringExtra("mode").equals("instagram"))
-        {
-
-        }
-
+        ImageView imageView = findViewById(R.id.demoimage);
+        imageView.setImageBitmap(bmp);
 
         // Set up the user interaction to manually show or hide the system UI.
         /*mContentView.setOnClickListener(new View.OnClickListener() {
