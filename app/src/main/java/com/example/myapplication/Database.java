@@ -11,6 +11,9 @@ import android.support.annotation.Nullable;
 
 import com.example.myapplication.model.Image_Item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Database extends SQLiteOpenHelper {
 
     //information of database
@@ -48,17 +51,30 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
-    public String loadImage() {
-        String result = "";
-        String query = "Select * FROM " + TABLE_NAME_2;
+    public List<String> loadImages(int templateID) {
+        List<String> result = new ArrayList<>();
+
+        String query = "Select * FROM " + TABLE_NAME_2 + "WHERE TEMPLATE_ID=" + templateID;
+
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        while (cursor.moveToNext()) {
-            int result_0 = cursor.getInt(0);
-            String result_1 = cursor.getString(1);
-            result += String.valueOf(result_0) + " " + result_1 + System.getProperty("line.separator");
+
+        try
+        {
+            Cursor cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+
+                int imageID = cursor.getInt(0);
+                String location = cursor.getString(1);
+
+                result.add(imageID, location);
+            }
+            cursor.close();
         }
-        cursor.close();
+        catch (Exception e)
+        {
+            
+        }
+
         db.close();
         return result;
 
