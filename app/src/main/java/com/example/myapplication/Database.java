@@ -72,7 +72,7 @@ public class Database extends SQLiteOpenHelper {
         }
         catch (Exception e)
         {
-            
+
         }
 
         db.close();
