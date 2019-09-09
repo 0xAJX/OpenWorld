@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.fragments;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myapplication.R;
+import com.example.myapplication.adapters.SelectTemplateAdapter;
+import com.example.myapplication.model.Select_Template_Item;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SelectTemplateFragment extends Fragment {

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.example.myapplication.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

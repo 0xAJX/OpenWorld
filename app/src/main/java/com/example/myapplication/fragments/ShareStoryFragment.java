@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.example.myapplication.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

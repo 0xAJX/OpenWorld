@@ -25,22 +25,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingLeft="20dp"
+                android:paddingTop="16dp">
 
                 <TextView
                     android:id="@+id/mystorytitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+
                     android:text="CARD TITLE"
                     android:textColor="#000"
                     android:textSize="18sp" />
-                <TextView
-                    android:id="@+id/mystorydescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="CARD DESCRIPTION"
-                    android:textColor="#555" />
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

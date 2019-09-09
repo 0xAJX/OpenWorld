@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +28,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.myapplication.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -123,6 +125,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             REQUEST_IMAGE_ID[i-1] = i;
         }
 
+
+        EditText title = findViewById(R.id.storytitle);
 
         //img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
@@ -250,6 +254,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             }
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 
     float[] lastEvent = null;

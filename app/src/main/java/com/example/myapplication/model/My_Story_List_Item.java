@@ -1,13 +1,13 @@
-package com.example.myapplication;
+package com.example.myapplication.model;
 
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.widget.ImageView;
 
-public class My_Story_List_Items {
+public class My_Story_List_Item {
 
     private String title;
-    private String description;
+
 
 
     public Bitmap getImage() {
@@ -49,21 +49,14 @@ public class My_Story_List_Items {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
 
 
-    public My_Story_List_Items(String title, String description ,Bitmap image)
+
+    public My_Story_List_Item(String title, Bitmap image)
     {
         this.image = image;
         this.title = title;
-        this.description = description;
         //this.information = information;
         //this.location = location;
     }
