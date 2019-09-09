@@ -152,6 +152,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             @Override
             public void onClick(View v) {
 
+                for(int i = 0; i < addImage.length ; i++)
+                {
+                    addImage[i].setImageAlpha(0);
+                }
+
                 templateloader.post(new Runnable() {
                     @Override
                     public void run() {
@@ -162,6 +167,15 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                         byte[] byteArray = stream.toByteArray();
                         i.putExtra("demoimage", byteArray);
+
+                        for(int x = 0; x < addImage.length ; x++)
+                        {
+                            if(img[x].getDrawable() == null)
+                            {
+                                addImage[x].setImageAlpha(255);
+                            }
+                        }
+
                         startActivity(i);
                     }
                 });
