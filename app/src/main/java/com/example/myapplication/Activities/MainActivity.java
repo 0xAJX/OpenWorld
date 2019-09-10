@@ -1,4 +1,4 @@
-package com.example.myapplication.activities;
+package com.example.myapplication.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -8,9 +8,9 @@ import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 
-import com.example.myapplication.fragments.AllStoriesFragment;
+import com.example.myapplication.Fragments.AllStoriesFragment;
 import com.example.myapplication.R;
-import com.example.myapplication.fragments.SelectTemplateFragment;
+import com.example.myapplication.Fragments.SelectTemplateFragment;
 
 public class MainActivity extends AppCompatActivity {
     //private TextView mTextMessage;

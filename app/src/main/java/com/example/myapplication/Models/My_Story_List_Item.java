@@ -1,8 +1,6 @@
-package com.example.myapplication.model;
+package com.example.myapplication.Models;
 
 import android.graphics.Bitmap;
-import android.media.Image;
-import android.widget.ImageView;
 
 public class My_Story_List_Item {
 

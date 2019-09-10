@@ -1,4 +1,4 @@
-package com.example.myapplication.fragments;
+package com.example.myapplication.Fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;

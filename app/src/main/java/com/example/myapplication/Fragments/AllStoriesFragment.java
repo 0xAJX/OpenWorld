@@ -1,4 +1,4 @@
-package com.example.myapplication.fragments;
+package com.example.myapplication.Fragments;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.R;
-import com.example.myapplication.adapters.AllStoriesAdapter;
-import com.example.myapplication.model.My_Story_List_Item;
+import com.example.myapplication.Adapters.AllStoriesAdapter;
+import com.example.myapplication.Models.My_Story_List_Item;
 
 import java.io.File;
 import java.util.ArrayList;

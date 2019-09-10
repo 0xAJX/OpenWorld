@@ -1,4 +1,4 @@
-package com.example.myapplication.activities;
+package com.example.myapplication.Activities;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;

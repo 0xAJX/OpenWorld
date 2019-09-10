@@ -1,4 +1,4 @@
-package com.example.myapplication.adapters;
+package com.example.myapplication.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.myapplication.Models.My_Story_List_Item;
 import com.example.myapplication.R;
-import com.example.myapplication.model.My_Story_List_Item;
 
 import java.util.List;
 

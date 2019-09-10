@@ -1,4 +1,4 @@
-package com.example.myapplication.adapters;
+package com.example.myapplication.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.myapplication.activities.MainActivity2;
+import com.example.myapplication.Activities.MainActivity2;
+import com.example.myapplication.Models.Template_Item;
 import com.example.myapplication.R;
-import com.example.myapplication.model.Template_Item;
 
 import java.util.List;
 

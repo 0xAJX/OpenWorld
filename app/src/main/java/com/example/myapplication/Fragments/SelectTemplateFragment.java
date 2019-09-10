@@ -1,4 +1,4 @@
-package com.example.myapplication.fragments;
+package com.example.myapplication.Fragments;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.R;
-import com.example.myapplication.adapters.SelectTemplateAdapter;
-import com.example.myapplication.model.Template_Item;
+import com.example.myapplication.Adapters.SelectTemplateAdapter;
+import com.example.myapplication.Models.Template_Item;
 
 import java.util.ArrayList;
 import java.util.List;
