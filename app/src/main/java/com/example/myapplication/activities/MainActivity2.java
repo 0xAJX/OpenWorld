@@ -93,17 +93,20 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         template = getLayoutInflater()
                 .inflate(templateLayout, templateloader, false);
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) template.getLayoutParams();
+        //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) template.getLayoutParams();
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
+        /*DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
+        int height = displayMetrics.heightPixels;*/
 
-        double scalingfactor = 0.80;
-        params.height = (int)(1920 * scalingfactor);//(int)(height * scalingfactor);
+        float scalingfactor = 0.85f;
+        /*params.height = (int)(1920 * scalingfactor);//(int)(height * scalingfactor);
         params.width = (int)(1080 * scalingfactor);//(int)(width * scalingfactor);
-        template.setLayoutParams(params);
+        template.setLayoutParams(params);*/
+
+        template.setScaleX(scalingfactor);
+        template.setScaleY(scalingfactor);
 
         templateloader.addView(template);
         
@@ -152,14 +155,15 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             @Override
             public void onClick(View v) {
 
-                for(int i = 0; i < addImage.length ; i++)
-                {
-                    addImage[i].setImageAlpha(0);
-                }
-
                 templateloader.post(new Runnable() {
                     @Override
                     public void run() {
+
+                        for(int x = 0; x < addImage.length ; x++)
+                        {
+                            addImage[x].setImageAlpha(0);
+                        }
+
                         Intent i = new Intent(getBaseContext(), FullscreenView.class);
 
                         bmp = getBitmapFromView(templateloader);

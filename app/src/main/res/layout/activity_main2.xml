@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".activities.MainActivity2">
 
     <include layout="@layout/toolbar2" />
@@ -18,21 +18,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">-->
 
-<LinearLayout
-    android:paddingTop="30dp"
-    android:layout_centerInParent="true"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+
 
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/templateloader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
     </LinearLayout>
 
-    </LinearLayout>
 
     <!--<FrameLayout
         android:id="@+id/fragment_container"
