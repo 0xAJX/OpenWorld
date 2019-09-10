@@ -13,14 +13,14 @@ import android.widget.ImageView;
 
 import com.example.myapplication.activities.MainActivity2;
 import com.example.myapplication.R;
-import com.example.myapplication.model.Select_Template_Item;
+import com.example.myapplication.model.Template_Item;
 
 import java.util.List;
 
 public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAdapter.ViewHolder> {
 
     private Context context;
-    private List<Select_Template_Item> listItems;
+    private List<Template_Item> listItems;
 
     public SelectTemplateAdapter(Context context, List listItem)
     {
@@ -40,12 +40,10 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
     @Override
     public void onBindViewHolder(@NonNull SelectTemplateAdapter.ViewHolder holder, int position) {
 
-        Select_Template_Item item = listItems.get(position);
+        Template_Item item = listItems.get(position);
         //holder.myStoryTitle.setText(item.getTitle());
         holder.templateImage.setImageResource(R.drawable.ic_create_black_24dp);
-        //holder.myStoryDescription.setText(item.getDescription());
-        //holder.information.setText(item.getInformation());
-        //holder.location.setText(item.getLocation());
+
     }
 
     @Override
@@ -67,13 +65,14 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
                 @Override
                 public void onClick(View v) {
 
-                    Select_Template_Item select_template_item = listItems.get(getAdapterPosition());
+                    Template_Item template_item = listItems.get(getAdapterPosition());
 
-                    String id = select_template_item.getId();
+                    String id = template_item.getId();
 
                     Intent i = new Intent(context, MainActivity2.class);
 
                     i.putExtra("template_id", id);
+                    i.putExtra("no_of_images", template_item.getNo_of_images());
                     context.startActivity(i);
 
 

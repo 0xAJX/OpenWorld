@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.SelectTemplateAdapter;
-import com.example.myapplication.model.Select_Template_Item;
+import com.example.myapplication.model.Template_Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 public class SelectTemplateFragment extends Fragment {
 
     RecyclerView recyclerView;
-    private List<Select_Template_Item> selectTemplateItems;
+    private List<Template_Item> selectTemplateItems;
     private SelectTemplateAdapter selectTemplateAdapter;
 
     @Nullable
@@ -39,15 +39,15 @@ public class SelectTemplateFragment extends Fragment {
 
         selectTemplateItems = new ArrayList<>();
 
-        Select_Template_Item listItems = new Select_Template_Item("1", BitmapFactory.decodeResource(getContext().getResources(),
+        Template_Item listItems = new Template_Item("1", 1,BitmapFactory.decodeResource(getContext().getResources(),
                 R.drawable.ic_launcher_background));
         selectTemplateItems.add(listItems);
 
-        Select_Template_Item listItems1 = new Select_Template_Item( "2",BitmapFactory.decodeResource(getContext().getResources(),
+        Template_Item listItems1 = new Template_Item( "2", 2,BitmapFactory.decodeResource(getContext().getResources(),
                 R.drawable.ic_launcher_background));
         selectTemplateItems.add(listItems1);
 
-        Select_Template_Item listItems2 = new Select_Template_Item("3",BitmapFactory.decodeResource(getContext().getResources(),
+        Template_Item listItems2 = new Template_Item("3", 3,BitmapFactory.decodeResource(getContext().getResources(),
                 R.drawable.ic_launcher_background));
         selectTemplateItems.add(listItems2);
 

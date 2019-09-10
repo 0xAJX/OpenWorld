@@ -2,7 +2,7 @@ package com.example.myapplication.model;
 
 import android.graphics.Bitmap;
 
-public class Select_Template_Item {
+public class Template_Item {
 
 
 
@@ -26,11 +26,20 @@ public class Select_Template_Item {
 
     private String id;
 
+    public int getNo_of_images() {
+        return no_of_images;
+    }
 
+    public void setNo_of_images(int no_of_images) {
+        this.no_of_images = no_of_images;
+    }
 
-    public Select_Template_Item(String id, Bitmap image)
+    private int no_of_images;
+
+    public Template_Item(String id, int no_of_images ,Bitmap image)
     {
         this.image = image;
         this.id = id;
+        this.no_of_images = no_of_images;
     }
 }

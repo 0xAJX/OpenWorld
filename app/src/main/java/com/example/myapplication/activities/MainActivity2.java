@@ -47,6 +47,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     ImageView tempimage;
     ImageView img[];
     String id;
+    int no_of_images;
     int maxid;
     Bitmap bmp;
     LinearLayout templateloader;
@@ -75,16 +76,18 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
 
         id = getIntent().getStringExtra("template_id");
+        no_of_images = getIntent().getIntExtra("no_of_images",1);
 
-        REQUEST_IMAGE_ID = new int[Integer.parseInt(id)];
 
-        maxid = Integer.parseInt(id);
-        img = new ImageView[Integer.parseInt(id)];
-        addImage = new ImageView[Integer.parseInt(id)];
+        REQUEST_IMAGE_ID = new int[no_of_images];
+
+        maxid = no_of_images;
+        img = new ImageView[no_of_images];
+        addImage = new ImageView[no_of_images];
 
 
         int templateLayout = getResources().getIdentifier(
-                "template" + id,
+                "template" + id + "" + no_of_images,
                 "layout",
                 this.getPackageName());
 
@@ -110,7 +113,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
         templateloader.addView(template);
         
-        for(int i = 1; i <= Integer.parseInt(id); i++)
+        for(int i = 1; i <= no_of_images; i++)
         {
             img[i-1] = findViewById(getResources().getIdentifier(
                     "displayimage" + i,
@@ -227,7 +230,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     @Override
     public void onClick(View v) {
 
-        for(int i = 1 ; i <=maxid ; i++)
+        for(int i = 1 ; i <=no_of_images ; i++)
         {
             if(v.getId() == getResources().getIdentifier(
                     "addimage" + i,
@@ -252,7 +255,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
         if (resultCode == RESULT_OK) {
 
-            for(int i = 1; i <= maxid; i++)
+            for(int i = 1; i <= no_of_images; i++)
             {
                 if (requestCode == REQUEST_IMAGE_ID[i-1]) {
                     Uri selectedImageUri = data.getData();

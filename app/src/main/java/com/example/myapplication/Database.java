@@ -30,6 +30,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String IMAGE_LOCATION = "";
 
     public static final String TEMPLATE_ID = "TEMPLATE_ID";
+    public static final String NO_OF_IMAGES = "NO_OF_IMAGES";
 
 
     SQLiteDatabase database;
@@ -42,7 +43,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //database.execSQL("CREATE TABLE " + TABLE_NAME + "(" + USER_ID + " INTEGER PRIMARY KEY ,"  + TEMPLATE_ID + " INTEGER" + ")");
+        database.execSQL("CREATE TABLE " + TABLE_NAME + "(" + TEMPLATE_ID + " INTEGER PRIMARY KEY ,"  + NO_OF_IMAGES + " INTEGER" + ")");
         database.execSQL("CREATE TABLE " + TABLE_NAME_2 + "(" + TEMPLATE_ID + " INTEGER PRIMARY KEY ," + IMAGE_ID + " INTEGER," + IMAGE_LOCATION + "TEXT" + ")");
     }
 
