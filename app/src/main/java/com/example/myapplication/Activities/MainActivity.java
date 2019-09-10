@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
 
-        loadFragment(new AllStoriesFragment());
+        navView.setSelectedItemId(R.id.navigation_all_stories);
+
+        //loadFragment(new AllStoriesFragment());
     }
 
 }
