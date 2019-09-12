@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar.bringToFront();
 
         navView.setSelectedItemId(R.id.navigation_all_stories);
-
-        //loadFragment(new AllStoriesFragment());
     }
 
 }

@@ -12,24 +12,25 @@ public class Image_Item {
         this.imageID = imageID;
     }
 
-    public int getTemplateID() {
-        return templateID;
+    public int getUserTemplateID() {
+        return userTemplateID;
     }
 
-    public void setTemplateID(int templateID) {
-        this.templateID = templateID;
+    public void setUserTemplateID(int userTemplateID) {
+        this.userTemplateID = userTemplateID;
     }
 
-    public int getImageLocation() {
+    private int userTemplateID;
+
+    public String getImageLocation() {
         return imageLocation;
     }
 
-    public void setImageLocation(int imageLocation) {
+    public void setImageLocation(String imageLocation) {
         this.imageLocation = imageLocation;
     }
 
-    private int templateID;
-    private int imageLocation;
+    private String imageLocation;
 
     public Image_Item()
     {

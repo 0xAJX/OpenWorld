@@ -9,7 +9,7 @@
     <item
         android:id="@+id/navigation_all_stories"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Stories" />
+        android:title="My Stories" />
 
     <item
         android:id="@+id/navigation_notifications"

@@ -3,6 +3,7 @@ package com.example.myapplication.Activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -28,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.myapplication.DatabaseHandler;
+import com.example.myapplication.Models.Image_Item;
 import com.example.myapplication.R;
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity2 extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
 
@@ -50,12 +54,14 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     int maxid;
     Bitmap bmp;
     LinearLayout templateloader;
+    EditText title;
+    DatabaseHandler mydb;
+    public List<Image_Item> imageItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
@@ -131,7 +137,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         }
 
 
-        EditText title = findViewById(R.id.storytitle);
+        title = findViewById(R.id.storytitle);
 
         //img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
@@ -224,6 +230,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                 });
             }
         });
+
+        mydb = new DatabaseHandler(this);
+
+
+
     }
 
     @Override
@@ -573,6 +584,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
     public String saveImage() {
 
+        addToDB();
         Bitmap myBitmap = bmp;
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -614,5 +626,23 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             e1.printStackTrace();
         }
         return "";
+    }
+
+    public void addToDB()
+    {
+        Cursor c = mydb.addUserTemplate(id, "" , title.getText().toString());
+
+        for(int i = 0; i < img.length; i++)
+        {
+            Image_Item item = new Image_Item();
+
+            item.setImageID(i+1);
+            item.setImageLocation("");
+            item.setUserTemplateID(Integer.parseInt(c.getString(0)));
+
+            imageItems.add(item);
+        }
+        
+        mydb.addImages(imageItems);
     }
 }
