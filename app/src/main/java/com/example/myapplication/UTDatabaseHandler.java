@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.myapplication.Models.Image_Item;
+import com.example.myapplication.Models.User_Template_Item;
 import com.example.myapplication.Util.Constants;
 
 import java.util.ArrayList;
@@ -129,10 +130,10 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
 
 
 
-    public List<String> loadImages(int templateID) {
-        List<String> result = new ArrayList<>();
+    public List<User_Template_Item> loadUserTemplates() {
+        List<User_Template_Item> templateItems = new ArrayList<>();
 
-        String query = "Select * FROM " + Constants.TABLE_NAME_2 + "WHERE TEMPLATE_ID=" + templateID;
+        String query = "Select * FROM " + Constants.TABLE_NAME_3;
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -141,11 +142,16 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(query, null);
             while (cursor.moveToNext()) {
 
-                int imageID = cursor.getInt(0);
-                String location = cursor.getString(1);
+               User_Template_Item item = new User_Template_Item();
+               item.setStory_title(cursor.getString(cursor.getColumnIndex("story_title")));
+               item.setTemplate_id(cursor.getString(cursor.getColumnIndex("template_id")));
+               item.setUser_template_id(cursor.getString(cursor.getColumnIndex("user_template_id")));
+               item.setUser_template_location(cursor.getString(cursor.getColumnIndex("user_template_location")));
 
-                result.add(imageID, location);
+
+               templateItems.add(item);
             }
+
             cursor.close();
         }
         catch (Exception e)
@@ -154,20 +160,30 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
         }
 
         db.close();
-        return result;
+        return templateItems;
 
     }
 
-    /*public void addImage(Image_Item image) {
-        ContentValues values = new ContentValues();
+   public List<Image_Item> loadImages(int userTemplateID)
+   {
+       List<Image_Item> image_items = new ArrayList<>();
 
-        values.put(Constants.IMAGE_ID, image.getImageID());
-        values.put(Constants.TEMPLATE_ID, image.getTemplateID());
-        values.put(Constants.IMAGE_LOCATION, image.getImageLocation());
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(Constants.TABLE_NAME_2, null, values);
-        db.close();
+       String query = "Select * FROM " + Constants.TABLE_NAME_4 + "WHERE " + Constants.USER_TEMPLATE_ID+ "=" + userTemplateID;
 
-    }*/
+       SQLiteDatabase db = this.getWritableDatabase();
+
+       Cursor cursor = db.rawQuery(query, null);
+
+       while (cursor.moveToNext())
+       {
+           Image_Item item = new Image_Item();
+
+           item.setUserTemplateID(userTemplateID);
+           item.setImageID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("image_id"))));
+           item.setImageLocation(cursor.getString(cursor.getColumnIndex("image_location")));
+       }
+
+       return image_items;
+   }
 
 }
