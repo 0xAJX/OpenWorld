@@ -29,9 +29,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.myapplication.DatabaseHandler;
+import com.example.myapplication.UTDatabaseHandler;
 import com.example.myapplication.Models.Image_Item;
 import com.example.myapplication.R;
+import com.example.myapplication.Util.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -55,13 +56,23 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     Bitmap bmp;
     LinearLayout templateloader;
     EditText title;
-    DatabaseHandler mydb;
+    UTDatabaseHandler mydb;
     public List<Image_Item> imageItems;
+
+    String imagelocation[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        mydb = new UTDatabaseHandler(this);
+        imageItems = new ArrayList<>();
+
+        //Log.d("query 1", "CREATE TABLE " + Constants.TABLE_NAME + " (" + Constants.TEMPLATE_ID + " INTEGER PRIMARY KEY , "  + Constants.NO_OF_IMAGES + " INTEGER" + ")");
+        //Log.d("query 2", "CREATE TABLE " + Constants.TABLE_NAME_2 + " (" + Constants.USER_ID + " INTEGER PRIMARY KEY , " + Constants.USERNAME + " TEXT," + Constants.PASSWORD + " TEXT" + ")");
+
+        //Log.d("query 4", "CREATE TABLE " + Constants.TABLE_NAME_4 + " (" + Constants.USER_TEMPLATE_ID + " INTEGER, " + Constants.IMAGE_ID + " INTEGER, " + Constants.IMAGE_LOCATION + " TEXT" + ");");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
@@ -89,7 +100,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         maxid = no_of_images;
         img = new ImageView[no_of_images];
         addImage = new ImageView[no_of_images];
+        imagelocation = new String[no_of_images];
 
+        for(int i = 0; i < no_of_images; i++)
+        {
+            imagelocation[i] = "";
+        }
 
         int templateLayout = getResources().getIdentifier(
                 "template" + id + "" + no_of_images,
@@ -199,11 +215,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             @Override
             public void onClick(View v) {
 
-                templateloader.post(new Runnable() {
+                template.post(new Runnable() {
                     @Override
                     public void run() {
 
-                        bmp = getBitmapFromView(templateloader);
+                        bmp = getBitmapFromView(template);
 
                         showPictureDialog();
 
@@ -231,7 +247,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             }
         });
 
-        mydb = new DatabaseHandler(this);
+
 
 
 
@@ -260,6 +276,20 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
     }
 
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -270,8 +300,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                 if (requestCode == REQUEST_IMAGE_ID[i-1]) {
                     Uri selectedImageUri = data.getData();
                     if (null != selectedImageUri) {
-                        String path = selectedImageUri.getPath();
-                        Log.e("image path", path + "");
+                        String path = getRealPathFromURI(selectedImageUri);
+
+
+                        imagelocation[requestCode-1] = path;
+
+                        Log.d("image path", path + "");
 
                         tempimage = findViewById(getResources().getIdentifier(
                                 "displayimage" + requestCode,
@@ -584,7 +618,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
     public String saveImage() {
 
-        addToDB();
+
         Bitmap myBitmap = bmp;
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -608,6 +642,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             fo.close();
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
 
+            addToDB(f.getAbsolutePath());
+
             Snackbar snackbar = Snackbar.make(findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -628,21 +664,22 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         return "";
     }
 
-    public void addToDB()
+    public void addToDB(String filepath)
     {
-        Cursor c = mydb.addUserTemplate(id, "" , title.getText().toString());
+        String utid = mydb.addUserTemplate(id, "" , title.getText().toString(), filepath);
+
+        Log.d("utid1" , String.valueOf(utid));
 
         for(int i = 0; i < img.length; i++)
         {
             Image_Item item = new Image_Item();
 
             item.setImageID(i+1);
-            item.setImageLocation("");
-            item.setUserTemplateID(Integer.parseInt(c.getString(0)));
-
+            item.setImageLocation(imagelocation[i]);
+            item.setUserTemplateID(Integer.parseInt(utid));
             imageItems.add(item);
         }
-        
+
         mydb.addImages(imageItems);
     }
 }

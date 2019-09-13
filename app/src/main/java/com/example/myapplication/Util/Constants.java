@@ -4,24 +4,25 @@ public class Constants {
 
     public static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "COLLAGE";
+    public static final String DATABASE_NAME = "Collage.db";
 
-    public static final String TABLE_NAME = "TEMPLATES";
-    public static final String TABLE_NAME_2 = "USER";
-    public static final String TABLE_NAME_3 = "STORIES";
-    public static final String TABLE_NAME_4 = "STORY_ELEMENTS";
+    public static final String TABLE_NAME = "Templates";
+    public static final String TABLE_NAME_2 = "User";
+    public static final String TABLE_NAME_3 = "Stories";
+    public static final String TABLE_NAME_4 = "StoryElements";
 
-    public static final String USER_ID = "USER_ID";
-    public static final String USERNAME = "USERNAME";
-    public static final String PASSWORD = "PASSWORD";
+    public static final String USER_ID = "user_id";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
 
-    public static final String USER_TEMPLATE_ID = "USER_TEMPLATE_ID";
-    public static final String STORY_TITLE = "STORY_TITLE";
+    public static final String USER_TEMPLATE_ID = "user_template_id";
+    public static final String USER_TEMPLATE_LOCATION = "user_template_location";
+    public static final String STORY_TITLE = "story_title";
 
-    public static final String IMAGE_ID = "IMAGE_ID";
-    public static final String IMAGE_LOCATION = "IMAGE_LOCATION";
+    public static final String IMAGE_ID = "image_id";
+    public static final String IMAGE_LOCATION = "image_location";
 
-    public static final String TEMPLATE_ID = "TEMPLATE_ID";
-    public static final String NO_OF_IMAGES = "NO_OF_IMAGES";
+    public static final String TEMPLATE_ID = "template_id";
+    public static final String NO_OF_IMAGES = "no_of_images";
 
 }
