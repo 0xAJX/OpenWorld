@@ -128,7 +128,30 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public int getNoOfImages(String tid)
+    {
+        String query = "SELECT no_of_images FROM " + Constants.TABLE_NAME + " WHERE " + Constants.TEMPLATE_ID + "="+tid;
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        try
+        {
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext())
+            {
+
+                Log.d("query",cursor.getString(cursor.getColumnIndex("no_of_images")));
+                return Integer.parseInt(cursor.getString(cursor.getColumnIndex("no_of_images")));
+
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return 1;
+    }
 
     public List<User_Template_Item> loadUserTemplates() {
         List<User_Template_Item> templateItems = new ArrayList<>();
@@ -168,7 +191,9 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
    {
        List<Image_Item> image_items = new ArrayList<>();
 
-       String query = "Select * FROM " + Constants.TABLE_NAME_4 + "WHERE " + Constants.USER_TEMPLATE_ID+ "=" + userTemplateID;
+       String query = "Select * FROM " + Constants.TABLE_NAME_4 + " WHERE " + Constants.USER_TEMPLATE_ID+ "=" + userTemplateID;
+
+       Log.d("query load", query);
 
        SQLiteDatabase db = this.getWritableDatabase();
 
@@ -181,6 +206,10 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
            item.setUserTemplateID(userTemplateID);
            item.setImageID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("image_id"))));
            item.setImageLocation(cursor.getString(cursor.getColumnIndex("image_location")));
+
+           image_items.add(item);
+
+           Log.d("query",cursor.getString(cursor.getColumnIndex("image_location")));
        }
 
        return image_items;

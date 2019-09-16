@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -58,8 +59,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     EditText title;
     UTDatabaseHandler mydb;
     public List<Image_Item> imageItems;
+    String utid;
 
+    Boolean isUpdate = false;
     String imagelocation[];
+    String titletext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +73,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         mydb = new UTDatabaseHandler(this);
         imageItems = new ArrayList<>();
 
-        //Log.d("query 1", "CREATE TABLE " + Constants.TABLE_NAME + " (" + Constants.TEMPLATE_ID + " INTEGER PRIMARY KEY , "  + Constants.NO_OF_IMAGES + " INTEGER" + ")");
-        //Log.d("query 2", "CREATE TABLE " + Constants.TABLE_NAME_2 + " (" + Constants.USER_ID + " INTEGER PRIMARY KEY , " + Constants.USERNAME + " TEXT," + Constants.PASSWORD + " TEXT" + ")");
-
-        //Log.d("query 4", "CREATE TABLE " + Constants.TABLE_NAME_4 + " (" + Constants.USER_TEMPLATE_ID + " INTEGER, " + Constants.IMAGE_ID + " INTEGER, " + Constants.IMAGE_LOCATION + " TEXT" + ");");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
@@ -91,10 +91,28 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         fragmentTransaction.commit(); */
 
 
+        try
+        {
+            if(getIntent().getStringExtra("user_template_id") != null)
+            {
+                utid = getIntent().getStringExtra("user_template_id");
+                titletext = getIntent().getStringExtra("story_title");
+                isUpdate = true;
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+
         id = getIntent().getStringExtra("template_id");
-        no_of_images = getIntent().getIntExtra("no_of_images",1);
 
+        Log.d("id", id);
 
+        no_of_images = mydb.getNoOfImages(id);
+
+        Log.d("no of images", Integer.toString(no_of_images));
+        //no_of_images = getIntent().getIntExtra("no_of_images",1);
         REQUEST_IMAGE_ID = new int[no_of_images];
 
         maxid = no_of_images;
@@ -108,7 +126,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         }
 
         int templateLayout = getResources().getIdentifier(
-                "template" + id + "" + no_of_images,
+                "template" + id,
                 "layout",
                 this.getPackageName());
 
@@ -155,13 +173,34 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
         title = findViewById(R.id.storytitle);
 
+
+
+        try{
+
+            if(titletext != null)
+            {
+                title.setText(titletext);
+            }
+
+            List<Image_Item> image_items = mydb.loadImages(Integer.parseInt(utid));
+
+            for(int x = 0; x< no_of_images;x++)
+            {
+                if (image_items.get(x).getImageLocation() != null)
+                {
+                    Log.d("query 1", image_items.get(x).getImageLocation());
+                    img[x].setImageBitmap(BitmapFactory.decodeFile(new File(image_items.get(x).getImageLocation()).getAbsolutePath()));
+                    addImage[x].setImageAlpha(0);
+                }
+            }
+
+
+        }catch (Exception e)
+        {
+        }
+
         //img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
-
-
-        //ed2 = view.findViewById(R.id.desctext);
-
-
 
         /*int ressourceId = getResources().getIdentifier(
                 "desctext",
@@ -169,10 +208,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                 this.getPackageName());*/
 
 
-
-        //template = view.findViewById(R.id.imagelayout);
-
-        //Button save = findViewById(R.id.savebutton);
+        //img[0].setImageBitmap(BitmapFactory.decodeFile(new File("/storage/emulated/0/DCIM/Camera/IMG_20190913_203025.jpg").getAbsolutePath()));
 
         ImageButton demoview = findViewById(R.id.fullscreenbutton);
         demoview.setOnClickListener(new View.OnClickListener() {
@@ -642,7 +678,13 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             fo.close();
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
 
-            addToDB(f.getAbsolutePath());
+            if(isUpdate)
+            {
+
+            }
+            else {
+                addToDB(f.getAbsolutePath());
+            }
 
             Snackbar snackbar = Snackbar.make(findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
                 @Override
