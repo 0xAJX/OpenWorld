@@ -16,6 +16,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -281,7 +282,13 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         });
 
 
+        FloatingActionButton ftb = findViewById(R.id.addedittext);
+        ftb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
 
 
     }

@@ -41,4 +41,25 @@
 
     </FrameLayout>-->
 
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.FloatingActionButton
+
+            android:src="@drawable/ic_add_black_24dp"
+            android:id="@+id/addedittext"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:fabCustomSize="60dp"
+            android:layout_margin="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+        </android.support.design.widget.FloatingActionButton>
+
+    </android.support.constraint.ConstraintLayout>
+
+
 </RelativeLayout>

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.myapplication.Activities.MainActivity2;
 import com.example.myapplication.Models.User_Template_Item;
 import com.example.myapplication.R;
+import com.example.myapplication.SaveAlertDialog;
 import com.example.myapplication.UTDatabaseHandler;
 
 import java.net.URI;
@@ -89,6 +90,8 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    listItems.get(getAdapterPosition()).getUser_template_location();
+                    new SaveAlertDialog(context);
 
                 }
             });
