@@ -50,10 +50,10 @@
                     android:background="@color/white"
                     android:theme="@style/PrimaryFlatButton" />
                 <Button
-                    android:id="@+id/mystoryexplore"
+                    android:id="@+id/mystorydelete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="EXPLORE"
+                    android:text="DELETE"
                     android:background="@color/white"
                     android:theme="@style/PrimaryFlatButton" />
 

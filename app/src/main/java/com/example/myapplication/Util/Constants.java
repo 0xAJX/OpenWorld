@@ -24,5 +24,6 @@ public class Constants {
 
     public static final String TEMPLATE_ID = "template_id";
     public static final String NO_OF_IMAGES = "no_of_images";
+    public static final String TEMPLATE_RES = "template_res";
 
 }

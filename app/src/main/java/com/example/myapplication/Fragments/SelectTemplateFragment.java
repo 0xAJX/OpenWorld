@@ -1,6 +1,7 @@
 package com.example.myapplication.Fragments;
 
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.myapplication.R;
 import com.example.myapplication.Adapters.SelectTemplateAdapter;
 import com.example.myapplication.Models.Template_Item;
+import com.example.myapplication.UTDatabaseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +27,14 @@ public class SelectTemplateFragment extends Fragment {
     RecyclerView recyclerView;
     private List<Template_Item> selectTemplateItems;
     private SelectTemplateAdapter selectTemplateAdapter;
+    UTDatabaseHandler handler;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.selecttemplatefragment, null);
+
+        handler = new UTDatabaseHandler(getContext());
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Create New Story");
@@ -39,25 +45,55 @@ public class SelectTemplateFragment extends Fragment {
 
         selectTemplateItems = new ArrayList<>();
 
-        Template_Item listItems = new Template_Item("1", 1,BitmapFactory.decodeResource(getContext().getResources(),
-                R.drawable.ic_launcher_background));
-        selectTemplateItems.add(listItems);
+        selectTemplateItems = handler.getTemplates();
 
-        Template_Item listItems1 = new Template_Item( "2", 2,BitmapFactory.decodeResource(getContext().getResources(),
-                R.drawable.ic_launcher_background));
-        selectTemplateItems.add(listItems1);
+        Log.d("selecttemplateitems", Integer.toString(selectTemplateItems.size()));
 
-        Template_Item listItems2 = new Template_Item("3", 3,BitmapFactory.decodeResource(getContext().getResources(),
-                R.drawable.ic_launcher_background));
-        selectTemplateItems.add(listItems2);
+        for(int i = 0; i < selectTemplateItems.size();i++)
+        {
+            Log.d("selecttemplateitems",selectTemplateItems.get(i).getId());
+        }
 
-        //Collections.reverse(myStoryListItems);
-
-        selectTemplateAdapter = new SelectTemplateAdapter(getContext(), selectTemplateItems);
-
-        recyclerView.setAdapter(selectTemplateAdapter);
+        new getTemplates().execute();
 
         return view;
     }
+
+
+    private class getTemplates extends AsyncTask<Void, Integer, List<Template_Item>> {
+        /*protected Long doInBackground(URL... urls) {
+            int count = urls.length;
+            long totalSize = 0;
+            for (int i = 0; i < count; i++) {
+                totalSize += Downloader.downloadFile(urls[i]);
+                publishProgress((int) ((i / (float) count) * 100));
+                // Escape early if cancel() is called
+                if (isCancelled()) break;
+            }
+            return totalSize;
+        }*/
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        @Override
+        protected List<Template_Item> doInBackground(Void... voids) {
+
+            List<Template_Item> template_items = handler.getTemplates();
+
+
+            return template_items;
+        }
+
+        protected void onPostExecute(List<Template_Item> result) {
+
+            selectTemplateAdapter = new SelectTemplateAdapter(getContext(), selectTemplateItems);
+            recyclerView.setAdapter(selectTemplateAdapter);
+
+            handler.close();
+        }
+    }
+
 
 }

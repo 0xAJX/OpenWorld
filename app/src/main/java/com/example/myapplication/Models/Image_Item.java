@@ -12,15 +12,15 @@ public class Image_Item {
         this.imageID = imageID;
     }
 
-    public int getUserTemplateID() {
+    public String getUserTemplateID() {
         return userTemplateID;
     }
 
-    public void setUserTemplateID(int userTemplateID) {
+    public void setUserTemplateID(String userTemplateID) {
         this.userTemplateID = userTemplateID;
     }
 
-    private int userTemplateID;
+    private String userTemplateID;
 
     public String getImageLocation() {
         return imageLocation;

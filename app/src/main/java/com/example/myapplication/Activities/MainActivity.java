@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import com.example.myapplication.Fragments.AllStoriesFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.Fragments.SelectTemplateFragment;
+import com.example.myapplication.UTDatabaseHandler;
 
 public class MainActivity extends AppCompatActivity {
     //private TextView mTextMessage;
@@ -63,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         //mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        UTDatabaseHandler handler = new UTDatabaseHandler(this);
+
+
+
+
+        handler.close();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();

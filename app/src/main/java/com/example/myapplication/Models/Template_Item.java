@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 public class Template_Item {
 
 
-
     public Bitmap getImage() {
         return image;
     }
@@ -36,10 +35,18 @@ public class Template_Item {
 
     private int no_of_images;
 
-    public Template_Item(String id, int no_of_images ,Bitmap image)
+    public String getTemplate_res() {
+        return template_res;
+    }
+
+    public void setTemplate_res(String template_res) {
+        this.template_res = template_res;
+    }
+
+    private String template_res = "";
+
+    public Template_Item()
     {
-        this.image = image;
-        this.id = id;
-        this.no_of_images = no_of_images;
+
     }
 }

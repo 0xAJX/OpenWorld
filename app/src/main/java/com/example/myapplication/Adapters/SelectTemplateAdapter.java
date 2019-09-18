@@ -66,15 +66,10 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
                 public void onClick(View v) {
 
                     Template_Item template_item = listItems.get(getAdapterPosition());
-
                     String id = template_item.getId();
-
                     Intent i = new Intent(context, MainActivity2.class);
-
                     i.putExtra("template_id", id);
-                    i.putExtra("no_of_images", template_item.getNo_of_images());
                     context.startActivity(i);
-
 
                     /*Fragment fragment = new NewStoryFragment();
 

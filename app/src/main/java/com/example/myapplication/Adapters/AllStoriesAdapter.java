@@ -8,12 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.Activities.MainActivity2;
 import com.example.myapplication.Models.User_Template_Item;
 import com.example.myapplication.R;
+import com.example.myapplication.UTDatabaseHandler;
 
 import java.net.URI;
 import java.util.List;
@@ -59,12 +61,16 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
 
         public ImageView myStoryImage;
         public TextView myStoryTitle;
+        public Button share;
+        public Button delete;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             myStoryTitle = itemView.findViewById(R.id.mystorytitle);
             myStoryImage = itemView.findViewById(R.id.mystoryimage);
+            share = itemView.findViewById(R.id.mystoryshare);
+            delete = itemView.findViewById(R.id.mystorydelete);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,6 +83,24 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                     intent.putExtra("template_id", items.getTemplate_id());
 
                     context.startActivity(intent);
+                }
+            });
+
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UTDatabaseHandler handler = new UTDatabaseHandler(context);
+                    handler.deleteUserTemplate(listItems.get(getAdapterPosition()).getUser_template_id());
+                    handler.close();
+                    notifyDataSetChanged();
+
                 }
             });
 

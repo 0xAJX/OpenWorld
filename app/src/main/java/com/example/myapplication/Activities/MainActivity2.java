@@ -71,8 +71,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         setContentView(R.layout.activity_main2);
 
         mydb = new UTDatabaseHandler(this);
-        imageItems = new ArrayList<>();
 
+        imageItems = new ArrayList<>();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
@@ -174,31 +174,28 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         title = findViewById(R.id.storytitle);
 
 
+        if(isUpdate) {
 
-        try{
+            try {
 
-            if(titletext != null)
-            {
-                title.setText(titletext);
-            }
-
-            List<Image_Item> image_items = mydb.loadImages(Integer.parseInt(utid));
-
-            for(int x = 0; x< no_of_images;x++)
-            {
-                if (image_items.get(x).getImageLocation() != null)
-                {
-                    Log.d("query 1", image_items.get(x).getImageLocation());
-                    img[x].setImageBitmap(BitmapFactory.decodeFile(new File(image_items.get(x).getImageLocation()).getAbsolutePath()));
-                    addImage[x].setImageAlpha(0);
+                if (titletext != null) {
+                    title.setText(titletext);
                 }
+
+                imageItems = mydb.loadImages(utid);
+
+                for (int x = 0; x < no_of_images; x++) {
+                    if (imageItems.get(x).getImageLocation() != null) {
+                        Log.d("query 1", imageItems.get(x).getImageLocation());
+                        img[x].setImageBitmap(BitmapFactory.decodeFile(new File(imageItems.get(x).getImageLocation()).getAbsolutePath()));
+                        addImage[x].setImageAlpha(0);
+                    }
+                }
+
+
+            } catch (Exception e) {
             }
-
-
-        }catch (Exception e)
-        {
         }
-
         //img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
 
@@ -680,7 +677,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
             if(isUpdate)
             {
-
+                UpdateDB(f.getAbsolutePath());
             }
             else {
                 addToDB(f.getAbsolutePath());
@@ -703,12 +700,25 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+
         return "";
+    }
+
+    public void UpdateDB(String filepath)
+    {
+        mydb.UpdateUserTemplate(utid,title.getText().toString(),filepath);
+
+        for(int i = 0; i<imageItems.size();i++)
+        {
+            imageItems.get(i).setImageLocation(imagelocation[i]);
+        }
+
+        mydb.UpdateImages(utid, imageItems);
     }
 
     public void addToDB(String filepath)
     {
-        String utid = mydb.addUserTemplate(id, "" , title.getText().toString(), filepath);
+        String usertemplateid = mydb.addUserTemplate(id, "" , title.getText().toString(), filepath);
 
         Log.d("utid1" , String.valueOf(utid));
 
@@ -718,10 +728,28 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
             item.setImageID(i+1);
             item.setImageLocation(imagelocation[i]);
-            item.setUserTemplateID(Integer.parseInt(utid));
+            item.setUserTemplateID(usertemplateid);
             imageItems.add(item);
         }
 
         mydb.addImages(imageItems);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mydb.close();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mydb.close();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mydb = new UTDatabaseHandler(this);
     }
 }
