@@ -48,31 +48,49 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE " + Constants.TABLE_NAME_3 + " (" + Constants.USER_TEMPLATE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Constants.TEMPLATE_ID + " INTEGER," + Constants.USER_ID + " INTEGER, " + Constants.STORY_TITLE + " TEXT, " + Constants.USER_TEMPLATE_LOCATION + " TEXT" +")");
             db.execSQL("CREATE TABLE " + Constants.TABLE_NAME_4 + " (" + Constants.USER_TEMPLATE_ID + " INTEGER, " + Constants.IMAGE_ID + " INTEGER, " + Constants.IMAGE_LOCATION + " TEXT" + ")");
 
+
         }
         catch (Exception e)
         {
             Log.d("QUERY ERROR", "QUERY ERROR");
         }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Constants.NO_OF_IMAGES, 1);
+        contentValues.put(Constants.TEMPLATE_RES, "");
+        db.insert(Constants.TABLE_NAME, null, contentValues);
+        contentValues.put(Constants.NO_OF_IMAGES, 2);
+        contentValues.put(Constants.TEMPLATE_RES, "");
+        db.insert(Constants.TABLE_NAME, null, contentValues);
+        contentValues.put(Constants.NO_OF_IMAGES, 3);
+        contentValues.put(Constants.TEMPLATE_RES, "");
+        db.insert(Constants.TABLE_NAME, null, contentValues);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME);
-        //db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME_2);
-        //db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME_3);
-        //db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME_4);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME_2);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME_3);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME_4);
 
         onCreate(db);
     }
 
-    public boolean addTemplate(int no_of_images, String template_res)
+    /*public boolean addTemplate()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Constants.NO_OF_IMAGES, no_of_images);
-        contentValues.put(Constants.TEMPLATE_RES, template_res);
 
-        long result = db.insert(Constants.TABLE_NAME, null, contentValues);
+
+
+        long result = -1;
+
+        for(int i = 1; i <=3 ; i++)
+        {
+            result =
+        }
+
+        Log.d("result" , Long.toString(result));
 
         db.close();
 
@@ -81,7 +99,7 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
         else
             return true;
 
-    }
+    }*/
 
     public int getNoOfImages(String tid)
     {

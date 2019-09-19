@@ -91,7 +91,7 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                 @Override
                 public void onClick(View v) {
                     listItems.get(getAdapterPosition()).getUser_template_location();
-                    new SaveAlertDialog(context);
+                    new SaveAlertDialog(context, listItems.get(getAdapterPosition()).getUser_template_location());
 
                 }
             });
@@ -102,10 +102,15 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                     UTDatabaseHandler handler = new UTDatabaseHandler(context);
                     handler.deleteUserTemplate(listItems.get(getAdapterPosition()).getUser_template_id());
                     handler.close();
-                    notifyDataSetChanged();
+                    listItems.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+
+
+                    //notifyDataSetChanged();
 
                 }
             });
+
 
             //title = itemView.findViewById(R.id.title);
             //description = itemView.findViewById(R.id.description);

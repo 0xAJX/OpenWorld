@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 public class My_Story_List_Item {
 
-    private String title;
+    private String title = "My Story";
 
 
 
@@ -44,7 +44,8 @@ public class My_Story_List_Item {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+
+            this.title = title;
     }
 
 

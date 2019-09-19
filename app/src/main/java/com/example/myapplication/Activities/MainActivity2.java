@@ -725,7 +725,14 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
     public void addToDB(String filepath)
     {
-        String usertemplateid = mydb.addUserTemplate(id, "" , title.getText().toString(), filepath);
+        String text = title.getText().toString();
+
+        if(title.getText().toString().isEmpty() || text.trim().length() == 0)
+        {
+            text = "My Story";
+        }
+
+        String usertemplateid = mydb.addUserTemplate(id, "" , text, filepath);
 
         Log.d("utid1" , String.valueOf(utid));
 

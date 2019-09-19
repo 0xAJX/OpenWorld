@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.myapplication.Models.User_Template_Item;
 import com.example.myapplication.R;
@@ -61,10 +62,17 @@ public class AllStoriesFragment extends Fragment {
         UTDatabaseHandler handler = new UTDatabaseHandler(getContext());
         user_template_items = handler.loadUserTemplates();
 
+        if(user_template_items.size() != 0)
+        {
+            TextView textView = view.findViewById(R.id.nostorytext);
+            textView.setVisibility(View.INVISIBLE);
+        }
+
         Collections.reverse(user_template_items);
 
         allStoriesAdapter = new AllStoriesAdapter(getContext(), user_template_items);
         recyclerView.setAdapter(allStoriesAdapter);
+        allStoriesAdapter.notifyDataSetChanged();
 
         return view;
     }
