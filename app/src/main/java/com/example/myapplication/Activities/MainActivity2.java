@@ -16,12 +16,12 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,7 +34,6 @@ import android.widget.TextView;
 import com.example.myapplication.UTDatabaseHandler;
 import com.example.myapplication.Models.Image_Item;
 import com.example.myapplication.R;
-import com.example.myapplication.Util.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -698,9 +697,9 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                     Log.d("here" ,"here");
                 }
             });
-            int snackbarTextId = android.support.design.R.id.snackbar_text;
-            TextView textView = snackbar.getView().findViewById(snackbarTextId);
-            textView.setTextColor(getColor(R.color.colorAccent));
+            //int snackbarTextId = android.support.design.R.id.snackbar_text;
+            //TextView textView = snackbar.getView().findViewById(snackbarTextId);
+            //textView.setTextColor(getColor(R.color.colorAccent));
             snackbar.show();
 
             return f.getAbsolutePath();
