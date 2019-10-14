@@ -1,51 +1,62 @@
 package com.example.myapplication.Activities;
 
 import android.os.Bundle;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import com.example.myapplication.Fragments.BottomNavigationDrawerFragment;
+import com.google.android.material.bottomappbar.BottomAppBar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
+
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.Fragments.AllStoriesFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.Fragments.SelectTemplateFragment;
 import com.example.myapplication.UTDatabaseHandler;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
-    //private TextView mTextMessage;
 
+    FloatingActionButton create;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bottom_nav_menu, menu);
+        return true;
+    }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
 
-            Fragment fragment = null;
+            case android.R.id.home:
+                BottomNavigationDrawerFragment bottomNavigationDrawerFragment = new BottomNavigationDrawerFragment();
+                bottomNavigationDrawerFragment.show(getSupportFragmentManager(), bottomNavigationDrawerFragment.getTag());
+                break;
 
-            switch (item.getItemId()) {
-                case R.id.navigation_select_template:
-                    fragment = new SelectTemplateFragment();
-                    //fragment = new SelectTemplateFragment();
-                    break;
-                    //mTextMessage.setText(R.string.title_home);
-                    //return true;
-                case R.id.navigation_all_stories:
-                    fragment = new AllStoriesFragment();
-                    break;
-                    //mTextMessage.setText(R.string.title_dashboard);
-                    //return true;
-                case R.id.navigation_notifications:
-                    break;
-                    //mTextMessage.setText(R.string.title_notifications);
-                    //return true;
-            }
-            return loadFragment(fragment);
+            case R.id.navigation_notifications:
+                create.show();
+                loadFragment(new SelectTemplateFragment());
+                break;
+
         }
-    };
+        return true;
+    }
+
 
     private  boolean loadFragment(Fragment fragment)
     {
@@ -61,21 +72,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        //BottomNavigationView navView = findViewById(R.id.nav_view);
         //mTextMessage = findViewById(R.id.message);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         UTDatabaseHandler handler = new UTDatabaseHandler(this);
 
-
-
-
         handler.close();
+
+        BottomAppBar bottomAppBar = findViewById(R.id.bottombar);
+        setSupportActionBar(bottomAppBar);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
 
-        navView.setSelectedItemId(R.id.navigation_all_stories);
+        loadFragment(new AllStoriesFragment());
+
+        create = findViewById(R.id.fab);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new SelectTemplateFragment());
+                create.hide();
+            }
+        });
+
+
     }
 
 }

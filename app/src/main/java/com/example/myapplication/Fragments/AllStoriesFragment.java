@@ -43,7 +43,7 @@ public class AllStoriesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        bottomNavigationMenu = getActivity().findViewById(R.id.nav_view);
+        //bottomNavigationMenu = getActivity().findViewById(R.id.nav_view);
 
         user_template_items = new ArrayList<>();
 

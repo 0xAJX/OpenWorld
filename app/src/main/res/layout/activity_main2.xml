@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/black"
     tools:context=".Activities.MainActivity2">
 
     <include layout="@layout/toolbar2" />
@@ -41,25 +42,35 @@
 
     </FrameLayout>-->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bar"
+            app:backgroundTint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabAlignmentMode="center"
+            app:navigationIcon="@drawable/ic_add_black_24dp"
+            app:menu="@menu/bottom_nav_menu"
+            />
+
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            app:tint="@color/white"
+            app:backgroundTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_anchor="@id/bar"/>
 
-            android:src="@drawable/ic_add_black_24dp"
-            android:id="@+id/addedittext"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:fabCustomSize="60dp"
-            android:layout_margin="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </RelativeLayout>

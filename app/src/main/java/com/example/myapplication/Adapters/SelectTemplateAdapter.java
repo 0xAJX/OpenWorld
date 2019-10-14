@@ -42,7 +42,7 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
 
         Template_Item item = listItems.get(position);
         //holder.myStoryTitle.setText(item.getTitle());
-        holder.templateImage.setImageResource(R.drawable.ic_create_black_24dp);
+        holder.templateImage.setImageResource(R.mipmap.template2_foreground);
 
     }
 

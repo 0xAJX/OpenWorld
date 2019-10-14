@@ -281,13 +281,13 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         });
 
 
-        FloatingActionButton ftb = findViewById(R.id.addedittext);
+        /*FloatingActionButton ftb = findViewById(R.id.addedittext);
         ftb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
 
 
     }
