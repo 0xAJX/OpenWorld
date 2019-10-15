@@ -5,7 +5,7 @@
     android:layout_height="1920px">
 
     <LinearLayout
-        android:background="@color/colorAccent"
+        android:background="@color/white"
         android:id="@+id/imagelayout"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"

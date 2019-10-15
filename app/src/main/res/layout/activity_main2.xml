@@ -23,6 +23,7 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:layout_marginTop="10dp"
         android:id="@+id/templateloader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -45,29 +46,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bar"
-            app:backgroundTint="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:fabAlignmentMode="center"
-            app:navigationIcon="@drawable/ic_add_black_24dp"
-            app:menu="@menu/bottom_nav_menu"
-            />
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            app:tint="@color/white"
-            app:backgroundTint="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_foreground"
-            app:layout_anchor="@id/bar"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

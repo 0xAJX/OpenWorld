@@ -77,19 +77,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
 
-        /*Fragment fragment = new NewStoryFragment();
-
-
-        //String id = "1";
-
-        //getIntent().putExtra("template_id", id);
-
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container , fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit(); */
-
 
         try
         {

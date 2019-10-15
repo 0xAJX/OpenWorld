@@ -42,7 +42,13 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
 
         Template_Item item = listItems.get(position);
         //holder.myStoryTitle.setText(item.getTitle());
-        holder.templateImage.setImageResource(R.mipmap.template2_foreground);
+
+        int template_image = context.getResources().getIdentifier(
+                "template" + item.getId() + "_foreground",
+                "mipmap",
+                context.getPackageName());
+
+        holder.templateImage.setImageResource(template_image);
 
     }
 
@@ -70,20 +76,6 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
                     Intent i = new Intent(context, MainActivity2.class);
                     i.putExtra("template_id", id);
                     context.startActivity(i);
-
-                    /*Fragment fragment = new NewStoryFragment();
-
-
-                    MainActivity activity = (MainActivity)context;
-
-                    activity.getIntent().putExtra("template_id", id);
-
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container , fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();*/
-
                 }
             });
 

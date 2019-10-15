@@ -30,6 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton create;
+    boolean isAllStory = true;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,8 +93,19 @@ public class MainActivity extends AppCompatActivity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFragment(new SelectTemplateFragment());
-                create.hide();
+
+                if(isAllStory)
+                {
+                    loadFragment(new SelectTemplateFragment());
+                    create.setImageResource(R.drawable.ic_dashboard_black_24dp);
+                    isAllStory = false;
+                }
+                else
+                {
+                    loadFragment(new AllStoriesFragment());
+                    create.setImageResource(R.drawable.ic_create_black_24dp);
+                    isAllStory = true;
+                }
             }
         });
 

@@ -48,8 +48,7 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
 
         holder.myStoryTitle.setText(item.getStory_title());
         holder.myStoryImage.setImageURI(Uri.parse(item.getUser_template_location()));
-        //holder.information.setText(item.getInformation());
-        //holder.location.setText(item.getLocation());
+
     }
 
     @Override
