@@ -3,6 +3,7 @@ package com.example.myapplication.Activities;
 import android.os.Bundle;
 
 import com.example.myapplication.Fragments.BottomNavigationDrawerFragment;
+import com.example.myapplication.Fragments.ShareBottomSheetFragment;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 import androidx.annotation.NonNull;
@@ -50,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.navigation_notifications:
-                create.show();
-                loadFragment(new SelectTemplateFragment());
                 break;
 
         }

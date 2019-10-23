@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/device_share"
+            android:icon="@drawable/ic_file_download_black_24dp"
+            android:title="Device" />
+        <item
+            android:id="@+id/facebook_share"
+            android:icon="@drawable/ic_share_black_24dp"
+            android:title="Facebook" />
+
+        <item
+            android:id="@+id/instagram_share"
+            android:icon="@drawable/ic_share_black_24dp"
+            android:title="Instagram" />
+
+    </group>
+</menu>

@@ -16,6 +16,9 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+
+import com.example.myapplication.Fragments.ShareBottomSheetFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AlertDialog;
@@ -55,6 +58,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     int no_of_images;
     int maxid;
     Bitmap bmp;
+    BottomNavigationView bottomNavigationView;
     LinearLayout templateloader;
     EditText title;
     UTDatabaseHandler mydb;
@@ -71,12 +75,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         setContentView(R.layout.activity_main2);
 
         mydb = new UTDatabaseHandler(this);
-
         imageItems = new ArrayList<>();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
-
+        bottomNavigationView = findViewById(R.id.nav_view);
 
         try
         {
@@ -138,7 +141,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         template.setScaleY(scalingfactor);
 
         templateloader.addView(template);
-        
+
         for(int i = 1; i <= no_of_images; i++)
         {
             img[i-1] = findViewById(getResources().getIdentifier(
@@ -232,6 +235,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
         ImageButton save = findViewById(R.id.imageshare);
         save.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
@@ -240,8 +244,17 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                     public void run() {
 
                         bmp = getBitmapFromView(template);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("utid", utid);
+                        bundle.putString("template_id", id);
+                        bundle.putString("title", titletext);
+                        bundle.putStringArray("imageLocation", imagelocation);
+                        bundle.putBoolean("isUpdate", isUpdate);
+                        bundle.putInt("no_of_images", no_of_images);
+                        ShareBottomSheetFragment shareBottomSheetFragment = new ShareBottomSheetFragment(bundle, bmp, imageItems);
+                        shareBottomSheetFragment.show(getSupportFragmentManager(), shareBottomSheetFragment.getTag());
 
-                        showPictureDialog();
+                        //showPictureDialog();
 
                         //ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         //b.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -276,6 +289,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
             }
         });*/
 
+        mydb.close();
 
     }
 
@@ -319,17 +333,17 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
 
-            for(int i = 1; i <= no_of_images; i++)
-            {
-                if (requestCode == REQUEST_IMAGE_ID[i-1]) {
+            for (int i = 1; i <= no_of_images; i++) {
+                if (requestCode == REQUEST_IMAGE_ID[i - 1]) {
                     Uri selectedImageUri = data.getData();
                     if (null != selectedImageUri) {
                         String path = getRealPathFromURI(selectedImageUri);
 
 
-                        imagelocation[requestCode-1] = path;
+                        imagelocation[requestCode - 1] = path;
 
                         Log.d("image path", path + "");
 
@@ -339,7 +353,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                                 this.getPackageName()));
 
                         tempimage.setImageURI(selectedImageUri);
-                        addImage[requestCode-1].setImageAlpha(0);
+                        addImage[requestCode - 1].setImageAlpha(0);
                     }
                 }
             }
@@ -580,7 +594,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                                     getIntent().putExtra("image" + i, byteArray);
                                 }
                                 startActivity(i);*/
-                                saveImage();
+                                //saveImage();
                                 //choosePhotoFromGallary();
                                 break;
                             case 1:
@@ -596,35 +610,13 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                                     getIntent().putExtra("image" + i, byteArray);
                                 }
                                 startActivity(i);*/
-                                onShare();
+                                //onShare();
                                 //takePhotoFromCamera();
                                 break;
                         }
                     }
                 });
         pictureDialog.show();
-    }
-
-    public void onShare()
-    {
-        ImageView imageView = findViewById(R.id.collageimage);
-        Drawable mDrawable = imageView.getDrawable();
-        Bitmap mBitmap = ((BitmapDrawable)mDrawable).getBitmap();
-
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(),
-                mBitmap, "Design", null);
-
-        Uri uri = Uri.parse(path);
-
-        Intent share = new Intent(Intent.ACTION_SEND);
-        //Intent share = new Intent("com.instagram.share.ADD_TO_STORY");
-        share.setType("image/*");
-        //share.setPackage("com.whatsapp");
-        //share.setPackage("com.facebook.android");
-        share.setPackage("com.instagram.android");
-        share.putExtra(Intent.EXTRA_STREAM, uri);
-        share.putExtra(Intent.EXTRA_TEXT, "I found something cool!");
-        startActivity(Intent.createChooser(share, "Share Your Design!"));
     }
 
     private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
@@ -642,98 +634,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         return found;
     }
 
-    public String saveImage() {
 
-
-        Bitmap myBitmap = bmp;
-
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + "/app/image/");
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-            if(isUpdate)
-            {
-                UpdateDB(f.getAbsolutePath());
-            }
-            else {
-                addToDB(f.getAbsolutePath());
-            }
-
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Respond to the click, such as by undoing the modification that caused
-                    // this message to be displayed
-                    Log.d("here" ,"here");
-                }
-            });
-            //int snackbarTextId = android.support.design.R.id.snackbar_text;
-            //TextView textView = snackbar.getView().findViewById(snackbarTextId);
-            //textView.setTextColor(getColor(R.color.colorAccent));
-            snackbar.show();
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-
-        return "";
-    }
-
-    public void UpdateDB(String filepath)
-    {
-        mydb.UpdateUserTemplate(utid,title.getText().toString(),filepath);
-
-        for(int i = 0; i<imageItems.size();i++)
-        {
-            imageItems.get(i).setImageLocation(imagelocation[i]);
-        }
-
-        mydb.UpdateImages(utid, imageItems);
-    }
-
-    public void addToDB(String filepath)
-    {
-        String text = title.getText().toString();
-
-        if(title.getText().toString().isEmpty() || text.trim().length() == 0)
-        {
-            text = "My Story";
-        }
-
-        String usertemplateid = mydb.addUserTemplate(id, "" , text, filepath);
-
-        Log.d("utid1" , String.valueOf(utid));
-
-        for(int i = 0; i < img.length; i++)
-        {
-            Image_Item item = new Image_Item();
-
-            item.setImageID(i+1);
-            item.setImageLocation(imagelocation[i]);
-            item.setUserTemplateID(usertemplateid);
-            imageItems.add(item);
-        }
-
-        mydb.addImages(imageItems);
-    }
 
     @Override
     protected void onDestroy() {
