@@ -5,9 +5,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/black"
-    tools:context=".Activities.MainActivity2">
+    tools:context=".Activities.UpsertPageActivity">
 
-    <include layout="@layout/toolbar2" />
+    <include layout="@layout/upsert_page_toolbar" />
 
     <!--<LinearLayout
 

@@ -1,6 +1,6 @@
 package com.example.myapplication.Models;
 
-public class User_Template_Item {
+public class UserTemplateItem {
 
     private String user_template_id;
     private String user_template_location;

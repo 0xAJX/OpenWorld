@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 import com.example.myapplication.Adapters.SelectTemplateAdapter;
-import com.example.myapplication.Models.Template_Item;
-import com.example.myapplication.UTDatabaseHandler;
+import com.example.myapplication.Models.TemplateItem;
+import com.example.myapplication.Handlers.UTDatabaseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +24,14 @@ import java.util.List;
 public class SelectTemplateFragment extends Fragment {
 
     RecyclerView recyclerView;
-    private List<Template_Item> selectTemplateItems;
+    private List<TemplateItem> selectTemplateItems;
     private SelectTemplateAdapter selectTemplateAdapter;
     UTDatabaseHandler handler;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.selecttemplatefragment, null);
+        View view = inflater.inflate(R.layout.select_template_fragment, null);
 
         handler = new UTDatabaseHandler(getContext());
 
@@ -59,7 +59,7 @@ public class SelectTemplateFragment extends Fragment {
     }
 
 
-    private class getTemplates extends AsyncTask<Void, Integer, List<Template_Item>> {
+    private class getTemplates extends AsyncTask<Void, Integer, List<TemplateItem>> {
         /*protected Long doInBackground(URL... urls) {
             int count = urls.length;
             long totalSize = 0;
@@ -77,15 +77,15 @@ public class SelectTemplateFragment extends Fragment {
         }
 
         @Override
-        protected List<Template_Item> doInBackground(Void... voids) {
+        protected List<TemplateItem> doInBackground(Void... voids) {
 
-            List<Template_Item> template_items = handler.getTemplates();
+            List<TemplateItem> template_items = handler.getTemplates();
 
 
             return template_items;
         }
 
-        protected void onPostExecute(List<Template_Item> result) {
+        protected void onPostExecute(List<TemplateItem> result) {
 
             selectTemplateAdapter = new SelectTemplateAdapter(getContext(), selectTemplateItems);
             recyclerView.setAdapter(selectTemplateAdapter);

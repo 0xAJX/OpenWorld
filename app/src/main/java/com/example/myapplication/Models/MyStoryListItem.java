@@ -2,7 +2,7 @@ package com.example.myapplication.Models;
 
 import android.graphics.Bitmap;
 
-public class My_Story_List_Item {
+public class MyStoryListItem {
 
     private String title = "My Story";
 
@@ -52,7 +52,7 @@ public class My_Story_List_Item {
 
 
 
-    public My_Story_List_Item(String title, Bitmap image)
+    public MyStoryListItem(String title, Bitmap image)
     {
         this.image = image;
         this.title = title;

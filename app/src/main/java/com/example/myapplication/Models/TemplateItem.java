@@ -2,7 +2,7 @@ package com.example.myapplication.Models;
 
 import android.graphics.Bitmap;
 
-public class Template_Item {
+public class TemplateItem {
 
 
     public Bitmap getImage() {
@@ -45,7 +45,7 @@ public class Template_Item {
 
     private String template_res = "";
 
-    public Template_Item()
+    public TemplateItem()
     {
 
     }

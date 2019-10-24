@@ -14,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.myapplication.Models.User_Template_Item;
+import com.example.myapplication.Models.UserTemplateItem;
 import com.example.myapplication.R;
 import com.example.myapplication.Adapters.AllStoriesAdapter;
-import com.example.myapplication.UTDatabaseHandler;
+import com.example.myapplication.Handlers.UTDatabaseHandler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,14 +27,14 @@ import java.util.List;
 public class AllStoriesFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private List<User_Template_Item> user_template_items;
+    private List<UserTemplateItem> user_template_items;
     private AllStoriesAdapter allStoriesAdapter;
     BottomNavigationView bottomNavigationMenu;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.allstoriesfragment, null);
+        View view = inflater.inflate(R.layout.all_stories_fragment, null);
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("My Stories");

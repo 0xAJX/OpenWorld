@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Handlers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
-import com.example.myapplication.Models.Image_Item;
-import com.example.myapplication.Models.Template_Item;
-import com.example.myapplication.Models.User_Template_Item;
+import com.example.myapplication.Models.DisplayImageItem;
+import com.example.myapplication.Models.TemplateItem;
+import com.example.myapplication.Models.UserTemplateItem;
 import com.example.myapplication.Util.Constants;
 
 import java.util.ArrayList;
@@ -126,10 +126,10 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
         return 1;
     }
 
-    public List<Template_Item> getTemplates()
+    public List<TemplateItem> getTemplates()
     {
         String query = "SELECT * FROM " + Constants.TABLE_NAME;
-        List<Template_Item> template_items = new ArrayList<>();
+        List<TemplateItem> template_items = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
 
         //try {
@@ -138,7 +138,7 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
 
             while (cursor.moveToNext())
             {
-                Template_Item item = new Template_Item();
+                TemplateItem item = new TemplateItem();
                 item.setId(cursor.getString(cursor.getColumnIndex("template_id")));
                 Log.d("id", item.getId());
                 item.setNo_of_images(Integer.parseInt(cursor.getString(cursor.getColumnIndex("no_of_images"))));
@@ -206,7 +206,7 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
             return true;*/
     }
 
-    public boolean addImages(List<Image_Item> images)
+    public boolean addImages(List<DisplayImageItem> images)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -231,7 +231,7 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public boolean UpdateUserTemplate(String utid, String story_title, String utLocation)
+    public boolean updateUserTemplate(String utid, String story_title, String utLocation)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -250,7 +250,7 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean UpdateImages(String utid, List<Image_Item> images)
+    public boolean updateImages(String utid, List<DisplayImageItem> images)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -275,8 +275,8 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
 
 
 
-    public List<User_Template_Item> loadUserTemplates() {
-        List<User_Template_Item> templateItems = new ArrayList<>();
+    public List<UserTemplateItem> loadUserTemplates() {
+        List<UserTemplateItem> templateItems = new ArrayList<>();
 
         String query = "Select * FROM " + Constants.TABLE_NAME_3;
 
@@ -287,7 +287,7 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(query, null);
             while (cursor.moveToNext()) {
 
-               User_Template_Item item = new User_Template_Item();
+               UserTemplateItem item = new UserTemplateItem();
                item.setStory_title(cursor.getString(cursor.getColumnIndex("story_title")));
                item.setTemplate_id(cursor.getString(cursor.getColumnIndex("template_id")));
                item.setUser_template_id(cursor.getString(cursor.getColumnIndex("user_template_id")));
@@ -309,27 +309,27 @@ public class UTDatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-   public List<Image_Item> loadImages(String utid)
+   public List<DisplayImageItem> loadImages(String utid)
    {
-       List<Image_Item> image_items = new ArrayList<>();
+       List<DisplayImageItem> displayImageItems = new ArrayList<>();
        String query = "Select * FROM " + Constants.TABLE_NAME_4 + " WHERE " + Constants.USER_TEMPLATE_ID+ "=" + utid;
        Log.d("query load", query);
        SQLiteDatabase db = this.getWritableDatabase();
        Cursor cursor = db.rawQuery(query, null);
        while (cursor.moveToNext())
        {
-           Image_Item item = new Image_Item();
+           DisplayImageItem item = new DisplayImageItem();
            item.setUserTemplateID(utid);
            item.setImageID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("image_id"))));
            item.setImageLocation(cursor.getString(cursor.getColumnIndex("image_location")));
 
-           image_items.add(item);
+           displayImageItems.add(item);
 
            Log.d("query",cursor.getString(cursor.getColumnIndex("image_location")));
        }
 
        db.close();
-       return image_items;
+       return displayImageItems;
    }
 
    public boolean deleteUserTemplate(String utid)

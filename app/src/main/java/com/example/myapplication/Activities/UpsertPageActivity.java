@@ -1,8 +1,6 @@
 package com.example.myapplication.Activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,18 +8,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.example.myapplication.Fragments.ShareBottomSheetFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -32,28 +25,24 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.example.myapplication.UTDatabaseHandler;
-import com.example.myapplication.Models.Image_Item;
+import com.example.myapplication.Handlers.UTDatabaseHandler;
+import com.example.myapplication.Models.DisplayImageItem;
 import com.example.myapplication.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity2 extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
+public class UpsertPageActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
 
     ImageView addImage[];
     private static int RESULT_LOAD_IMAGE = 1;
     private static int[] REQUEST_IMAGE_ID;
     View template;
     ImageView tempimage;
-    ImageView img[];
+    ImageView displayImage[];
     String template_id;
     int no_of_images;
     Bitmap bmp;
@@ -61,7 +50,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     LinearLayout templateloader;
     EditText title;
     UTDatabaseHandler mydb;
-    public List<Image_Item> imageItems;
+    public List<DisplayImageItem> imageItems;
     String utid;
 
     Boolean isUpdate = false;
@@ -71,7 +60,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_upsert_page);
 
         mydb = new UTDatabaseHandler(this);
         imageItems = new ArrayList<>();
@@ -102,7 +91,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         //no_of_images = getIntent().getIntExtra("no_of_images",1);
         REQUEST_IMAGE_ID = new int[no_of_images];
 
-        img = new ImageView[no_of_images];
+        displayImage = new ImageView[no_of_images];
         addImage = new ImageView[no_of_images];
         imagelocation = new String[no_of_images];
 
@@ -140,7 +129,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
         for(int i = 1; i <= no_of_images; i++)
         {
-            img[i-1] = findViewById(getResources().getIdentifier(
+            displayImage[i-1] = findViewById(getResources().getIdentifier(
                     "displayimage" + i,
                     "id",
                     this.getPackageName()));
@@ -151,7 +140,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                     this.getPackageName()));
 
             addImage[i-1].setOnClickListener(this);
-            img[i-1].setOnTouchListener(this);
+            displayImage[i-1].setOnTouchListener(this);
 
             REQUEST_IMAGE_ID[i-1] = i;
         }
@@ -173,7 +162,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                 for (int x = 0; x < no_of_images; x++) {
                     if (imageItems.get(x).getImageLocation() != null) {
                         Log.d("query 1", imageItems.get(x).getImageLocation());
-                        img[x].setImageBitmap(BitmapFactory.decodeFile(new File(imageItems.get(x).getImageLocation()).getAbsolutePath()));
+                        displayImage[x].setImageBitmap(BitmapFactory.decodeFile(new File(imageItems.get(x).getImageLocation()).getAbsolutePath()));
                         addImage[x].setImageAlpha(0);
                     }
                 }
@@ -207,7 +196,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                             addImage[x].setImageAlpha(0);
                         }
 
-                        Intent i = new Intent(getBaseContext(), FullscreenView.class);
+                        Intent i = new Intent(getBaseContext(), DisplayStoryPageActivity.class);
 
                         bmp = getBitmapFromView(templateloader);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -217,7 +206,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
                         for(int x = 0; x < addImage.length ; x++)
                         {
-                            if(img[x].getDrawable() == null)
+                            if(displayImage[x].getDrawable() == null)
                             {
                                 addImage[x].setImageAlpha(255);
                             }
@@ -305,8 +294,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                 //intent.setType("image/*");
                 //intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), i);
-
-                //showPictureDialog();
             }
         }
 
@@ -357,10 +344,33 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    private Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
 
+        Log.d("canvas", Integer.toString(view.getWidth()));
+        Log.d("canvas", Integer.toString(view.getHeight()));
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+
+
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null) {
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        }   else{
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        }
+        // draw the view on the canvas
+        view.draw(canvas);
+
+        Bitmap resizedbitmap = Bitmap.createScaledBitmap(returnedBitmap, 1080,1920, false);
+
+        //return the bitmap
+        //return returnedBitmap;
+        return resizedbitmap;
     }
 
     float[] lastEvent = null;
@@ -514,35 +524,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
     }
 
-    private Bitmap getBitmapFromView(View view) {
-        //Define a bitmap with the same size as the view
-
-        Log.d("canvas", Integer.toString(view.getWidth()));
-        Log.d("canvas", Integer.toString(view.getHeight()));
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-
-
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(returnedBitmap);
-        //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null) {
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        }   else{
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
-        }
-        // draw the view on the canvas
-        view.draw(canvas);
-
-        Bitmap resizedbitmap = Bitmap.createScaledBitmap(returnedBitmap, 1080,1920, false);
-
-        //return the bitmap
-        //return returnedBitmap;
-        return resizedbitmap;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -559,6 +540,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     protected void onResume() {
         super.onResume();
         mydb = new UTDatabaseHandler(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 
 //    private void showPictureDialog(){
@@ -590,7 +577,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 //                        switch (which) {
 //
 //                            case 0:
-//                                /*i = new Intent(getBaseContext(), FullscreenView.class);
+//                                /*i = new Intent(getBaseContext(), DisplayStoryPageActivity.class);
 //                                i.putExtra("template_id", id);
 //                                i.putExtra("mode", "device");
 //                                for(int x = 1 ; x <= maxid ; x++)
@@ -611,7 +598,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 //                                //choosePhotoFromGallary();
 //                                break;
 //                            case 1:
-//                                /*i = new Intent(getBaseContext(), FullscreenView.class);
+//                                /*i = new Intent(getBaseContext(), DisplayStoryPageActivity.class);
 //                                i.putExtra("template_id", id);
 //                                i.putExtra("mode", "instagram");
 //                                for(int x = 1 ; x <= maxid ; x++)

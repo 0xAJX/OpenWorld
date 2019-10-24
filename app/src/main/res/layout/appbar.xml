@@ -8,6 +8,6 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/home_page_toolbar" />
 
 </android.support.design.widget.AppBarLayout>

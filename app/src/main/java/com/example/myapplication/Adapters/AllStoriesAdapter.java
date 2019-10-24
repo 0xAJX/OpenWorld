@@ -12,19 +12,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.myapplication.Activities.MainActivity2;
+import com.example.myapplication.Activities.UpsertPageActivity;
 import com.example.myapplication.Fragments.ShareBottomSheetFragment;
-import com.example.myapplication.Models.User_Template_Item;
+import com.example.myapplication.Models.UserTemplateItem;
 import com.example.myapplication.R;
-import com.example.myapplication.SaveAlertDialog;
-import com.example.myapplication.UTDatabaseHandler;
+import com.example.myapplication.Handlers.UTDatabaseHandler;
 
 import java.util.List;
 
 public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.ViewHolder> {
 
     private Context context;
-    private List<User_Template_Item> listItems;
+    private List<UserTemplateItem> listItems;
 
     public AllStoriesAdapter(Context context, List listItem)
     {
@@ -44,7 +43,7 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull AllStoriesAdapter.ViewHolder holder, int position) {
 
-        User_Template_Item item = listItems.get(position);
+        UserTemplateItem item = listItems.get(position);
         holder.myStoryTitle.setText(item.getStory_title());
         holder.myStoryImage.setImageURI(Uri.parse(item.getUser_template_location()));
 
@@ -74,8 +73,8 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                 @Override
                 public void onClick(View v) {
 
-                    User_Template_Item items = listItems.get(getAdapterPosition());
-                    Intent intent = new Intent(context, MainActivity2.class);
+                    UserTemplateItem items = listItems.get(getAdapterPosition());
+                    Intent intent = new Intent(context, UpsertPageActivity.class);
                     intent.putExtra("user_template_id", items.getUser_template_id());
                     intent.putExtra("story_title", items.getStory_title());
                     intent.putExtra("template_id", items.getTemplate_id());

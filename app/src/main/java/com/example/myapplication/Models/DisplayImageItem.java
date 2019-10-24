@@ -1,6 +1,6 @@
 package com.example.myapplication.Models;
 
-public class Image_Item {
+public class DisplayImageItem {
 
     private int imageID;
 
@@ -32,7 +32,7 @@ public class Image_Item {
 
     private String imageLocation;
 
-    public Image_Item()
+    public DisplayImageItem()
     {
 
     }

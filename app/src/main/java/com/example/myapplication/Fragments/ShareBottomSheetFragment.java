@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myapplication.Models.Image_Item;
+import com.example.myapplication.Models.DisplayImageItem;
 import com.example.myapplication.R;
-import com.example.myapplication.UTDatabaseHandler;
+import com.example.myapplication.Handlers.UTDatabaseHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,7 +34,7 @@ import java.util.List;
 public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
 
     Bitmap bitmap;
-    List<Image_Item> imageItems;
+    List<DisplayImageItem> imageItems;
     Bundle bundle;
     String imagelocation[];
     String bitmapLocation = null;
@@ -44,7 +44,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
         this.bitmapLocation = bitmapLocation;
     }
 
-    public ShareBottomSheetFragment(Bundle bundle, Bitmap bitmap, List<Image_Item> imageItems) {
+    public ShareBottomSheetFragment(Bundle bundle, Bitmap bitmap, List<DisplayImageItem> imageItems) {
         this.bundle = bundle;
         this.bitmap = bitmap;
         this.imageItems = imageItems;
@@ -178,13 +178,12 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     public void UpdateDB(String filepath) {
-        databaseHandler.UpdateUserTemplate(bundle.getString("utid"), bundle.getString("title"), filepath);
+        databaseHandler.updateUserTemplate(bundle.getString("user_template_id"), bundle.getString("title"), filepath);
 
         for (int i = 0; i < imageItems.size(); i++) {
             imageItems.get(i).setImageLocation(imagelocation[i]);
         }
-
-        databaseHandler.UpdateImages(bundle.getString("utid"), imageItems);
+        databaseHandler.updateImages(bundle.getString("user_template_id"), imageItems);
     }
 
     public void addToDB(String filepath) {
@@ -194,16 +193,14 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
             text = "My Story";
         }
 
-        String usertemplateid = databaseHandler.addUserTemplate(bundle.getString("template_id"), "", text, filepath);
-
-        //Log.d("utid1", String.valueOf(utid));
+        String userTemplateID = databaseHandler.addUserTemplate(bundle.getString("template_id"), "", text, filepath);
 
         for (int i = 0; i < bundle.getInt("no_of_images"); i++) {
-            Image_Item item = new Image_Item();
+            DisplayImageItem item = new DisplayImageItem();
 
             item.setImageID(i + 1);
             item.setImageLocation(imagelocation[i]);
-            item.setUserTemplateID(usertemplateid);
+            item.setUserTemplateID(userTemplateID);
             imageItems.add(item);
         }
 

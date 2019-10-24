@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.myapplication.Activities.MainActivity2;
-import com.example.myapplication.Models.Template_Item;
+import com.example.myapplication.Activities.UpsertPageActivity;
+import com.example.myapplication.Models.TemplateItem;
 import com.example.myapplication.R;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAdapter.ViewHolder> {
 
     private Context context;
-    private List<Template_Item> listItems;
+    private List<TemplateItem> listItems;
 
     public SelectTemplateAdapter(Context context, List listItem)
     {
@@ -40,7 +40,7 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
     @Override
     public void onBindViewHolder(@NonNull SelectTemplateAdapter.ViewHolder holder, int position) {
 
-        Template_Item item = listItems.get(position);
+        TemplateItem item = listItems.get(position);
         //holder.myStoryTitle.setText(item.getTitle());
 
         int template_image = context.getResources().getIdentifier(
@@ -71,9 +71,9 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
                 @Override
                 public void onClick(View v) {
 
-                    Template_Item template_item = listItems.get(getAdapterPosition());
+                    TemplateItem template_item = listItems.get(getAdapterPosition());
                     String id = template_item.getId();
-                    Intent i = new Intent(context, MainActivity2.class);
+                    Intent i = new Intent(context, UpsertPageActivity.class);
                     i.putExtra("template_id", id);
                     context.startActivity(i);
                 }

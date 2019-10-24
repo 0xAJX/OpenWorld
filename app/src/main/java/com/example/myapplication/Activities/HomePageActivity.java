@@ -2,33 +2,25 @@ package com.example.myapplication.Activities;
 
 import android.os.Bundle;
 
-import com.example.myapplication.Fragments.BottomNavigationDrawerFragment;
-import com.example.myapplication.Fragments.ShareBottomSheetFragment;
+import com.example.myapplication.Fragments.NavigationDrawerBottomSheetFragment;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.Fragments.AllStoriesFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.Fragments.SelectTemplateFragment;
-import com.example.myapplication.UTDatabaseHandler;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.example.myapplication.Handlers.UTDatabaseHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MainActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity {
 
     FloatingActionButton create;
     boolean isAllStory = true;
@@ -46,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         {
 
             case android.R.id.home:
-                BottomNavigationDrawerFragment bottomNavigationDrawerFragment = new BottomNavigationDrawerFragment();
-                bottomNavigationDrawerFragment.show(getSupportFragmentManager(), bottomNavigationDrawerFragment.getTag());
+                NavigationDrawerBottomSheetFragment navigationDrawerBottomSheetFragment = new NavigationDrawerBottomSheetFragment();
+                navigationDrawerBottomSheetFragment.show(getSupportFragmentManager(), navigationDrawerBottomSheetFragment.getTag());
                 break;
 
             case R.id.navigation_notifications:
@@ -71,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home_page);
         //BottomNavigationView navView = findViewById(R.id.nav_view);
         //mTextMessage = findViewById(R.id.message);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
