@@ -36,8 +36,8 @@ public class AllStoriesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.all_stories_fragment, null);
 
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("My Stories");
+        //Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        //toolbar.setTitle("My Stories");
 
         recyclerView = view.findViewById(R.id.allstoriesrecyclerview);
         recyclerView.setHasFixedSize(true);

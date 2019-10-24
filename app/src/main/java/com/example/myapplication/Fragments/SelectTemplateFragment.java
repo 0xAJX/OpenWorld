@@ -35,8 +35,8 @@ public class SelectTemplateFragment extends Fragment {
 
         handler = new UTDatabaseHandler(getContext());
 
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Create New Story");
+        //Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        //toolbar.setTitle("Create New Story");
 
         recyclerView = view.findViewById(R.id.select_template_recyclerview);
         recyclerView.setHasFixedSize(true);
