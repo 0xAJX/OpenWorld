@@ -1,6 +1,7 @@
 package com.example.myapplication.Fragments;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -15,17 +16,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.Models.Image_Item;
 import com.example.myapplication.R;
 import com.example.myapplication.UTDatabaseHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
@@ -37,7 +37,12 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
     List<Image_Item> imageItems;
     Bundle bundle;
     String imagelocation[];
-    UTDatabaseHandler mydb;
+    String bitmapLocation = null;
+    UTDatabaseHandler databaseHandler;
+
+    public ShareBottomSheetFragment(String bitmapLocation) {
+        this.bitmapLocation = bitmapLocation;
+    }
 
     public ShareBottomSheetFragment(Bundle bundle, Bitmap bitmap, List<Image_Item> imageItems) {
         this.bundle = bundle;
@@ -51,8 +56,13 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.share_bottom_sheet_fragment, null, false);
-        mydb = new UTDatabaseHandler(getContext());
+        databaseHandler = new UTDatabaseHandler(getContext());
         BottomNavigationView navigationView = view.findViewById(R.id.nav_view);
+
+        if (bitmapLocation != null) {
+           navigationView.getMenu().findItem(R.id.device_share).setVisible(false);
+        }
+
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         return view;
@@ -72,11 +82,21 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
                     break;
 
                 case R.id.facebook_share:
-                    onShare("com.facebook.android");
+                    if (isPackageInstalled("com.facebook.android", getActivity().getPackageManager())) {
+                        onShare("com.facebook.android");
+                    }
+                    else {
+
+                    }
                     break;
 
                 case R.id.instagram_share:
-                    onShare("com.instagram.android");
+                    if (isPackageInstalled("com.instagram.android", getActivity().getPackageManager())) {
+                        onShare("com.instagram.android");
+                    }
+                    else {
+
+                    }
                     break;
 
             }
@@ -86,11 +106,14 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
 
     public void onShare(String packageName) {
 
-        String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
-                bitmap, "Design", null);
-
-        Uri uri = Uri.parse(path);
-
+        Uri uri;
+        if (bitmapLocation == null) {
+            String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
+                    bitmap, "Design", null);
+            uri = Uri.parse(path);
+        } else {
+            uri = Uri.parse(bitmapLocation);
+        }
         Intent share = new Intent(Intent.ACTION_SEND);
         //Intent share = new Intent("com.instagram.share.ADD_TO_STORY");
         share.setType("image/*");
@@ -133,18 +156,18 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
                 addToDB(f.getAbsolutePath());
             }
 
-            /*Snackbar snackbar = Snackbar.make(findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
+            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Respond to the click, such as by undoing the modification that caused
                     // this message to be displayed
                     //Log.d("here", "here");
                 }
-            });*/
+            });
             //int snackbarTextId = android.support.design.R.id.snackbar_text;
             //TextView textView = snackbar.getView().findViewById(snackbarTextId);
             //textView.setTextColor(getColor(R.color.colorAccent));
-            //snackbar.show();
+            snackbar.show();
 
             return f.getAbsolutePath();
         } catch (IOException e1) {
@@ -155,13 +178,13 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     public void UpdateDB(String filepath) {
-        mydb.UpdateUserTemplate(bundle.getString("utid"), bundle.getString("title"), filepath);
+        databaseHandler.UpdateUserTemplate(bundle.getString("utid"), bundle.getString("title"), filepath);
 
         for (int i = 0; i < imageItems.size(); i++) {
             imageItems.get(i).setImageLocation(imagelocation[i]);
         }
 
-        mydb.UpdateImages(bundle.getString("utid"), imageItems);
+        databaseHandler.UpdateImages(bundle.getString("utid"), imageItems);
     }
 
     public void addToDB(String filepath) {
@@ -171,7 +194,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
             text = "My Story";
         }
 
-        String usertemplateid = mydb.addUserTemplate(bundle.getString("template_id"), "", text, filepath);
+        String usertemplateid = databaseHandler.addUserTemplate(bundle.getString("template_id"), "", text, filepath);
 
         //Log.d("utid1", String.valueOf(utid));
 
@@ -184,6 +207,21 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
             imageItems.add(item);
         }
 
-        mydb.addImages(imageItems);
+        databaseHandler.addImages(imageItems);
+    }
+
+    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+
+        boolean found = true;
+
+        try {
+
+            packageManager.getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+
+            found = false;
+        }
+
+        return found;
     }
 }

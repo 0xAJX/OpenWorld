@@ -54,9 +54,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
     View template;
     ImageView tempimage;
     ImageView img[];
-    String id;
+    String template_id;
     int no_of_images;
-    int maxid;
     Bitmap bmp;
     BottomNavigationView bottomNavigationView;
     LinearLayout templateloader;
@@ -95,17 +94,14 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
 
         }
 
-        id = getIntent().getStringExtra("template_id");
+        template_id = getIntent().getStringExtra("template_id");
 
-        Log.d("id", id);
-
-        no_of_images = mydb.getNoOfImages(id);
+        no_of_images = mydb.getNoOfImages(template_id);
 
         Log.d("no of images", Integer.toString(no_of_images));
         //no_of_images = getIntent().getIntExtra("no_of_images",1);
         REQUEST_IMAGE_ID = new int[no_of_images];
 
-        maxid = no_of_images;
         img = new ImageView[no_of_images];
         addImage = new ImageView[no_of_images];
         imagelocation = new String[no_of_images];
@@ -116,7 +112,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         }
 
         int templateLayout = getResources().getIdentifier(
-                "template" + id,
+                "template" + template_id,
                 "layout",
                 this.getPackageName());
 
@@ -246,7 +242,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
                         bmp = getBitmapFromView(template);
                         Bundle bundle = new Bundle();
                         bundle.putString("utid", utid);
-                        bundle.putString("template_id", id);
+                        bundle.putString("template_id", template_id);
                         bundle.putString("title", titletext);
                         bundle.putStringArray("imageLocation", imagelocation);
                         bundle.putBoolean("isUpdate", isUpdate);
@@ -547,95 +543,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         return resizedbitmap;
     }
 
-
-    private void showPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("SAVE");
-
-        ArrayList<String> temp = new ArrayList<>();
-
-        /*String[] pictureDialogItems = {
-                "Save to Device"
-                 }; */
-
-        temp.add("Save to Device");
-
-        PackageManager pm = this.getPackageManager();
-        if(isPackageInstalled("com.instagram.android", pm))
-        {
-            temp.add("Instagram");
-        }
-
-        String pictureDialogItems[]=temp.toArray(new String[temp.size()]);
-
-
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent i;
-                        switch (which) {
-
-                            case 0:
-                                /*i = new Intent(getBaseContext(), FullscreenView.class);
-                                i.putExtra("template_id", id);
-                                i.putExtra("mode", "device");
-                                for(int x = 1 ; x <= maxid ; x++)
-                                {
-                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-                                    Matrix m = img[x-1].getImageMatrix();
-
-                                    //BitmapDrawable drawable = (BitmapDrawable) img[x-1].getDrawable();
-                                    //drawable.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-                                    //((BitmapDrawable)img[x-1].getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                    byte[] byteArray = stream.toByteArray();
-                                    getIntent().putExtra("image" + i, byteArray);
-                                }
-                                startActivity(i);*/
-                                //saveImage();
-                                //choosePhotoFromGallary();
-                                break;
-                            case 1:
-                                /*i = new Intent(getBaseContext(), FullscreenView.class);
-                                i.putExtra("template_id", id);
-                                i.putExtra("mode", "instagram");
-                                for(int x = 1 ; x <= maxid ; x++)
-                                {
-
-                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                    ((BitmapDrawable)img[x-1].getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                    byte[] byteArray = stream.toByteArray();
-                                    getIntent().putExtra("image" + i, byteArray);
-                                }
-                                startActivity(i);*/
-                                //onShare();
-                                //takePhotoFromCamera();
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
-    }
-
-    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
-
-        boolean found = true;
-
-        try {
-
-            packageManager.getPackageInfo(packageName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-
-            found = false;
-        }
-
-        return found;
-    }
-
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -653,4 +560,75 @@ public class MainActivity2 extends AppCompatActivity implements View.OnTouchList
         super.onResume();
         mydb = new UTDatabaseHandler(this);
     }
+
+//    private void showPictureDialog(){
+//        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+//        pictureDialog.setTitle("SAVE");
+//
+//        ArrayList<String> temp = new ArrayList<>();
+//
+//        /*String[] pictureDialogItems = {
+//                "Save to Device"
+//                 }; */
+//
+//        temp.add("Save to Device");
+//
+//        PackageManager pm = this.getPackageManager();
+//        if(isPackageInstalled("com.instagram.android", pm))
+//        {
+//            temp.add("Instagram");
+//        }
+//
+//        String pictureDialogItems[]=temp.toArray(new String[temp.size()]);
+//
+//
+//        pictureDialog.setItems(pictureDialogItems,
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent i;
+//                        switch (which) {
+//
+//                            case 0:
+//                                /*i = new Intent(getBaseContext(), FullscreenView.class);
+//                                i.putExtra("template_id", id);
+//                                i.putExtra("mode", "device");
+//                                for(int x = 1 ; x <= maxid ; x++)
+//                                {
+//                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//
+//                                    Matrix m = img[x-1].getImageMatrix();
+//
+//                                    //BitmapDrawable drawable = (BitmapDrawable) img[x-1].getDrawable();
+//                                    //drawable.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+//
+//                                    //((BitmapDrawable)img[x-1].getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                                    byte[] byteArray = stream.toByteArray();
+//                                    getIntent().putExtra("image" + i, byteArray);
+//                                }
+//                                startActivity(i);*/
+//                                //saveImage();
+//                                //choosePhotoFromGallary();
+//                                break;
+//                            case 1:
+//                                /*i = new Intent(getBaseContext(), FullscreenView.class);
+//                                i.putExtra("template_id", id);
+//                                i.putExtra("mode", "instagram");
+//                                for(int x = 1 ; x <= maxid ; x++)
+//                                {
+//
+//                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                    ((BitmapDrawable)img[x-1].getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                                    byte[] byteArray = stream.toByteArray();
+//                                    getIntent().putExtra("image" + i, byteArray);
+//                                }
+//                                startActivity(i);*/
+//                                //onShare();
+//                                //takePhotoFromCamera();
+//                                break;
+//                        }
+//                    }
+//                });
+//        pictureDialog.show();
+//    }
 }

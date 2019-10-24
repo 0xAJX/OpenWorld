@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.Activities.MainActivity2;
+import com.example.myapplication.Fragments.ShareBottomSheetFragment;
 import com.example.myapplication.Models.User_Template_Item;
 import com.example.myapplication.R;
 import com.example.myapplication.SaveAlertDialog;
@@ -44,8 +45,6 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
     public void onBindViewHolder(@NonNull AllStoriesAdapter.ViewHolder holder, int position) {
 
         User_Template_Item item = listItems.get(position);
-
-
         holder.myStoryTitle.setText(item.getStory_title());
         holder.myStoryImage.setImageURI(Uri.parse(item.getUser_template_location()));
 
@@ -89,8 +88,8 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                 @Override
                 public void onClick(View v) {
                     listItems.get(getAdapterPosition()).getUser_template_location();
-                    new SaveAlertDialog(context, listItems.get(getAdapterPosition()).getUser_template_location());
-
+                    ShareBottomSheetFragment shareBottomSheetFragment = new ShareBottomSheetFragment(listItems.get(getAdapterPosition()).getUser_template_location());
+                    shareBottomSheetFragment.show(shareBottomSheetFragment.getFragmentManager(), shareBottomSheetFragment.getTag());
                 }
             });
 
