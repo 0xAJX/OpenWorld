@@ -23,10 +23,10 @@
 
         <ImageButton
             android:id="@+id/fullscreenbutton"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="15dp"
             android:scaleType="fitXY"
             android:background="@color/white"
-            android:src="@drawable/ic_remove_red_eye_black_24dp"
+            android:src="@drawable/ic_view"
             android:layout_toLeftOf="@+id/imageshare"
             android:layout_width="30dp"
             android:layout_height="30dp"></ImageButton>
@@ -37,7 +37,7 @@
             android:layout_marginRight="15dp"
             android:scaleType="fitXY"
             android:background="@color/white"
-            android:src="@drawable/ic_share_black_24dp"
+            android:src="@drawable/ic_share"
             android:layout_width="30dp"
             android:layout_height="30dp">
 

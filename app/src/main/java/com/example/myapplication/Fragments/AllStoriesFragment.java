@@ -29,7 +29,6 @@ public class AllStoriesFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<UserTemplateItem> user_template_items;
     private AllStoriesAdapter allStoriesAdapter;
-    BottomNavigationView bottomNavigationMenu;
 
     @Nullable
     @Override

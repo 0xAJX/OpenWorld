@@ -81,7 +81,6 @@ public class SelectTemplateFragment extends Fragment {
 
             List<TemplateItem> template_items = handler.getTemplates();
 
-
             return template_items;
         }
 

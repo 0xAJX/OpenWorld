@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,8 +59,8 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
 
         public ImageView myStoryImage;
         public TextView myStoryTitle;
-        public Button share;
-        public Button delete;
+        public ImageButton share;
+        public ImageButton delete;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -100,7 +101,6 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                     handler.close();
                     listItems.remove(getAdapterPosition());
                     notifyItemRemoved(getAdapterPosition());
-
 
                     //notifyDataSetChanged();
 

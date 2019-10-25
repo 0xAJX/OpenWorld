@@ -49,7 +49,6 @@ public class HomePageActivity extends AppCompatActivity {
         return true;
     }
 
-
     private  boolean loadFragment(Fragment fragment)
     {
         if(fragment != null)
@@ -88,18 +87,17 @@ public class HomePageActivity extends AppCompatActivity {
                 if(isAllStory)
                 {
                     loadFragment(new SelectTemplateFragment());
-                    create.setImageResource(R.drawable.ic_dashboard_black_24dp);
+                    create.setImageResource(R.drawable.ic_dashboard);
                     isAllStory = false;
                 }
                 else
                 {
                     loadFragment(new AllStoriesFragment());
-                    create.setImageResource(R.drawable.ic_create_black_24dp);
+                    create.setImageResource(R.drawable.ic_pencil);
                     isAllStory = true;
                 }
             }
         });
-
 
     }
 
