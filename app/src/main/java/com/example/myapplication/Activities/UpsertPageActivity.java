@@ -16,8 +16,11 @@ import com.example.myapplication.Fragments.ShareBottomSheetFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,80 +38,86 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpsertPageActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
+public class UpsertPageActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener {
 
     ImageView addImage[];
+
+    BottomNavigationView bottomNavigationView;
+
+    UTDatabaseHandler databaseHandler;
+    ImageView displayImage[];
+
+    public List<DisplayImageItem> imageItems;
+    String imageLocation[];
+    Boolean isUpdate = false;
+
+    int noOfImages;
+
     private static int RESULT_LOAD_IMAGE = 1;
     private static int[] REQUEST_IMAGE_ID;
-    View template;
-    ImageView tempimage;
-    ImageView displayImage[];
-    String template_id;
-    int no_of_images;
-    Bitmap bmp;
-    BottomNavigationView bottomNavigationView;
-    LinearLayout templateloader;
-    EditText title;
-    UTDatabaseHandler mydb;
-    public List<DisplayImageItem> imageItems;
-    String utid;
 
-    Boolean isUpdate = false;
-    String imagelocation[];
-    String titletext;
+    Bitmap storyBitmap;
+
+    View template;
+    String templateID;
+    ImageView tempImage;
+    LinearLayout templateLoader;
+    EditText title;
+    String titleText;
+
+    String userTemplateID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upsert_page);
 
-        mydb = new UTDatabaseHandler(this);
+        databaseHandler = new UTDatabaseHandler(this);
         imageItems = new ArrayList<>();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
-        bottomNavigationView = findViewById(R.id.nav_view);
+        //bottomNavigationView = findViewById(R.id.nav_view);
 
-        try
-        {
-            if(getIntent().getStringExtra("user_template_id") != null)
-            {
-                utid = getIntent().getStringExtra("user_template_id");
-                titletext = getIntent().getStringExtra("story_title");
+        /** Check if it is create or update story */
+        try {
+            if (getIntent().getStringExtra("user_template_id") != null) {
+                userTemplateID = getIntent().getStringExtra("user_template_id");
+                titleText = getIntent().getStringExtra("story_title");
                 isUpdate = true;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
+        /** Check if it is create or update story */
 
-        template_id = getIntent().getStringExtra("template_id");
+        templateID = getIntent().getStringExtra("template_id");
+        noOfImages = databaseHandler.getNoOfImages(templateID);
 
-        no_of_images = mydb.getNoOfImages(template_id);
-
-        Log.d("no of images", Integer.toString(no_of_images));
+        Log.d("no of images", Integer.toString(noOfImages));
         //no_of_images = getIntent().getIntExtra("no_of_images",1);
-        REQUEST_IMAGE_ID = new int[no_of_images];
+        REQUEST_IMAGE_ID = new int[noOfImages];
 
-        displayImage = new ImageView[no_of_images];
-        addImage = new ImageView[no_of_images];
-        imagelocation = new String[no_of_images];
+        displayImage = new ImageView[noOfImages];
+        addImage = new ImageView[noOfImages];
+        imageLocation = new String[noOfImages];
 
-        for(int i = 0; i < no_of_images; i++)
-        {
-            imagelocation[i] = "";
+        /** Making all values of array empty so that no error is caused ahead*/
+        for (int i = 0; i < noOfImages; i++) {
+            imageLocation[i] = "";
         }
+        /** Making all values of array empty so that no error is caused ahead*/
 
+        /** Get the required layout based on template ID */
         int templateLayout = getResources().getIdentifier(
-                "template" + template_id,
+                "template" + templateID,
                 "layout",
                 this.getPackageName());
+        /** Get the required layout based on template ID */
 
-
-        templateloader = findViewById(R.id.templateloader);
+        templateLoader = findViewById(R.id.templateloader);
         template = getLayoutInflater()
-                .inflate(templateLayout, templateloader, false);
+                .inflate(templateLayout, templateLoader, false);
 
         //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) template.getLayoutParams();
 
@@ -117,6 +126,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;*/
 
+        /** Scaling the template down */
         float scalingfactor = 0.85f;
         /*params.height = (int)(1920 * scalingfactor);//(int)(height * scalingfactor);
         params.width = (int)(1080 * scalingfactor);//(int)(width * scalingfactor);
@@ -124,42 +134,45 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
         template.setScaleX(scalingfactor);
         template.setScaleY(scalingfactor);
+        /** Scaling the template down */
 
-        templateloader.addView(template);
+        /** Add the template to template loader */
+        templateLoader.addView(template);
+        /** Add the template to template loader */
 
-        for(int i = 1; i <= no_of_images; i++)
-        {
-            displayImage[i-1] = findViewById(getResources().getIdentifier(
+        /** Get imageViews based on no. of images */
+        for (int i = 1; i <= noOfImages; i++) {
+            displayImage[i - 1] = findViewById(getResources().getIdentifier(
                     "displayimage" + i,
                     "id",
                     this.getPackageName()));
 
-            addImage[i-1] = findViewById(getResources().getIdentifier(
+            addImage[i - 1] = findViewById(getResources().getIdentifier(
                     "addimage" + i,
                     "id",
                     this.getPackageName()));
 
-            addImage[i-1].setOnClickListener(this);
-            displayImage[i-1].setOnTouchListener(this);
+            addImage[i - 1].setOnClickListener(this);
+            displayImage[i - 1].setOnTouchListener(this);
 
-            REQUEST_IMAGE_ID[i-1] = i;
+            REQUEST_IMAGE_ID[i - 1] = i;
         }
-
+        /** Get imageViews based on no. of images */
 
         title = findViewById(R.id.storytitle);
 
-
-        if(isUpdate) {
+        /** IF its update then restore images to imageViews */
+        if (isUpdate) {
 
             try {
 
-                if (titletext != null) {
-                    title.setText(titletext);
+                if (titleText != null) {
+                    title.setText(titleText);
                 }
 
-                imageItems = mydb.loadImages(utid);
+                imageItems = databaseHandler.loadImages(userTemplateID);
 
-                for (int x = 0; x < no_of_images; x++) {
+                for (int x = 0; x < noOfImages; x++) {
                     if (imageItems.get(x).getImageLocation() != null) {
                         Log.d("query 1", imageItems.get(x).getImageLocation());
                         displayImage[x].setImageBitmap(BitmapFactory.decodeFile(new File(imageItems.get(x).getImageLocation()).getAbsolutePath()));
@@ -171,6 +184,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
             } catch (Exception e) {
             }
         }
+        /** IF its update then restore images to imageViews */
         //img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
 
@@ -187,27 +201,24 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
             @Override
             public void onClick(View v) {
 
-                templateloader.post(new Runnable() {
+                templateLoader.post(new Runnable() {
                     @Override
                     public void run() {
 
-                        for(int x = 0; x < addImage.length ; x++)
-                        {
+                        for (int x = 0; x < addImage.length; x++) {
                             addImage[x].setImageAlpha(0);
                         }
 
                         Intent i = new Intent(getBaseContext(), DisplayStoryPageActivity.class);
 
-                        bmp = getBitmapFromView(templateloader);
+                        storyBitmap = getBitmapFromView(templateLoader);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        storyBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                         byte[] byteArray = stream.toByteArray();
-                        i.putExtra("demoimage", byteArray);
+                        i.putExtra("demo_image", byteArray);
 
-                        for(int x = 0; x < addImage.length ; x++)
-                        {
-                            if(displayImage[x].getDrawable() == null)
-                            {
+                        for (int x = 0; x < addImage.length; x++) {
+                            if (displayImage[x].getDrawable() == null) {
                                 addImage[x].setImageAlpha(255);
                             }
                         }
@@ -218,6 +229,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
             }
         });
 
+        /** IF save button is clicked then send data to share bottom sheet */
         ImageButton save = findViewById(R.id.imageshare);
         save.setOnClickListener(new View.OnClickListener() {
 
@@ -228,15 +240,15 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
                     @Override
                     public void run() {
 
-                        bmp = getBitmapFromView(template);
+                        storyBitmap = getBitmapFromView(template);
                         Bundle bundle = new Bundle();
-                        bundle.putString("utid", utid);
-                        bundle.putString("template_id", template_id);
-                        bundle.putString("title", titletext);
-                        bundle.putStringArray("imageLocation", imagelocation);
+                        bundle.putString("user_template_id", userTemplateID);
+                        bundle.putString("template_id", templateID);
+                        bundle.putString("title", titleText);
+                        bundle.putStringArray("imageLocation", imageLocation);
                         bundle.putBoolean("isUpdate", isUpdate);
-                        bundle.putInt("no_of_images", no_of_images);
-                        ShareBottomSheetFragment shareBottomSheetFragment = new ShareBottomSheetFragment(bundle, bmp, imageItems);
+                        bundle.putInt("no_of_images", noOfImages);
+                        ShareBottomSheetFragment shareBottomSheetFragment = new ShareBottomSheetFragment(bundle, storyBitmap, imageItems);
                         shareBottomSheetFragment.show(getSupportFragmentManager(), shareBottomSheetFragment.getTag());
 
                         //showPictureDialog();
@@ -264,7 +276,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
                 });
             }
         });
-
+        /** IF save button is clicked then send data to share bottom sheet */
 
         /*FloatingActionButton ftb = findViewById(R.id.addedittext);
         ftb.setOnClickListener(new View.OnClickListener() {
@@ -274,20 +286,19 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
             }
         });*/
 
-        mydb.close();
+        databaseHandler.close();
 
     }
 
+    /** addImage onclick */
     @Override
     public void onClick(View v) {
 
-        for(int i = 1 ; i <=no_of_images ; i++)
-        {
-            if(v.getId() == getResources().getIdentifier(
+        for (int i = 1; i <= noOfImages; i++) {
+            if (v.getId() == getResources().getIdentifier(
                     "addimage" + i,
                     "id",
-                    this.getPackageName()))
-            {
+                    this.getPackageName())) {
 
                 Intent intent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -296,9 +307,10 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), i);
             }
         }
-
     }
+    /** addImage onclick */
 
+    /** Get the actual path of image added to displayImage */
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
@@ -312,30 +324,32 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         }
         return result;
     }
+    /** Get the actual path of image added to displayImage */
 
+    /** Used to add selected image to display image */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
 
-            for (int i = 1; i <= no_of_images; i++) {
+            for (int i = 1; i <= noOfImages; i++) {
                 if (requestCode == REQUEST_IMAGE_ID[i - 1]) {
                     Uri selectedImageUri = data.getData();
                     if (null != selectedImageUri) {
                         String path = getRealPathFromURI(selectedImageUri);
 
 
-                        imagelocation[requestCode - 1] = path;
+                        imageLocation[requestCode - 1] = path;
 
                         Log.d("image path", path + "");
 
-                        tempimage = findViewById(getResources().getIdentifier(
+                        tempImage = findViewById(getResources().getIdentifier(
                                 "displayimage" + requestCode,
                                 "id",
                                 this.getPackageName()));
 
-                        tempimage.setImageURI(selectedImageUri);
+                        tempImage.setImageURI(selectedImageUri);
                         addImage[requestCode - 1].setImageAlpha(0);
                     }
                 }
@@ -343,36 +357,40 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
         }
     }
+    /** Used to add selected image to display image */
 
+    /** Convert created story to image */
     private Bitmap getBitmapFromView(View view) {
         //Define a bitmap with the same size as the view
 
         Log.d("canvas", Integer.toString(view.getWidth()));
         Log.d("canvas", Integer.toString(view.getHeight()));
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
 
 
         //Bind a canvas to it
         Canvas canvas = new Canvas(returnedBitmap);
         //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null) {
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null) {
             //has background drawable, then draw it on the canvas
             bgDrawable.draw(canvas);
-        }   else{
+        } else {
             //does not have background drawable, then draw white background on the canvas
             canvas.drawColor(Color.WHITE);
         }
         // draw the view on the canvas
         view.draw(canvas);
 
-        Bitmap resizedbitmap = Bitmap.createScaledBitmap(returnedBitmap, 1080,1920, false);
+        Bitmap resizedbitmap = Bitmap.createScaledBitmap(returnedBitmap, 1080, 1920, false);
 
         //return the bitmap
         //return returnedBitmap;
         return resizedbitmap;
     }
+    /** Convert created story to image */
 
+    /** Image drag, scale and rotate functionality */ //TODO make a separate class
     float[] lastEvent = null;
     float d = 0f;
     float newRot = 0f;
@@ -413,7 +431,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
             case MotionEvent.ACTION_DOWN: //first finger down only
                 savedMatrix.set(matrix);
                 start.set(event.getX(), event.getY());
-                Log.d(TAG, "mode=DRAG" );
+                Log.d(TAG, "mode=DRAG");
                 mode = DRAG;
                 break;
 
@@ -435,7 +453,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
             case MotionEvent.ACTION_UP: //first finger lifted
             case MotionEvent.ACTION_POINTER_UP: //second finger lifted
                 mode = NONE;
-                Log.d(TAG, "mode=NONE" );
+                Log.d(TAG, "mode=NONE");
                 break;
 
 
@@ -468,6 +486,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         return true; // indicate event was handled
 
     }
+
     private float rotation(MotionEvent event) {
         double delta_x = (event.getX(0) - event.getX(1));
         double delta_y = (event.getY(0) - event.getY(1));
@@ -486,40 +505,42 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
     private void midPoint(PointF point, MotionEvent event) {
         float x = event.getX(0) + event.getX(1);
         float y = event.getY(0) + event.getY(1);
-        point.set(x/2, y/2);
+        point.set(x / 2, y / 2);
 
     }
+    /** Image drag, scale and rotate functionality */
 
-
-    /** Show an event in the LogCat view, for debugging */
+    /**
+     * Show an event in the LogCat view, for debugging
+     */
 
     private void dumpEvent(MotionEvent event) {
-        String names[] = { "DOWN" , "UP" , "MOVE" , "CANCEL" , "OUTSIDE" ,
-                "POINTER_DOWN" , "POINTER_UP" , "7?" , "8?" , "9?" };
+        String names[] = {"DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE",
+                "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?"};
         StringBuilder sb = new StringBuilder();
         int action = event.getAction();
         int actionCode = action & MotionEvent.ACTION_MASK;
-        sb.append("event ACTION_" ).append(names[actionCode]);
+        sb.append("event ACTION_").append(names[actionCode]);
         if (actionCode == MotionEvent.ACTION_POINTER_DOWN
                 || actionCode == MotionEvent.ACTION_POINTER_UP) {
-            sb.append("(pid " ).append(
+            sb.append("(pid ").append(
                     action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
-            sb.append(")" );
+            sb.append(")");
         }
 
-        sb.append("[" );
+        sb.append("[");
 
         for (int i = 0; i < event.getPointerCount(); i++) {
-            sb.append("#" ).append(i);
-            sb.append("(pid " ).append(event.getPointerId(i));
-            sb.append(")=" ).append((int) event.getX(i));
-            sb.append("," ).append((int) event.getY(i));
+            sb.append("#").append(i);
+            sb.append("(pid ").append(event.getPointerId(i));
+            sb.append(")=").append((int) event.getX(i));
+            sb.append(",").append((int) event.getY(i));
             if (i + 1 < event.getPointerCount())
 
-                sb.append(";" );
+                sb.append(";");
         }
 
-        sb.append("]" );
+        sb.append("]");
         Log.d(TAG, sb.toString());
 
     }
@@ -527,19 +548,19 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mydb.close();
+        databaseHandler.close();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mydb.close();
+        databaseHandler.close();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mydb = new UTDatabaseHandler(this);
+        databaseHandler = new UTDatabaseHandler(this);
     }
 
     @Override

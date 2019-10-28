@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class HomePageActivity extends AppCompatActivity {
 
     FloatingActionButton create;
+
     boolean isAllStory = true;
 
     @Override

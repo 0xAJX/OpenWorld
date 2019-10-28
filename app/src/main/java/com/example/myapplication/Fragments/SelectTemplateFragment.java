@@ -23,10 +23,10 @@ import java.util.List;
 
 public class SelectTemplateFragment extends Fragment {
 
+    UTDatabaseHandler handler;
     RecyclerView recyclerView;
     private List<TemplateItem> selectTemplateItems;
     private SelectTemplateAdapter selectTemplateAdapter;
-    UTDatabaseHandler handler;
 
     @Nullable
     @Override

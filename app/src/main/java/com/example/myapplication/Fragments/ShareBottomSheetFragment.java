@@ -34,11 +34,13 @@ import java.util.List;
 public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
 
     Bitmap bitmap;
-    List<DisplayImageItem> imageItems;
-    Bundle bundle;
-    String imagelocation[];
     String bitmapLocation = null;
+    Bundle bundle;
+
     UTDatabaseHandler databaseHandler;
+
+    List<DisplayImageItem> imageItems;
+    String imageLocation[];
 
     public ShareBottomSheetFragment(String bitmapLocation) {
         this.bitmapLocation = bitmapLocation;
@@ -48,7 +50,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
         this.bundle = bundle;
         this.bitmap = bitmap;
         this.imageItems = imageItems;
-        imagelocation = bundle.getStringArray("imageLocation");
+        imageLocation = bundle.getStringArray("imageLocation");
     }
 
     @Nullable
@@ -181,7 +183,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
         databaseHandler.updateUserTemplate(bundle.getString("user_template_id"), bundle.getString("title"), filepath);
 
         for (int i = 0; i < imageItems.size(); i++) {
-            imageItems.get(i).setImageLocation(imagelocation[i]);
+            imageItems.get(i).setImageLocation(imageLocation[i]);
         }
         databaseHandler.updateImages(bundle.getString("user_template_id"), imageItems);
     }
@@ -199,7 +201,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
             DisplayImageItem item = new DisplayImageItem();
 
             item.setImageID(i + 1);
-            item.setImageLocation(imagelocation[i]);
+            item.setImageLocation(imageLocation[i]);
             item.setUserTemplateID(userTemplateID);
             imageItems.add(item);
         }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -105,7 +106,7 @@ public class DisplayStoryPageActivity extends AppCompatActivity {
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         //mContentView = findViewById(R.id.fullscreen_content);
 
-        byte[] byteArray = getIntent().getByteArrayExtra("demoimage");
+        byte[] byteArray = getIntent().getByteArrayExtra("demo_image");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
         ImageView imageView = findViewById(R.id.demoimage);

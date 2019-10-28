@@ -26,9 +26,9 @@ import java.util.List;
 
 public class AllStoriesFragment extends Fragment {
 
+    private AllStoriesAdapter allStoriesAdapter;
     private RecyclerView recyclerView;
     private List<UserTemplateItem> user_template_items;
-    private AllStoriesAdapter allStoriesAdapter;
 
     @Nullable
     @Override

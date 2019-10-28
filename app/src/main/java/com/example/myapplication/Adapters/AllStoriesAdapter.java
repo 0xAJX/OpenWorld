@@ -57,18 +57,18 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public ImageButton delete;
         public ImageView myStoryImage;
         public TextView myStoryTitle;
         public ImageButton share;
-        public ImageButton delete;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            delete = itemView.findViewById(R.id.mystorydelete);
             myStoryTitle = itemView.findViewById(R.id.mystorytitle);
             myStoryImage = itemView.findViewById(R.id.mystoryimage);
             share = itemView.findViewById(R.id.mystoryshare);
-            delete = itemView.findViewById(R.id.mystorydelete);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
