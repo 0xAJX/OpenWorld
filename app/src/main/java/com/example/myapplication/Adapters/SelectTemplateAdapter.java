@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 
 
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.myapplication.Activities.UpsertPageActivity;
-import com.example.myapplication.Models.TemplateItem;
+import com.example.myapplication.Models.Template;
 import com.example.myapplication.R;
 
 import java.util.List;
@@ -20,12 +21,11 @@ import java.util.List;
 public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAdapter.ViewHolder> {
 
     private Context context;
-    private List<TemplateItem> listItems;
+    private List<Template> templates;
 
-    public SelectTemplateAdapter(Context context, List listItem)
+    public SelectTemplateAdapter(Context context)
     {
         this.context = context;
-        listItems = listItem;
     }
 
     @NonNull
@@ -40,8 +40,7 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
     @Override
     public void onBindViewHolder(@NonNull SelectTemplateAdapter.ViewHolder holder, int position) {
 
-        TemplateItem item = listItems.get(position);
-        //holder.myStoryTitle.setText(item.getTitle());
+        Template item = templates.get(position);
 
         int template_image = context.getResources().getIdentifier(
                 "template" + item.getId() + "_foreground",
@@ -52,9 +51,14 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
 
     }
 
+    public void setTemplates(List<Template> templates) {
+        this.templates = templates;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return templates.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,8 +75,8 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
                 @Override
                 public void onClick(View v) {
 
-                    TemplateItem template_item = listItems.get(getAdapterPosition());
-                    String id = template_item.getId();
+                    Template template = templates.get(getAdapterPosition());
+                    int id = template.getId();
                     Intent i = new Intent(context, UpsertPageActivity.class);
                     i.putExtra("template_id", id);
                     context.startActivity(i);
