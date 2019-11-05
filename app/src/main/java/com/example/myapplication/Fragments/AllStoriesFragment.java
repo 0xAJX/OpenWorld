@@ -34,6 +34,7 @@ public class AllStoriesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.all_stories_fragment, null);
 
+        final TextView textView = view.findViewById(R.id.nostorytext);
         //Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         //toolbar.setTitle("My Stories");
 
@@ -56,26 +57,14 @@ public class AllStoriesFragment extends Fragment {
 
         if(user_template_items.size() != 0)
         {
-            TextView textView = view.findViewById(R.id.nostorytext);
             textView.setVisibility(View.INVISIBLE);
         }
 
         Collections.reverse(user_template_items);
-
         allStoriesAdapter = new AllStoriesAdapter(getContext(), user_template_items);
         recyclerView.setAdapter(allStoriesAdapter);
         allStoriesAdapter.notifyDataSetChanged();
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(user_template_items.size() != 0)
-        {
-            TextView textView = view.findViewById(R.id.nostorytext);
-            textView.setVisibility(View.INVISIBLE);
-        }
     }
 }

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.Fragments.AllStoriesFragment;
 import com.example.myapplication.R;
@@ -54,7 +55,7 @@ public class HomePageActivity extends AppCompatActivity {
     {
         if(fragment != null)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(R.id.fragment_container,fragment).commit();
             return true;
         }
         return false;

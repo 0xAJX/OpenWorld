@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +70,9 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
             myStoryImage = itemView.findViewById(R.id.mystoryimage);
             share = itemView.findViewById(R.id.mystoryshare);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            /** Update feature removed temporarily */
+
+            /*itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -83,17 +84,22 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
 
                     //context.startActivity(intent);
                 }
-            });
+            });*/
 
+            /** Update feature removed temporarily */
+
+            /** Start shareBottomSheetFragment when share button is clicked */
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listItems.get(getAdapterPosition()).getUser_template_location();
-                    FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                     ShareBottomSheetFragment shareBottomSheetFragment = new ShareBottomSheetFragment(listItems.get(getAdapterPosition()).getUser_template_location());
-                    shareBottomSheetFragment.show(manager, shareBottomSheetFragment.getTag());
+                    shareBottomSheetFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), shareBottomSheetFragment.getTag());
                 }
             });
+            /** Start shareBottomSheetFragment when share button is clicked */
+
+            /** Delete user story when delete is clicked */
 
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,18 +109,10 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                     handler.close();
                     listItems.remove(getAdapterPosition());
                     notifyItemRemoved(getAdapterPosition());
-
-                    //notifyDataSetChanged();
-
                 }
             });
 
-
-            //title = itemView.findViewById(R.id.title);
-            //description = itemView.findViewById(R.id.description);
-            //information = itemView.findViewById(R.id.information);
-            //location = itemView.findViewById(R.id.location);
-
+            /** Delete user story when delete is clicked */
         }
     }
 }
