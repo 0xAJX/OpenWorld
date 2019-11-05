@@ -52,6 +52,7 @@
                         android:layout_gravity="center"
                         android:textAlignment="center"
                         android:text="CARD TITLE"
+                        android:ellipsize="end"
                         android:textColor="#000"
                         android:textSize="20sp" />
 

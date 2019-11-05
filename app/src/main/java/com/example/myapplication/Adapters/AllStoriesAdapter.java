@@ -13,9 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.myapplication.Activities.UpsertPageActivity;
 import com.example.myapplication.Fragments.ShareBottomSheetFragment;
-import com.example.myapplication.Models.UserTemplateItem;
+import com.example.myapplication.Models.Story;
 import com.example.myapplication.R;
 import com.example.myapplication.Handlers.UTDatabaseHandler;
 
@@ -24,12 +23,10 @@ import java.util.List;
 public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.ViewHolder> {
 
     private Context context;
-    private List<UserTemplateItem> listItems;
+    private List<Story> stories;
 
-    public AllStoriesAdapter(Context context, List listItem)
-    {
+    public AllStoriesAdapter(Context context) {
         this.context = context;
-        listItems = listItem;
     }
 
     @NonNull
@@ -44,15 +41,20 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull AllStoriesAdapter.ViewHolder holder, int position) {
 
-        UserTemplateItem item = listItems.get(position);
-        holder.myStoryTitle.setText(item.getStory_title());
-        holder.myStoryImage.setImageURI(Uri.parse(item.getUser_template_location()));
+        Story story = stories.get(position);
+        holder.myStoryTitle.setText(story.getTitle());
+        holder.myStoryImage.setImageURI(Uri.parse(story.getImage_location()));
 
     }
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return stories.size();
+    }
+
+    public void setStories(List<Story> stories) {
+        this.stories = stories;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -92,8 +94,8 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listItems.get(getAdapterPosition()).getUser_template_location();
-                    ShareBottomSheetFragment shareBottomSheetFragment = new ShareBottomSheetFragment(listItems.get(getAdapterPosition()).getUser_template_location());
+                    stories.get(getAdapterPosition()).getImage_location();
+                    ShareBottomSheetFragment shareBottomSheetFragment = new ShareBottomSheetFragment(stories.get(getAdapterPosition()).getImage_location());
                     shareBottomSheetFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), shareBottomSheetFragment.getTag());
                 }
             });
@@ -101,16 +103,16 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
 
             /** Delete user story when delete is clicked */
 
-            delete.setOnClickListener(new View.OnClickListener() {
+            /*delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     UTDatabaseHandler handler = new UTDatabaseHandler(context);
-                    handler.deleteUserTemplate(listItems.get(getAdapterPosition()).getUser_template_id());
+                    handler.deleteUserTemplate(stories.get(getAdapterPosition()).get());
                     handler.close();
                     listItems.remove(getAdapterPosition());
                     notifyItemRemoved(getAdapterPosition());
                 }
-            });
+            });*/
 
             /** Delete user story when delete is clicked */
         }
