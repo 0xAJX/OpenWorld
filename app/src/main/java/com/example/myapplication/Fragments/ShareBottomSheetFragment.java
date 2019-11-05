@@ -82,6 +82,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
 
                 case R.id.device_share:
                     saveImage();
+                    dismiss();
                     break;
 
                 case R.id.facebook_share:
@@ -92,6 +93,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
                     else {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                     }
+                    dismiss();
                     break;
 
                 case R.id.instagram_share:
@@ -102,6 +104,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
                     else {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                     }
+                    dismiss();
                     break;
 
             }

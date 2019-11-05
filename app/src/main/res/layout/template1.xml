@@ -1,91 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="1080px"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1080px"
     android:layout_height="1920px">
 
     <LinearLayout
-        android:background="@color/white"
+
         android:id="@+id/imagelayout"
-        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
+        android:background="@color/white"
 
         android:orientation="vertical">
 
         <RelativeLayout
+            android:layout_marginTop="50px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
-            <com.github.florent37.shapeofview.shapes.CircleView
-                android:layout_marginTop="50dp"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
+<!--            <com.github.florent37.shapeofview.shapes.CircleView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:layout_marginTop="50dp">-->
 
                 <ImageView
-
                     android:id="@+id/displayimage1"
-                    android:src="@color/white"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="1000px"
+                    android:layout_height="1384px"
+                    android:src="@color/grey"
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_horizontal"
-                    android:scaleType="centerInside"
-                    />
+                    android:scaleType="centerInside" />
 
-            </com.github.florent37.shapeofview.shapes.CircleView>
-
-
+<!--            </com.github.florent37.shapeofview.shapes.CircleView>-->
 
             <ImageView
+                android:id="@+id/addimage1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_upload">
 
-                    android:layout_centerInParent="true"
-                    android:id="@+id/addimage1"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_add_black_24dp">
-
-                </ImageView>
-
-
-
+            </ImageView>
 
         </RelativeLayout>
 
 
-
         <EditText
-            android:background="@android:color/transparent"
             android:id="@+id/titletext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:hint="A Short Title"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/titillium_web_semibold"
+            android:hint="Title Here"
+            android:paddingTop="85px"
             android:textAlignment="center"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <EditText
-            android:background="@android:color/transparent"
             android:id="@+id/desctext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:hint="use short description to share your story"
-            android:paddingLeft="10dp"
-            android:paddingTop="20dp"
-            android:paddingRight="10dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/titillium_web"
+            android:hint="Enjoy the little things in life, because one day you will look back and realize they were the big things"
+            android:paddingLeft="20dp"
+            android:paddingTop="55px"
+            android:paddingRight="20dp"
             android:paddingBottom="20dp"
             android:textAlignment="center"
-            android:textSize="18dp" />
+            android:textSize="14dp" />
 
 
     </LinearLayout>

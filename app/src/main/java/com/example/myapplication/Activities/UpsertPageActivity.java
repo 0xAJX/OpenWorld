@@ -67,6 +67,34 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
     String userTemplateID;
 
+    /** Touch event variables */
+
+    float d = 0f;
+    public static String fileNAME;
+    public static int framePos = 0;
+    float[] lastEvent = null;
+    private Matrix matrix = new Matrix();
+    private Matrix savedMatrix = new Matrix();
+    float newRot = 0f;
+    private float newDist = 0;
+    private float scale = 0;
+
+    // Fields
+    private String TAG = this.getClass().getSimpleName();
+
+    // We can be in one of these 3 states
+    private static final int NONE = 0;
+    private static final int DRAG = 1;
+    private static final int ZOOM = 2;
+    private int mode = NONE;
+
+    // Remember some things for zooming
+    private PointF start = new PointF();
+    private PointF mid = new PointF();
+    float oldDist = 1f;
+
+    /** Touch event variables */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -391,30 +419,6 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
     /** Convert created story to image */
 
     /** Image drag, scale and rotate functionality */ //TODO make a separate class
-    float[] lastEvent = null;
-    float d = 0f;
-    float newRot = 0f;
-    private Matrix matrix = new Matrix();
-    private Matrix savedMatrix = new Matrix();
-    public static String fileNAME;
-    public static int framePos = 0;
-
-    private float scale = 0;
-    private float newDist = 0;
-
-    // Fields
-    private String TAG = this.getClass().getSimpleName();
-
-    // We can be in one of these 3 states
-    private static final int NONE = 0;
-    private static final int DRAG = 1;
-    private static final int ZOOM = 2;
-    private int mode = NONE;
-
-    // Remember some things for zooming
-    private PointF start = new PointF();
-    private PointF mid = new PointF();
-    float oldDist = 1f;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -424,7 +428,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         float scale;
 
         // Dump touch event to log
-        dumpEvent(event);
+        //dumpEvent(event);
 
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -514,7 +518,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
      * Show an event in the LogCat view, for debugging
      */
 
-    private void dumpEvent(MotionEvent event) {
+    /*private void dumpEvent(MotionEvent event) {
         String names[] = {"DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE",
                 "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?"};
         StringBuilder sb = new StringBuilder();
@@ -543,7 +547,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         sb.append("]");
         Log.d(TAG, sb.toString());
 
-    }
+    }*/
 
     @Override
     protected void onDestroy() {

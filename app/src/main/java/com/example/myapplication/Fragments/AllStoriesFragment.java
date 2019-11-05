@@ -4,11 +4,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +27,12 @@ public class AllStoriesFragment extends Fragment {
     private AllStoriesAdapter allStoriesAdapter;
     private RecyclerView recyclerView;
     private List<UserTemplateItem> user_template_items;
+    private View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.all_stories_fragment, null);
+        view = inflater.inflate(R.layout.all_stories_fragment, null);
 
         //Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         //toolbar.setTitle("My Stories");
@@ -45,9 +44,6 @@ public class AllStoriesFragment extends Fragment {
         //bottomNavigationMenu = getActivity().findViewById(R.id.nav_view);
 
         user_template_items = new ArrayList<>();
-
-
-
 
         File wallpaperDirectory = new File(
                 Environment.getExternalStorageDirectory() + "/app/image/");
@@ -73,4 +69,13 @@ public class AllStoriesFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(user_template_items.size() != 0)
+        {
+            TextView textView = view.findViewById(R.id.nostorytext);
+            textView.setVisibility(View.INVISIBLE);
+        }
+    }
 }

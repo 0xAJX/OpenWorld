@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -82,7 +81,7 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                     intent.putExtra("story_title", items.getStory_title());
                     intent.putExtra("template_id", items.getTemplate_id());
 
-                    context.startActivity(intent);
+                    //context.startActivity(intent);
                 }
             });
 
