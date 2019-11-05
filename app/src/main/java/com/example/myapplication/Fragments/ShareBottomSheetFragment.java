@@ -37,6 +37,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
     String bitmapLocation = null;
     Bundle bundle;
 
+    String appPackageName;
     UTDatabaseHandler databaseHandler;
 
     List<DisplayImageItem> imageItems;
@@ -84,20 +85,22 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
                     break;
 
                 case R.id.facebook_share:
-                    if (isPackageInstalled("com.facebook.android", getActivity().getPackageManager())) {
-                        onShare("com.facebook.android");
+                    appPackageName = "com.facebook.katana";
+                    if (isPackageInstalled(appPackageName, getActivity().getPackageManager())) {
+                        onShare(appPackageName);
                     }
                     else {
-
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                     }
                     break;
 
                 case R.id.instagram_share:
-                    if (isPackageInstalled("com.instagram.android", getActivity().getPackageManager())) {
-                        onShare("com.instagram.android");
+                    appPackageName = "com.instagram.android";
+                    if (isPackageInstalled(appPackageName, getActivity().getPackageManager())) {
+                        onShare(appPackageName);
                     }
                     else {
-
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                     }
                     break;
 
@@ -119,9 +122,6 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
         Intent share = new Intent(Intent.ACTION_SEND);
         //Intent share = new Intent("com.instagram.share.ADD_TO_STORY");
         share.setType("image/*");
-        //share.setPackage("com.whatsapp");
-        //share.setPackage("com.facebook.android");
-        //share.setPackage("com.instagram.android");
         share.setPackage(packageName);
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.putExtra(Intent.EXTRA_TEXT, "I found something cool!");

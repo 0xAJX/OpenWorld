@@ -244,7 +244,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
                         Bundle bundle = new Bundle();
                         bundle.putString("user_template_id", userTemplateID);
                         bundle.putString("template_id", templateID);
-                        bundle.putString("title", titleText);
+                        bundle.putString("title", title.getText().toString());
                         bundle.putStringArray("imageLocation", imageLocation);
                         bundle.putBoolean("isUpdate", isUpdate);
                         bundle.putInt("no_of_images", noOfImages);

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,8 +90,9 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
                 @Override
                 public void onClick(View v) {
                     listItems.get(getAdapterPosition()).getUser_template_location();
+                    FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                     ShareBottomSheetFragment shareBottomSheetFragment = new ShareBottomSheetFragment(listItems.get(getAdapterPosition()).getUser_template_location());
-                    shareBottomSheetFragment.show(shareBottomSheetFragment.getFragmentManager(), shareBottomSheetFragment.getTag());
+                    shareBottomSheetFragment.show(manager, shareBottomSheetFragment.getTag());
                 }
             });
 
