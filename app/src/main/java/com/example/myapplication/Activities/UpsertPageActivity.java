@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -30,7 +31,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.myapplication.Handlers.UTDatabaseHandler;
+import com.example.myapplication.Models.Template;
 import com.example.myapplication.R;
 import com.example.myapplication.ViewModels.TemplateViewModel;
 
@@ -43,7 +44,6 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
     ImageView addImage[];
 
-    UTDatabaseHandler databaseHandler;
     ImageView displayImage[];
 
     public List<StoryElement> imageItems;
@@ -97,7 +97,6 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upsert_page);
 
-        databaseHandler = new UTDatabaseHandler(this);
         imageItems = new ArrayList<>();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -115,9 +114,12 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         }*/
         /** Check if it is create or update story */
 
+        /** Get no. of images from TemplateViewModel */
         templateID = getIntent().getIntExtra("template_id", 1);
         TemplateViewModel templateViewModel = ViewModelProviders.of(this).get(TemplateViewModel.class);
-        noOfImages = templateViewModel.getTemplateById().getValue().get(0).getNo_of_images();
+        Template templateObject = templateViewModel.getTemplateById(templateID);
+        noOfImages = templateObject.getNo_of_images();
+        /** Get no. of images from TemplateViewModel */
 
         Log.d("no of images", Integer.toString(noOfImages));
         //no_of_images = getIntent().getIntExtra("no_of_images",1);
@@ -127,11 +129,11 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         addImage = new ImageView[noOfImages];
         imageLocation = new String[noOfImages];
 
-        /** Making all values of array empty so that no error is caused ahead*/
+        /** Making all values of array empty so that no error is caused ahead */
         for (int i = 0; i < noOfImages; i++) {
             imageLocation[i] = "";
         }
-        /** Making all values of array empty so that no error is caused ahead*/
+        /** Making all values of array empty so that no error is caused ahead */
 
         /** Get the required layout based on template ID */
         int templateLayout = getResources().getIdentifier(
@@ -310,9 +312,6 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
             }
         });*/
-
-        databaseHandler.close();
-
     }
 
     /** addImage onclick */
@@ -545,30 +544,6 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         Log.d(TAG, sb.toString());
 
     }*/
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        databaseHandler.close();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        databaseHandler.close();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        databaseHandler = new UTDatabaseHandler(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 
 //    private void showPictureDialog(){
 //        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);

@@ -15,14 +15,12 @@ import android.view.ViewGroup;
 import com.example.myapplication.Models.Template;
 import com.example.myapplication.R;
 import com.example.myapplication.Adapters.SelectTemplateAdapter;
-import com.example.myapplication.Handlers.UTDatabaseHandler;
 import com.example.myapplication.ViewModels.TemplateViewModel;
 
 import java.util.List;
 
 public class SelectTemplateFragment extends Fragment {
 
-    UTDatabaseHandler handler;
     RecyclerView recyclerView;
     private SelectTemplateAdapter selectTemplateAdapter;
     TemplateViewModel templateViewModel;

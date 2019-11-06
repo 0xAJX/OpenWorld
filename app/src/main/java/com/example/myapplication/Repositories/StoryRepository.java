@@ -18,6 +18,7 @@ public class StoryRepository {
     public StoryRepository(Application application) {
         CollageDatabase database = CollageDatabase.getInstance(application);
         storyDao = database.storyDao();
+        allStories = storyDao.getAllStories();
     }
 
     public void insert(Story story) {

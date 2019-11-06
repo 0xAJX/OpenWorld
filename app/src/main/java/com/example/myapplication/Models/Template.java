@@ -6,8 +6,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "templates")
 public class Template {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     private int id;
+
     private int no_of_images;
     private String template_res;
 

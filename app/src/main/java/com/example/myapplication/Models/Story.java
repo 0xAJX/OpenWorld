@@ -6,12 +6,18 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "stories")
 public class Story {
 
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     private int template_id;
     private int user_id;
     private String title;
     private String image_location;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public int getId() {
         return id;

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.example.myapplication.Fragments.ShareBottomSheetFragment;
 import com.example.myapplication.Models.Story;
 import com.example.myapplication.R;
-import com.example.myapplication.Handlers.UTDatabaseHandler;
 
 import java.util.List;
 

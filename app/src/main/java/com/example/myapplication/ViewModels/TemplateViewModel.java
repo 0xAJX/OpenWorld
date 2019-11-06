@@ -15,7 +15,8 @@ import java.util.List;
 public class TemplateViewModel extends AndroidViewModel {
 
     private TemplateRepository repository;
-    private LiveData<List<Template>> allTemplates, template;
+    private LiveData<List<Template>> allTemplates;
+    private Template template;
 
     public TemplateViewModel(@NonNull Application application) {
         super(application);
@@ -27,7 +28,7 @@ public class TemplateViewModel extends AndroidViewModel {
     public TemplateViewModel(@NonNull Application application, int templateId) {
         super(application);
 
-        repository = new TemplateRepository(application);
+        repository = new TemplateRepository(application, templateId);
         allTemplates = repository.getAllTemplates();
         template = repository.getTemplateById(templateId);
     }
@@ -48,5 +49,5 @@ public class TemplateViewModel extends AndroidViewModel {
         return allTemplates;
     }
 
-    public LiveData<List<Template>> getTemplateById() { return template; }
+    public Template getTemplateById(int id) { return template; }
 }

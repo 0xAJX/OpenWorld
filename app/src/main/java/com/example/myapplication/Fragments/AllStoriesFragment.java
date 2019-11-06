@@ -41,7 +41,8 @@ public class AllStoriesFragment extends Fragment {
         recyclerView.setAdapter(allStoriesAdapter);
 
         /** Get story view model and show data */
-        storyViewModel = ViewModelProviders.of(getActivity()).get(StoryViewModel.class);
+        storyViewModel = ViewModelProviders.of(this).get(StoryViewModel.class);
+
         storyViewModel.getAllStories().observe(this, new Observer<List<Story>>() {
             @Override
             public void onChanged(List<Story> stories) {

@@ -12,6 +12,9 @@ public class StoryElement {
     private int image_id;
     private String image_location;
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;

@@ -25,8 +25,8 @@ public interface TemplateDao {
     @Query("DELETE FROM templates")
     void deleteAllTemplates();
 
-    @Query("SELECT no_of_images, template_res FROM templates WHERE id = :id")
-    LiveData<List<Template>> getTemplateById(int id);
+    @Query("SELECT * FROM templates WHERE id = :id")
+    Template getTemplateById(int id);
 
     @Query("SELECT * FROM templates ORDER BY id ASC")
     LiveData<List<Template>> getAllTemplates();

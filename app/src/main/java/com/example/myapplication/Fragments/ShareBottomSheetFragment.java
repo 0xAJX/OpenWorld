@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.myapplication.Models.Story;
 import com.example.myapplication.Models.StoryElement;
 import com.example.myapplication.R;
-import com.example.myapplication.Handlers.UTDatabaseHandler;
 import com.example.myapplication.ViewModels.StoryViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -41,7 +40,6 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
     Bundle bundle;
 
     String appPackageName;
-    UTDatabaseHandler databaseHandler;
 
     List<StoryElement> imageItems;
     String imageLocation[];
@@ -62,7 +60,6 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.share_bottom_sheet_fragment, null, false);
-        databaseHandler = new UTDatabaseHandler(getContext());
         BottomNavigationView navigationView = view.findViewById(R.id.nav_view);
 
         if (bitmapLocation != null) {

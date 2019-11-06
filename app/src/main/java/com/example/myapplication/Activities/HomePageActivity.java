@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.myapplication.Fragments.AllStoriesFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.Fragments.SelectTemplateFragment;
-import com.example.myapplication.Handlers.UTDatabaseHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomePageActivity extends AppCompatActivity {
@@ -68,10 +67,6 @@ public class HomePageActivity extends AppCompatActivity {
         //BottomNavigationView navView = findViewById(R.id.nav_view);
         //mTextMessage = findViewById(R.id.message);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        UTDatabaseHandler handler = new UTDatabaseHandler(this);
-
-        handler.close();
 
         BottomAppBar bottomAppBar = findViewById(R.id.bottombar);
         setSupportActionBar(bottomAppBar);

@@ -70,7 +70,6 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
 
             templateImage = itemView.findViewById(R.id.templateimage);
 
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -82,11 +81,6 @@ public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAd
                     context.startActivity(i);
                 }
             });
-
-            //title = itemView.findViewById(R.id.title);
-            //description = itemView.findViewById(R.id.description);
-            //information = itemView.findViewById(R.id.information);
-            //location = itemView.findViewById(R.id.location);
 
         }
     }

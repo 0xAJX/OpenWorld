@@ -13,12 +13,20 @@ import java.util.List;
 
 public class TemplateRepository {
     private TemplateDao templateDao;
-    private LiveData<List<Template>> allTemplates, template;
+    private LiveData<List<Template>> allTemplates;
+    private Template template;
 
 
     public TemplateRepository(Application application) {
         CollageDatabase database = CollageDatabase.getInstance(application);
         templateDao = database.templateDao();
+        allTemplates = templateDao.getAllTemplates();
+    }
+
+    public TemplateRepository(Application application, int id) {
+        CollageDatabase database = CollageDatabase.getInstance(application);
+        templateDao = database.templateDao();
+        template = templateDao.getTemplateById(id);
     }
 
     public void insert(Template template) {
@@ -33,7 +41,7 @@ public class TemplateRepository {
         new DeleteTemplateAsyncTask(templateDao).execute(template);
     }
 
-    public LiveData<List<Template>> getTemplateById(int id) {
+    public Template getTemplateById(int id) {
         return template;
     }
 
