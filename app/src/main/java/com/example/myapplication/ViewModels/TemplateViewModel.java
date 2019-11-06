@@ -10,6 +10,7 @@ import com.example.myapplication.Models.Template;
 import com.example.myapplication.Repositories.TemplateRepository;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class TemplateViewModel extends AndroidViewModel {
 
@@ -39,5 +40,5 @@ public class TemplateViewModel extends AndroidViewModel {
         return allTemplates;
     }
 
-    public Template getTemplateById(int id) { return repository.getTemplateById(id); }
+    public Template getTemplateById(int id) throws ExecutionException, InterruptedException { return repository.getTemplateById(id); }
 }

@@ -39,6 +39,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class UpsertPageActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener {
 
@@ -117,7 +118,13 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         /** Get no. of images from TemplateViewModel */
         templateID = getIntent().getIntExtra("template_id", 1);
         TemplateViewModel templateViewModel = ViewModelProviders.of(this).get(TemplateViewModel.class);
-        noOfImages = templateViewModel.getTemplateById(templateID).getNo_of_images();
+        try {
+            noOfImages = templateViewModel.getTemplateById(templateID).getNo_of_images();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         /** Get no. of images from TemplateViewModel */
 
         Log.d("no of images", Integer.toString(noOfImages));

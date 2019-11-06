@@ -11,11 +11,11 @@ import com.example.myapplication.Databases.CollageDatabase;
 import com.example.myapplication.Models.Template;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class TemplateRepository {
     private TemplateDao templateDao;
     private LiveData<List<Template>> allTemplates;
-    private Template template;
 
     public TemplateRepository(Application application) {
         CollageDatabase database = CollageDatabase.getInstance(application);
@@ -35,9 +35,9 @@ public class TemplateRepository {
         new DeleteTemplateAsyncTask(templateDao).execute(template);
     }
 
-    public Template getTemplateById(int id) {
-        new GetTemplateByIdAsyncTask(templateDao).execute(id);
-        return template;
+    public Template getTemplateById(int id) throws ExecutionException, InterruptedException {
+
+        return new GetTemplateByIdAsyncTask(templateDao).execute(id).get();
     }
 
     public LiveData<List<Template>> getAllTemplates() {
@@ -104,13 +104,7 @@ public class TemplateRepository {
 
         @Override
         protected void onPostExecute(Template template) {
-            getTemplate(template);
         }
-    }
-
-    private void getTemplate(Template template) {
-        //handle value
-        this.template = template;
     }
 
 }
