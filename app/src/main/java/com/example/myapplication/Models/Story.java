@@ -10,7 +10,7 @@ public class Story {
     private int id;
     private int template_id;
     private int user_id;
-    private int title;
+    private String title;
     private String image_location;
 
     public int getId() {
@@ -25,7 +25,7 @@ public class Story {
         return user_id;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -33,7 +33,7 @@ public class Story {
         return image_location;
     }
 
-    public Story(int template_id, int user_id, int title, String image_location) {
+    public Story(int template_id, int user_id, String title, String image_location) {
         this.template_id = template_id;
         this.user_id = user_id;
         this.title = title;

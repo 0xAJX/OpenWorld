@@ -13,13 +13,14 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.example.myapplication.Fragments.ShareBottomSheetFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.myapplication.Models.StoryElement;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.MotionEvent;
@@ -30,8 +31,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.myapplication.Handlers.UTDatabaseHandler;
-import com.example.myapplication.Models.DisplayImageItem;
 import com.example.myapplication.R;
+import com.example.myapplication.ViewModels.TemplateViewModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,30 +43,26 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
     ImageView addImage[];
 
-    BottomNavigationView bottomNavigationView;
-
     UTDatabaseHandler databaseHandler;
     ImageView displayImage[];
 
-    public List<DisplayImageItem> imageItems;
+    public List<StoryElement> imageItems;
     String imageLocation[];
     Boolean isUpdate = false;
 
     int noOfImages;
-
-    private static int RESULT_LOAD_IMAGE = 1;
     private static int[] REQUEST_IMAGE_ID;
 
     Bitmap storyBitmap;
 
     View template;
-    String templateID;
+    int templateID;
     ImageView tempImage;
     LinearLayout templateLoader;
     EditText title;
     String titleText;
 
-    String userTemplateID;
+    int userTemplateID;
 
     /** Touch event variables */
 
@@ -105,10 +102,9 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
-        //bottomNavigationView = findViewById(R.id.nav_view);
 
         /** Check if it is create or update story */
-        try {
+        /*try {
             if (getIntent().getStringExtra("user_template_id") != null) {
                 userTemplateID = getIntent().getStringExtra("user_template_id");
                 titleText = getIntent().getStringExtra("story_title");
@@ -116,11 +112,12 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
             }
         } catch (Exception e) {
 
-        }
+        }*/
         /** Check if it is create or update story */
 
-        templateID = getIntent().getStringExtra("template_id");
-        noOfImages = databaseHandler.getNoOfImages(templateID);
+        templateID = getIntent().getIntExtra("template_id", 1);
+        TemplateViewModel templateViewModel = ViewModelProviders.of(this).get(TemplateViewModel.class);
+        noOfImages = templateViewModel.getTemplateById().getValue().get(0).getNo_of_images();
 
         Log.d("no of images", Integer.toString(noOfImages));
         //no_of_images = getIntent().getIntExtra("no_of_images",1);
@@ -190,7 +187,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         title = findViewById(R.id.storytitle);
 
         /** IF its update then restore images to imageViews */
-        if (isUpdate) {
+        /*if (isUpdate) {
 
             try {
 
@@ -211,7 +208,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
             } catch (Exception e) {
             }
-        }
+        }*/
         /** IF its update then restore images to imageViews */
         //img = view.findViewById(R.id.myimageview);
         //img.setMaxZoom(4f);
@@ -270,8 +267,8 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
                         storyBitmap = getBitmapFromView(template);
                         Bundle bundle = new Bundle();
-                        bundle.putString("user_template_id", userTemplateID);
-                        bundle.putString("template_id", templateID);
+                        bundle.putInt("user_template_id", userTemplateID);
+                        bundle.putInt("template_id", templateID);
                         bundle.putString("title", title.getText().toString());
                         bundle.putStringArray("imageLocation", imageLocation);
                         bundle.putBoolean("isUpdate", isUpdate);

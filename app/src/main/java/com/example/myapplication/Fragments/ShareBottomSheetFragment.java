@@ -16,10 +16,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
-import com.example.myapplication.Models.DisplayImageItem;
+import com.example.myapplication.Models.Story;
+import com.example.myapplication.Models.StoryElement;
 import com.example.myapplication.R;
 import com.example.myapplication.Handlers.UTDatabaseHandler;
+import com.example.myapplication.ViewModels.StoryViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -40,14 +43,14 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
     String appPackageName;
     UTDatabaseHandler databaseHandler;
 
-    List<DisplayImageItem> imageItems;
+    List<StoryElement> imageItems;
     String imageLocation[];
 
     public ShareBottomSheetFragment(String bitmapLocation) {
         this.bitmapLocation = bitmapLocation;
     }
 
-    public ShareBottomSheetFragment(Bundle bundle, Bitmap bitmap, List<DisplayImageItem> imageItems) {
+    public ShareBottomSheetFragment(Bundle bundle, Bitmap bitmap, List<StoryElement> imageItems) {
         this.bundle = bundle;
         this.bitmap = bitmap;
         this.imageItems = imageItems;
@@ -156,7 +159,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
 
             if (bundle.getBoolean("isUpdate")) {
-                UpdateDB(f.getAbsolutePath());
+                //UpdateDB(f.getAbsolutePath());
             } else {
                 addToDB(f.getAbsolutePath());
             }
@@ -182,14 +185,14 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
         return "";
     }
 
-    public void UpdateDB(String filepath) {
+    /*public void UpdateDB(String filepath) {
         databaseHandler.updateUserTemplate(bundle.getString("user_template_id"), bundle.getString("title"), filepath);
 
         for (int i = 0; i < imageItems.size(); i++) {
-            imageItems.get(i).setImageLocation(imageLocation[i]);
+            imageItems.get(i).getImage_location(imageLocation[i]);
         }
         databaseHandler.updateImages(bundle.getString("user_template_id"), imageItems);
-    }
+    }*/
 
     public void addToDB(String filepath) {
         String text = bundle.getString("title");
@@ -198,9 +201,12 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
             text = "My Story";
         }
 
-        String userTemplateID = databaseHandler.addUserTemplate(bundle.getString("template_id"), "", text, filepath);
+        StoryViewModel storyViewModel = ViewModelProviders.of(this).get(StoryViewModel.class);
+        storyViewModel.insert(new Story(bundle.getInt("template_id"), 0, bundle.getString("title"), filepath));
 
-        for (int i = 0; i < bundle.getInt("no_of_images"); i++) {
+        //String userTemplateID = databaseHandler.addUserTemplate(bundle.getString("template_id"), "", text, filepath);
+
+        /*for (int i = 0; i < bundle.getInt("no_of_images"); i++) {
             DisplayImageItem item = new DisplayImageItem();
 
             item.setImageID(i + 1);
@@ -208,8 +214,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
             item.setUserTemplateID(userTemplateID);
             imageItems.add(item);
         }
-
-        databaseHandler.addImages(imageItems);
+        databaseHandler.addImages(imageItems);*/
     }
 
     private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
