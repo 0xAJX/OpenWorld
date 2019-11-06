@@ -18,7 +18,6 @@ public class Story {
         this.id = id;
     }
 
-
     public int getId() {
         return id;
     }

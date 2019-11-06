@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -31,12 +30,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.myapplication.Models.Template;
 import com.example.myapplication.R;
 import com.example.myapplication.ViewModels.TemplateViewModel;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -61,7 +58,6 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
     ImageView tempImage;
     LinearLayout templateLoader;
     EditText title;
-    String titleText;
 
     int userTemplateID;
 
