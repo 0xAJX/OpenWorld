@@ -16,12 +16,13 @@ import com.example.myapplication.Activities.UpsertPageActivity;
 import com.example.myapplication.Models.Template;
 import com.example.myapplication.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectTemplateAdapter extends RecyclerView.Adapter<SelectTemplateAdapter.ViewHolder> {
 
     private Context context;
-    private List<Template> templates;
+    private List<Template> templates =  new ArrayList<>();
 
     public SelectTemplateAdapter(Context context)
     {

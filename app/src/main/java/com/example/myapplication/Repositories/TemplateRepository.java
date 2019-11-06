@@ -2,6 +2,7 @@ package com.example.myapplication.Repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.renderscript.Sampler;
 
 import androidx.lifecycle.LiveData;
 
@@ -16,17 +17,10 @@ public class TemplateRepository {
     private LiveData<List<Template>> allTemplates;
     private Template template;
 
-
     public TemplateRepository(Application application) {
         CollageDatabase database = CollageDatabase.getInstance(application);
         templateDao = database.templateDao();
         allTemplates = templateDao.getAllTemplates();
-    }
-
-    public TemplateRepository(Application application, int id) {
-        CollageDatabase database = CollageDatabase.getInstance(application);
-        templateDao = database.templateDao();
-        template = templateDao.getTemplateById(id);
     }
 
     public void insert(Template template) {
@@ -42,6 +36,7 @@ public class TemplateRepository {
     }
 
     public Template getTemplateById(int id) {
+        new GetTemplateByIdAsyncTask(templateDao).execute(id);
         return template;
     }
 
@@ -92,6 +87,30 @@ public class TemplateRepository {
             templateDao.delete(templates[0]);
             return null;
         }
+    }
+
+    private class GetTemplateByIdAsyncTask extends AsyncTask<Integer, Void, Template> {
+
+        private TemplateDao templateDao;
+
+        private GetTemplateByIdAsyncTask(TemplateDao templateDao) {
+            this.templateDao = templateDao;
+        }
+
+        @Override
+        protected Template doInBackground(Integer... integers) {
+            return templateDao.getTemplateById(integers[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Template template) {
+            getTemplate(template);
+        }
+    }
+
+    private void getTemplate(Template template) {
+        //handle value
+        this.template = template;
     }
 
 }

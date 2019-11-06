@@ -21,9 +21,8 @@ import java.util.List;
 
 public class SelectTemplateFragment extends Fragment {
 
-    RecyclerView recyclerView;
-    private SelectTemplateAdapter selectTemplateAdapter;
-    TemplateViewModel templateViewModel;
+    private RecyclerView recyclerView;
+    private TemplateViewModel templateViewModel;
 
     @Nullable
     @Override
@@ -34,7 +33,7 @@ public class SelectTemplateFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(true);
 
-        selectTemplateAdapter = new SelectTemplateAdapter(getContext());
+        final SelectTemplateAdapter selectTemplateAdapter = new SelectTemplateAdapter(getContext());
         recyclerView.setAdapter(selectTemplateAdapter);
 
         /** Get story view model and show data */

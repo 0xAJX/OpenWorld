@@ -17,12 +17,13 @@ import com.example.myapplication.Fragments.ShareBottomSheetFragment;
 import com.example.myapplication.Models.Story;
 import com.example.myapplication.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.ViewHolder> {
 
     private Context context;
-    private List<Story> stories;
+    private List<Story> stories = new ArrayList<>();
 
     public AllStoriesAdapter(Context context) {
         this.context = context;
@@ -32,7 +33,7 @@ public class AllStoriesAdapter extends RecyclerView.Adapter<AllStoriesAdapter.Vi
     @Override
     public AllStoriesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_story_row,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_story_row, parent,false);
 
         return new ViewHolder(view);
     }

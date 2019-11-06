@@ -3,7 +3,6 @@ package com.example.myapplication.ViewModels;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -16,21 +15,12 @@ public class TemplateViewModel extends AndroidViewModel {
 
     private TemplateRepository repository;
     private LiveData<List<Template>> allTemplates;
-    private Template template;
 
     public TemplateViewModel(@NonNull Application application) {
         super(application);
 
         repository = new TemplateRepository(application);
         allTemplates = repository.getAllTemplates();
-    }
-
-    public TemplateViewModel(@NonNull Application application, int templateId) {
-        super(application);
-
-        repository = new TemplateRepository(application, templateId);
-        allTemplates = repository.getAllTemplates();
-        template = repository.getTemplateById(templateId);
     }
 
     public void insert(Template template) {
@@ -49,5 +39,5 @@ public class TemplateViewModel extends AndroidViewModel {
         return allTemplates;
     }
 
-    public Template getTemplateById(int id) { return template; }
+    public Template getTemplateById(int id) { return repository.getTemplateById(id); }
 }

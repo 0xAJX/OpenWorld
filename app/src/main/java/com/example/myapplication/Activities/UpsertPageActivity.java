@@ -117,8 +117,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
         /** Get no. of images from TemplateViewModel */
         templateID = getIntent().getIntExtra("template_id", 1);
         TemplateViewModel templateViewModel = ViewModelProviders.of(this).get(TemplateViewModel.class);
-        Template templateObject = templateViewModel.getTemplateById(templateID);
-        noOfImages = templateObject.getNo_of_images();
+        noOfImages = templateViewModel.getTemplateById(templateID).getNo_of_images();
         /** Get no. of images from TemplateViewModel */
 
         Log.d("no of images", Integer.toString(noOfImages));
@@ -238,7 +237,7 @@ public class UpsertPageActivity extends AppCompatActivity implements View.OnTouc
 
                         Intent i = new Intent(getBaseContext(), DisplayStoryPageActivity.class);
 
-                        storyBitmap = getBitmapFromView(templateLoader);
+                        storyBitmap = getBitmapFromView(template);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         storyBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                         byte[] byteArray = stream.toByteArray();

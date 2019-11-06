@@ -1,15 +1,20 @@
 package com.example.myapplication.Models;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "templates")
 public class Template {
 
+    @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = false)
     private int id;
 
+    @ColumnInfo(name = "no_of_images")
     private int no_of_images;
+
+    @ColumnInfo(name = "template_res")
     private String template_res;
 
     public int getId() {

@@ -21,7 +21,6 @@ import java.util.List;
 
 public class AllStoriesFragment extends Fragment {
 
-    private AllStoriesAdapter allStoriesAdapter;
     private StoryViewModel storyViewModel;
     private RecyclerView recyclerView;
     private View view;
@@ -37,25 +36,31 @@ public class AllStoriesFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(true);
 
-        allStoriesAdapter = new AllStoriesAdapter(getContext());
-        recyclerView.setAdapter(allStoriesAdapter);
+        try {
+            final AllStoriesAdapter allStoriesAdapter = new AllStoriesAdapter(getContext());
+            recyclerView.setAdapter(allStoriesAdapter);
 
-        /** Get story view model and show data */
-        storyViewModel = ViewModelProviders.of(this).get(StoryViewModel.class);
-
-        storyViewModel.getAllStories().observe(this, new Observer<List<Story>>() {
-            @Override
-            public void onChanged(List<Story> stories) {
-                allStoriesAdapter.setStories(stories);
-                if(stories.size() == 0) {
-                    textView.setVisibility(View.VISIBLE);
-                } else {
-                    textView.setVisibility(View.INVISIBLE);
+            /** Get story view model and show data */
+            storyViewModel = ViewModelProviders.of(this).get(StoryViewModel.class);
+            storyViewModel.getAllStories().observe(this, new Observer<List<Story>>() {
+                @Override
+                public void onChanged(List<Story> stories) {
+                    allStoriesAdapter.setStories(stories);
+                    if(stories.size() == 0) {
+                        textView.setVisibility(View.VISIBLE);
+                    } else {
+                        textView.setVisibility(View.INVISIBLE);
+                    }
                 }
-            }
-        });
-        /** Get story view model and show data */
+            });
+            /** Get story view model and show data */
+
+        } catch (Exception e) {
+
+        }
 
         return view;
     }
+
+
 }
