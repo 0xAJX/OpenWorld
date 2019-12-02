@@ -1,7 +1,6 @@
 package com.example.myapplication.Fragments;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -18,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.myapplication.Helpers.AppPackage;
 import com.example.myapplication.Models.Story;
 import com.example.myapplication.Models.StoryElement;
 import com.example.myapplication.R;
@@ -77,6 +77,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+            String googlePlayUrl = "https://play.google.com/store/apps/details?id=";
 
             switch (item.getItemId()) {
 
@@ -87,22 +88,22 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
 
                 case R.id.facebook_share:
                     appPackageName = "com.facebook.katana";
-                    if (isPackageInstalled(appPackageName, getActivity().getPackageManager())) {
+                    if (AppPackage.isPackageInstalled(appPackageName, getActivity().getPackageManager())) {
                         onShare(appPackageName);
                     }
                     else {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayUrl + appPackageName)));
                     }
                     dismiss();
                     break;
 
                 case R.id.instagram_share:
                     appPackageName = "com.instagram.android";
-                    if (isPackageInstalled(appPackageName, getActivity().getPackageManager())) {
+                    if (AppPackage.isPackageInstalled(appPackageName, getActivity().getPackageManager())) {
                         onShare(appPackageName);
                     }
                     else {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayUrl + appPackageName)));
                     }
                     dismiss();
                     break;
@@ -127,8 +128,8 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
         share.setType("image/*");
         share.setPackage(packageName);
         share.putExtra(Intent.EXTRA_STREAM, uri);
-        share.putExtra(Intent.EXTRA_TEXT, "I found something cool!");
-        startActivity(Intent.createChooser(share, "Share Your Design!"));
+        share.putExtra(Intent.EXTRA_TEXT, "I created something cool!");
+        startActivity(Intent.createChooser(share, "Share Your Story!"));
     }
 
 
@@ -161,17 +162,15 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
                 addToDB(f.getAbsolutePath());
             }
 
-            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Respond to the click, such as by undoing the modification that caused
-                    // this message to be displayed
-                    //Log.d("here", "here");
-                }
-            });
-            //int snackbarTextId = android.support.design.R.id.snackbar_text;
-            //TextView textView = snackbar.getView().findViewById(snackbarTextId);
-            //textView.setTextColor(getColor(R.color.colorAccent));
+            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT);
+//            .setAction("UNDO", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Respond to the click, such as by undoing the modification that caused
+//                    // this message to be displayed
+//                    //Log.d("here", "here");
+//                }
+//            });
             snackbar.show();
 
             return f.getAbsolutePath();
@@ -200,32 +199,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
 
         StoryViewModel storyViewModel = ViewModelProviders.of(this).get(StoryViewModel.class);
         storyViewModel.insert(new Story(bundle.getInt("template_id"), 0, text, filepath));
-
-        //String userTemplateID = databaseHandler.addUserTemplate(bundle.getString("template_id"), "", text, filepath);
-
-        /*for (int i = 0; i < bundle.getInt("no_of_images"); i++) {
-            DisplayImageItem item = new DisplayImageItem();
-
-            item.setImageID(i + 1);
-            item.setImageLocation(imageLocation[i]);
-            item.setUserTemplateID(userTemplateID);
-            imageItems.add(item);
-        }
-        databaseHandler.addImages(imageItems);*/
     }
 
-    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
 
-        boolean found = true;
-
-        try {
-
-            packageManager.getPackageInfo(packageName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-
-            found = false;
-        }
-
-        return found;
-    }
 }

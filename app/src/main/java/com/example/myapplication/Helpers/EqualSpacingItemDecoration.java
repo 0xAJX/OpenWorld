@@ -6,6 +6,10 @@ import android.view.View;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Adds required spacing to cards if used in grid layout
+ * */
+
 public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
     private final int spacing;
     private int displayMode;

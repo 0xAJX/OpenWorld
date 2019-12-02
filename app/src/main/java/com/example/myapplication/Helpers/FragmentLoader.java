@@ -9,6 +9,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.myapplication.R;
 
 public class FragmentLoader{
+
+    /**
+     * Used to loads fragments
+     * */
+
     public static boolean loadFragment(Fragment fragment, Activity activity)
     {
         if(fragment != null)
