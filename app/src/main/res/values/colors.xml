@@ -9,4 +9,31 @@
     <color name="red">#f0134d</color>
     <color name="black_overlay">#66000000</color>
     <color name="grey">#C0C0C0</color>
+    <color name="dark_blue">#03121f</color>
+    <color name="dark_blue_75">#BF03121f</color>
 </resources>
+
+
+<!-- Transparency percent to hex -->
+<!--
+    100% — FF
+    95% — F2
+    90% — E6
+    85% — D9
+    80% — CC
+    75% — BF
+    70% — B3
+    65% — A6
+    60% — 99
+    55% — 8C
+    50% — 80
+    45% — 73
+    40% — 66
+    35% — 59
+    30% — 4D
+    25% — 40
+    20% — 33
+    15% — 26
+    10% — 1A
+    5%  — 0D
+    0% —  00 -->
