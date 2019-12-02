@@ -199,7 +199,7 @@ public class ShareBottomSheetFragment extends BottomSheetDialogFragment {
         }
 
         StoryViewModel storyViewModel = ViewModelProviders.of(this).get(StoryViewModel.class);
-        storyViewModel.insert(new Story(bundle.getInt("template_id"), 0, bundle.getString("title"), filepath));
+        storyViewModel.insert(new Story(bundle.getInt("template_id"), 0, text, filepath));
 
         //String userTemplateID = databaseHandler.addUserTemplate(bundle.getString("template_id"), "", text, filepath);
 

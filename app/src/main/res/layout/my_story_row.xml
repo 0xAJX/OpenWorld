@@ -48,10 +48,10 @@
                         android:layout_gravity="center"
                         android:textAlignment="center"
                         android:paddingTop="5dp"
-                        android:text="CARD TITLE"
+                        android:text="@string/card_title"
                         android:ellipsize="end"
                         android:textColor="@color/grey"
-                        android:textSize="20sp" />
+                        android:textSize="14sp" />
 
                     <androidx.coordinatorlayout.widget.CoordinatorLayout
                         android:layout_width="match_parent"

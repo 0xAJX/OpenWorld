@@ -81,7 +81,7 @@
             android:paddingRight="20dp"
             android:paddingBottom="20dp"
             android:textAlignment="center"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

@@ -3,9 +3,9 @@ package com.example.myapplication.Activities;
 import android.os.Bundle;
 
 import com.example.myapplication.Fragments.NavigationDrawerBottomSheetFragment;
+import com.example.myapplication.Helpers.FragmentLoader;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Menu;
@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.Fragments.AllStoriesFragment;
 import com.example.myapplication.R;
@@ -50,15 +49,7 @@ public class HomePageActivity extends AppCompatActivity {
         return true;
     }
 
-    private  boolean loadFragment(Fragment fragment)
-    {
-        if(fragment != null)
-        {
-            getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(R.id.fragment_container,fragment).commit();
-            return true;
-        }
-        return false;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +65,7 @@ public class HomePageActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
 
-        loadFragment(new AllStoriesFragment());
+        FragmentLoader.loadFragment(new AllStoriesFragment(), this);
 
         create = findViewById(R.id.fab);
         create.setOnClickListener(new View.OnClickListener() {
@@ -83,13 +74,13 @@ public class HomePageActivity extends AppCompatActivity {
 
                 if(isAllStory)
                 {
-                    loadFragment(new SelectTemplateFragment());
+                    FragmentLoader.loadFragment(new SelectTemplateFragment(), HomePageActivity.this);
                     create.setImageResource(R.drawable.ic_dashboard);
                     isAllStory = false;
                 }
                 else
                 {
-                    loadFragment(new AllStoriesFragment());
+                    FragmentLoader.loadFragment(new AllStoriesFragment(), HomePageActivity.this);
                     create.setImageResource(R.drawable.ic_pencil);
                     isAllStory = true;
                 }

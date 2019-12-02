@@ -7,4 +7,15 @@
     <string name="title_activity_collage_view">CollageVIew</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="team">Team</string>
+    <string name="getting_started">Getting Started</string>
+    <string name="you_haven_t_created_any_story">You haven\'t created any story</string>
+    <string name="card_title">CARD TITLE</string>
+    <string name="a_short_title">A Short Title</string>
+    <string name="use_short_description_to_share_your_story">use short description to share your story</string>
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="device">Device</string>
+    <string name="story_title">Story Title</string>
 </resources>

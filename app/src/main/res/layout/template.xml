@@ -54,11 +54,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:hint="A Short Title"
+            android:hint="@string/a_short_title"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:textAlignment="center"
-            android:textSize="40dp" />
+            android:textSize="40sp" />
 
         <EditText
             android:background="@android:color/transparent"
@@ -66,13 +66,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:hint="use short description to share your story"
+            android:hint="@string/use_short_description_to_share_your_story"
             android:paddingLeft="10dp"
             android:paddingTop="20dp"
             android:paddingRight="10dp"
             android:paddingBottom="20dp"
             android:textAlignment="center"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
 
     </LinearLayout>

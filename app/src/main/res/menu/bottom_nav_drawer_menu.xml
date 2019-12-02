@@ -3,23 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="none">
         <item
-            android:id="@+id/nav1"
+            android:id="@+id/getting_started"
             android:icon="@drawable/abc_vector_test"
-            android:title="nav_item1" />
+            android:title="@string/getting_started" />
         <item
-            android:id="@+id/nav2"
+            android:id="@+id/team"
             android:icon="@drawable/abc_vector_test"
-            android:title="nav_item1" />
+            android:title="@string/team" />
 
         <item
-            android:id="@+id/nav3"
+            android:id="@+id/contact_us"
             android:icon="@drawable/abc_vector_test"
-            android:title="nav_item1" />
-
-        <item
-            android:id="@+id/nav4"
-            android:icon="@drawable/abc_vector_test"
-            android:title="nav_item1" />
-
+            android:title="@string/contact_us" />
     </group>
 </menu>

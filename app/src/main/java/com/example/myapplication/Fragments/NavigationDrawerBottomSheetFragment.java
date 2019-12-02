@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.example.myapplication.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -34,15 +32,18 @@ public class NavigationDrawerBottomSheetFragment extends BottomSheetDialogFragme
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            Fragment fragment = null;
-
             switch (item.getItemId()) {
 
-                case R.id.nav1:
-                    //loadFragment(new SelectTemplateFragment());
+                case R.id.getting_started:
+                    //FragmentLoader.loadFragment(new AllStoriesFragment(), getActivity());
                     break;
-                //mTextMessage.setText(R.string.title_notifications);
-                //return true;
+                case R.id.team:
+                    //FragmentLoader.loadFragment(new AllStoriesFragment(), getActivity());
+                    break;
+                case R.id.contact_us:
+                    //FragmentLoader.loadFragment(new AllStoriesFragment(), getActivity());
+                    break;
+
             }
             return true;
         }

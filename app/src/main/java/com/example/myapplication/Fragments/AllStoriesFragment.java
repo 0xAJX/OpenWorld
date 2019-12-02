@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.myapplication.Helpers.EqualSpacingItemDecoration;
 import com.example.myapplication.Models.Story;
 import com.example.myapplication.R;
 import com.example.myapplication.Adapters.AllStoriesAdapter;
@@ -35,6 +36,7 @@ public class AllStoriesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.allstoriesrecyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new EqualSpacingItemDecoration(16, EqualSpacingItemDecoration.HORIZONTAL));
 
         try {
             final AllStoriesAdapter allStoriesAdapter = new AllStoriesAdapter(getContext());
