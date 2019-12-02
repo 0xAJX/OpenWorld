@@ -3,7 +3,7 @@ package com.example.myapplication.Activities;
 import android.os.Bundle;
 
 import com.example.myapplication.Fragments.NavigationDrawerBottomSheetFragment;
-import com.example.myapplication.Helpers.FragmentLoader;
+import com.example.myapplication.Helpers.ContentLoader;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +65,7 @@ public class HomePageActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.bringToFront();
 
-        FragmentLoader.loadFragment(new AllStoriesFragment(), this);
+        ContentLoader.loadFragment(new AllStoriesFragment(), this);
 
         create = findViewById(R.id.fab);
         create.setOnClickListener(new View.OnClickListener() {
@@ -74,13 +74,13 @@ public class HomePageActivity extends AppCompatActivity {
 
                 if(isAllStory)
                 {
-                    FragmentLoader.loadFragment(new SelectTemplateFragment(), HomePageActivity.this);
+                    ContentLoader.loadFragment(new SelectTemplateFragment(), HomePageActivity.this);
                     create.setImageResource(R.drawable.ic_dashboard);
                     isAllStory = false;
                 }
                 else
                 {
-                    FragmentLoader.loadFragment(new AllStoriesFragment(), HomePageActivity.this);
+                    ContentLoader.loadFragment(new AllStoriesFragment(), HomePageActivity.this);
                     create.setImageResource(R.drawable.ic_pencil);
                     isAllStory = true;
                 }

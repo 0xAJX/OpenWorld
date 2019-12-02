@@ -35,13 +35,13 @@ public class NavigationDrawerBottomSheetFragment extends BottomSheetDialogFragme
             switch (item.getItemId()) {
 
                 case R.id.getting_started:
-                    //FragmentLoader.loadFragment(new AllStoriesFragment(), getActivity());
+                    //ContentLoader.loadFragment(new AllStoriesFragment(), getActivity());
                     break;
                 case R.id.team:
-                    //FragmentLoader.loadFragment(new AllStoriesFragment(), getActivity());
+                    //ContentLoader.loadFragment(new AllStoriesFragment(), getActivity());
                     break;
                 case R.id.contact_us:
-                    //FragmentLoader.loadFragment(new AllStoriesFragment(), getActivity());
+                    //ContentLoader.loadFragment(new AllStoriesFragment(), getActivity());
                     break;
 
             }
