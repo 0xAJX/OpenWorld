@@ -1,7 +1,7 @@
 package com.example.myapplication.Helpers;
 
 import android.app.Activity;
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 
@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.myapplication.Activities.SplashScreenActivity;
 import com.example.myapplication.R;
 
 public class ContentLoader {
