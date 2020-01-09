@@ -35,6 +35,7 @@ public class ContentLoader {
         return false;
     }
 
+    /** TODO Make this class jump between activities **/
     private static class ActivityLoader extends AsyncTask<Activity, Void, Activity> {
 
         Intent i;
@@ -48,7 +49,7 @@ public class ContentLoader {
             }
 
             i = new Intent(activities[0], activities[1].getClass());
-
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             return activities[0];
         }
 
@@ -63,7 +64,7 @@ public class ContentLoader {
         @Override
         protected void onProgressUpdate(Void... values) {}
     }
-
+    /** TODO Make this class jump between activities **/
 
 }
 
