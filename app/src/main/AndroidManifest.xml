@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.SplashScreenActivity">
+        <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,16 +28,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.DisplayStoryPageActivity"
+            android:name=".activities.DisplayStoryPageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_collage_view"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".Activities.UpsertPageActivity"
+            android:name=".activities.UpsertPageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.HomePageActivity"
+            android:name=".activities.HomePageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
