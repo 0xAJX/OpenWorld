@@ -26,18 +26,18 @@ import java.util.*
 import java.util.concurrent.ExecutionException
 
 class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickListener {
-    var addImage: Array<ImageView?>
-    var displayImage: Array<ImageView?>
-    var imageItems: List<StoryElement>? = null
-    var imageLocation: Array<String?>
+    lateinit var addImage: Array<ImageView?>
+    lateinit var displayImage: Array<ImageView?>
+    lateinit var imageItems: List<StoryElement>
+    lateinit var imageLocation: Array<String?>
     var isUpdate = false
     var noOfImages = 0
     var storyBitmap: Bitmap? = null
-    var template: View? = null
+    lateinit var template: View
     var templateID = 0
-    var tempImage: ImageView? = null
-    var templateLoader: LinearLayout? = null
-    var title: EditText? = null
+    lateinit var tempImage: ImageView
+    lateinit var templateLoader: LinearLayout
+    lateinit var title: EditText
     var userTemplateID = 0
 
     /** Touch event variables  */
@@ -134,8 +134,8 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
                     "addimage$i",
                     "id",
                     this.packageName))
-            addImage[i - 1].setOnClickListener(this)
-            displayImage[i - 1].setOnTouchListener(this)
+            addImage[i - 1]?.setOnClickListener(this)
+            displayImage[i - 1]?.setOnTouchListener(this)
             REQUEST_IMAGE_ID[i - 1] = i
         }
         /** Get imageViews based on no. of images  */
@@ -263,7 +263,7 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
         val result: String
         val cursor = contentResolver.query(contentURI, null, null, null, null)
         if (cursor == null) { // Source is Dropbox or other similar local file path
-            result = contentURI.path
+            result = contentURI.path.toString()
         } else {
             cursor.moveToFirst()
             val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
@@ -501,7 +501,7 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
     //        pictureDialog.show();
     //    }
     companion object {
-        private var REQUEST_IMAGE_ID: IntArray
+        private lateinit var REQUEST_IMAGE_ID: IntArray
         var fileNAME: String? = null
         var framePos = 0
 

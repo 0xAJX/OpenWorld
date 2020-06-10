@@ -8,7 +8,7 @@ import com.example.myapplication.repositories.StoryRepository
 
 class StoryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: StoryRepository
-    val allStories: LiveData<List<Story>>
+    val allStories: LiveData<List<Story?>?>?
     fun insert(story: Story?) {
         repository.insert(story)
     }

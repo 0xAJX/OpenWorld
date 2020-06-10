@@ -29,23 +29,23 @@ object ContentLoader {
     /** TODO Make this class jump between activities  */
     private class ActivityLoader : AsyncTask<Activity?, Void?, Activity>() {
         var i: Intent? = null
-        protected override fun doInBackground(vararg activities: Activity): Activity {
-            try {
-                Thread.sleep(500)
-            } catch (e: InterruptedException) {
-                Thread.interrupted()
-            }
-            i = Intent(activities[0], activities[1].javaClass)
-            i!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            return activities[0]
-        }
 
         override fun onPostExecute(activity: Activity) {
             activity.startActivity(i)
         }
 
         override fun onPreExecute() {}
-        protected override fun onProgressUpdate(vararg values: Void) {}
+        protected override fun onProgressUpdate(vararg values: Void?) {}
+        override fun doInBackground(vararg activities: Activity?): Activity? {
+            try {
+                Thread.sleep(500)
+            } catch (e: InterruptedException) {
+                Thread.interrupted()
+            }
+            i = Intent(activities[0], activities[1]?.javaClass)
+            i!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            return activities[0]
+        }
     }
     /** TODO Make this class jump between activities  */
 }

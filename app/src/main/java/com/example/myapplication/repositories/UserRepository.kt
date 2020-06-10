@@ -7,7 +7,8 @@ import com.example.myapplication.databases.CollageDatabase
 import com.example.myapplication.models.User
 
 class UserRepository(application: Application?) {
-    private val userDao: UserDao
+    lateinit var userDao: UserDao
+
     fun insert(user: User?) {
         InsertUserAsyncTask(userDao).execute(user)
     }
@@ -20,24 +21,23 @@ class UserRepository(application: Application?) {
         DeleteUserAsyncTask(userDao).execute(user)
     }
 
-    private class InsertUserAsyncTask private constructor(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
-        protected override fun doInBackground(vararg users: User): Void? {
+    private class InsertUserAsyncTask(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
+        override fun doInBackground(vararg users: User?): Void? {
             userDao.insert(users[0])
             return null
         }
-
     }
 
-    private class UpdateUserAsyncTask private constructor(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
-        protected override fun doInBackground(vararg users: User): Void? {
+    private class UpdateUserAsyncTask(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
+        override fun doInBackground(vararg users: User?): Void? {
             userDao.update(users[0])
             return null
         }
 
     }
 
-    private class DeleteUserAsyncTask private constructor(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
-        protected override fun doInBackground(vararg users: User): Void? {
+    private class DeleteUserAsyncTask(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
+        override fun doInBackground(vararg users: User?): Void? {
             userDao.delete(users[0])
             return null
         }
@@ -45,7 +45,9 @@ class UserRepository(application: Application?) {
     }
 
     init {
-        val database: CollageDatabase = CollageDatabase.getInstance(application)
-        userDao = database.userDao()
+        val database: CollageDatabase? = application?.let { CollageDatabase.getInstance(it) }
+        if (database != null) {
+            userDao = database.userDao()!!
+        }
     }
 }

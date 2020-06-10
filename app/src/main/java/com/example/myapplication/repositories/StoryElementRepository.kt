@@ -8,8 +8,9 @@ import com.example.myapplication.databases.CollageDatabase
 import com.example.myapplication.models.StoryElement
 
 class StoryElementRepository(application: Application?) {
-    private val storyElementDao: StoryElementDao
+    lateinit var storyElementDao: StoryElementDao
     private val allStoryELements: LiveData<List<StoryElement>>? = null
+
     fun insert(storyElement: StoryElement?) {
         InsertStoryElementAsyncTask(storyElementDao).execute(storyElement)
     }
@@ -22,24 +23,26 @@ class StoryElementRepository(application: Application?) {
         DeleteStoryElementAsyncTask(storyElementDao).execute(storyElement)
     }
 
-    private class InsertStoryElementAsyncTask private constructor(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
-        protected override fun doInBackground(vararg storyElements: StoryElement): Void? {
+    private class InsertStoryElementAsyncTask(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
+
+        override fun doInBackground(vararg storyElements: StoryElement?): Void? {
             storyElementDao.insert(storyElements[0])
             return null
         }
 
     }
 
-    private class UpdateStoryElementAsyncTask private constructor(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
-        protected override fun doInBackground(vararg storyElements: StoryElement): Void? {
+    private class UpdateStoryElementAsyncTask(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
+
+        override fun doInBackground(vararg storyElements: StoryElement?): Void? {
             storyElementDao.update(storyElements[0])
             return null
         }
 
     }
 
-    private class DeleteStoryElementAsyncTask private constructor(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
-        protected override fun doInBackground(vararg storyElements: StoryElement): Void? {
+    private class DeleteStoryElementAsyncTask(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
+        override fun doInBackground(vararg storyElements: StoryElement?): Void? {
             storyElementDao.delete(storyElements[0])
             return null
         }
@@ -47,7 +50,9 @@ class StoryElementRepository(application: Application?) {
     }
 
     init {
-        val database: CollageDatabase = CollageDatabase.getInstance(application)
-        storyElementDao = database.storyElementDao()
+        val database: CollageDatabase? = application?.let { CollageDatabase.getInstance(it) }
+        if (database != null) {
+            storyElementDao = database.storyElementDao()!!
+        }
     }
 }

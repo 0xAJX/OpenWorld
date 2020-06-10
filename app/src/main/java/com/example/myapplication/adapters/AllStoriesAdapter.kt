@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.fragments.ShareBottomSheetFragment
 import com.example.myapplication.models.Story
@@ -19,7 +19,7 @@ import com.example.myapplication.viewmodels.StoryViewModel
 import java.util.*
 
 class AllStoriesAdapter(private val context: Context) : RecyclerView.Adapter<AllStoriesAdapter.ViewHolder>() {
-    private var stories: List<Story> = ArrayList()
+    private var stories: MutableList<Story> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.my_story_row, parent, false)
         return ViewHolder(view)
@@ -35,7 +35,7 @@ class AllStoriesAdapter(private val context: Context) : RecyclerView.Adapter<All
         return stories.size
     }
 
-    fun setStories(stories: List<Story>) {
+    fun setStories(stories: MutableList <Story>) {
         this.stories = stories
         notifyDataSetChanged()
     }
@@ -76,9 +76,11 @@ class AllStoriesAdapter(private val context: Context) : RecyclerView.Adapter<All
             /** Start shareBottomSheetFragment when share button is clicked  */
             /** Delete user story when delete is clicked  */
             delete.setOnClickListener {
-                val storyViewModel = ViewModelProviders.of((context as FragmentActivity)).get(StoryViewModel::class.java)
+                val storyViewModel = ViewModelProvider(context as FragmentActivity).get(StoryViewModel::class.java)
                 storyViewModel.delete(stories[adapterPosition])
+
                 stories.removeAt(adapterPosition)
+
                 notifyItemRemoved(adapterPosition)
             }
             /** Delete user story when delete is clicked  */

@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.myapplication.helpers.AppPackage
 import com.example.myapplication.models.Story
@@ -32,7 +33,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
     var bundle: Bundle? = null
     var appPackageName: String? = null
     var imageItems: List<StoryElement>? = null
-    var imageLocation: Array<String>
+    lateinit var imageLocation: Array<String>
 
     constructor(bitmapLocation: String?) {
         this.bitmapLocation = bitmapLocation
@@ -42,7 +43,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
         this.bundle = bundle
         this.bitmap = bitmap
         this.imageItems = imageItems
-        imageLocation = bundle.getStringArray("imageLocation")
+        imageLocation = bundle.getStringArray("imageLocation") as Array<String>
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,7 +65,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
             }
             R.id.facebook_share -> {
                 appPackageName = "com.facebook.katana"
-                if (AppPackage.isPackageInstalled(appPackageName, activity!!.packageManager)) {
+                if (AppPackage.isPackageInstalled(appPackageName, requireActivity().packageManager)) {
                     onShare(appPackageName)
                 } else {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayUrl + appPackageName)))
@@ -73,7 +74,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
             }
             R.id.instagram_share -> {
                 appPackageName = "com.instagram.android"
-                if (AppPackage.isPackageInstalled(appPackageName, activity!!.packageManager)) {
+                if (AppPackage.isPackageInstalled(appPackageName, requireActivity().packageManager)) {
                     onShare(appPackageName)
                 } else {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayUrl + appPackageName)))
@@ -87,7 +88,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
     fun onShare(packageName: String?) {
         val uri: Uri
         uri = if (bitmapLocation == null) {
-            val path = MediaStore.Images.Media.insertImage(activity!!.contentResolver,
+            val path = MediaStore.Images.Media.insertImage(requireActivity().contentResolver,
                     bitmap, "Design", null)
             Uri.parse(path)
         } else {
@@ -124,7 +125,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
             } else {
                 addToDB(f.absolutePath)
             }
-            val snackbar = Snackbar.make(activity!!.findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT)
+            val snackbar = Snackbar.make(requireActivity().findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT)
             //            .setAction("UNDO", new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -151,10 +152,10 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
     }*/
     fun addToDB(filepath: String?) {
         var text = bundle!!.getString("title")
-        if (bundle!!.getString("title").isEmpty() || text.trim { it <= ' ' }.length == 0) {
+        if (bundle!!.getString("title")?.isEmpty()!! || text?.trim { it <= ' ' }?.length == 0) {
             text = "My Story"
         }
-        val storyViewModel = ViewModelProviders.of(this).get(StoryViewModel::class.java)
-        storyViewModel.insert(Story(bundle!!.getInt("template_id"), 0, text, filepath!!))
+        var storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
+        storyViewModel.insert(text?.let { Story(bundle!!.getInt("template_id"), 0, it, filepath!!) })
     }
 }

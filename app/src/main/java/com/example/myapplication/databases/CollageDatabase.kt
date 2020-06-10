@@ -21,17 +21,18 @@ abstract class CollageDatabase : RoomDatabase() {
     abstract fun storyElementDao(): StoryElementDao?
     abstract fun templateDao(): TemplateDao
     abstract fun userDao(): UserDao?
-    private class PopulateDbAsyncTask private constructor(collageDatabase: CollageDatabase?) : AsyncTask<Void?, Void?, Void?>() {
+    private class PopulateDbAsyncTask(collageDatabase: CollageDatabase?) : AsyncTask<Void?, Void?, Void?>() {
         private val templateDao: TemplateDao
-        protected override fun doInBackground(vararg voids: Void): Void? {
+
+        init {
+            templateDao = collageDatabase!!.templateDao()
+        }
+
+        override fun doInBackground(vararg voids: Void?): Void? {
             templateDao.insert(Template(1, 1, ""))
             templateDao.insert(Template(2, 2, ""))
             templateDao.insert(Template(3, 3, ""))
             return null
-        }
-
-        init {
-            templateDao = collageDatabase!!.templateDao()
         }
     }
 

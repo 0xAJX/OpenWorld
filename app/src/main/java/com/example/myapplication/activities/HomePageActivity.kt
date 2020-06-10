@@ -13,6 +13,7 @@ import com.example.myapplication.helpers.ContentLoader
 import com.example.myapplication.R
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_home_page.*
 
 class HomePageActivity : AppCompatActivity() {
     var create: FloatingActionButton? = null
@@ -45,15 +46,15 @@ class HomePageActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.bringToFront()
         ContentLoader.loadFragment(AllStoriesFragment(), this)
-        create = findViewById(R.id.fab)
-        create.setOnClickListener(View.OnClickListener {
+        //create = findViewById(R.id.fab)
+        fab.setOnClickListener(View.OnClickListener {
             isAllStory = if (isAllStory) {
                 ContentLoader.loadFragment(SelectTemplateFragment(), this@HomePageActivity)
-                create.setImageResource(R.drawable.ic_dashboard)
+                fab?.setImageResource(R.drawable.ic_dashboard)
                 false
             } else {
                 ContentLoader.loadFragment(AllStoriesFragment(), this@HomePageActivity)
-                create.setImageResource(R.drawable.ic_pencil)
+                fab?.setImageResource(R.drawable.ic_pencil)
                 true
             }
         })

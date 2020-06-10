@@ -7,9 +7,9 @@ import com.example.myapplication.models.Template
 import com.example.myapplication.repositories.TemplateRepository
 import java.util.concurrent.ExecutionException
 
-class TemplateViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: TemplateRepository
-    val allTemplatest: LiveData<List<Template>>
+open class TemplateViewModel(application: Application) : AndroidViewModel(application) {
+    val repository: TemplateRepository = TemplateRepository(application)
+    val alltemplates: LiveData<List<Template?>?>?
     fun insert(template: Template?) {
         repository.insert(template)
     }
@@ -28,7 +28,6 @@ class TemplateViewModel(application: Application) : AndroidViewModel(application
     }
 
     init {
-        repository = TemplateRepository(application)
-        allTemplatest = repository.allTemplates
+        alltemplates = repository.allTemplates
     }
 }
