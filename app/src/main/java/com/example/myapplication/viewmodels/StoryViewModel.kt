@@ -7,7 +7,7 @@ import com.example.myapplication.models.Story
 import com.example.myapplication.repositories.StoryRepository
 
 class StoryViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: StoryRepository
+    private val repository: StoryRepository = StoryRepository(application)
     val allStories: LiveData<List<Story?>?>?
     fun insert(story: Story?) {
         repository.insert(story)
@@ -26,7 +26,6 @@ class StoryViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     init {
-        repository = StoryRepository(application)
         allStories = repository.allStories
     }
 }

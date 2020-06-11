@@ -157,5 +157,6 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
         }
         var storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
         storyViewModel.insert(text?.let { Story(bundle!!.getInt("template_id"), 0, it, filepath!!) })
+        Log.d("storyview", storyViewModel.allStories.toString())
     }
 }
