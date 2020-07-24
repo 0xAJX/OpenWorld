@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_home_page.*
 
 class HomePageActivity : AppCompatActivity() {
-    var create: FloatingActionButton? = null
+
     var isAllStory = true
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.bottom_nav_menu, menu)
@@ -38,15 +38,13 @@ class HomePageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
-        //BottomNavigationView navView = findViewById(R.id.nav_view);
-        //mTextMessage = findViewById(R.id.message);
-        //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         val bottomAppBar = findViewById<BottomAppBar>(R.id.bottombar)
         setSupportActionBar(bottomAppBar)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.bringToFront()
         ContentLoader.loadFragment(AllStoriesFragment(), this)
-        //create = findViewById(R.id.fab)
+
         fab.setOnClickListener(View.OnClickListener {
             isAllStory = if (isAllStory) {
                 ContentLoader.loadFragment(SelectTemplateFragment(), this@HomePageActivity)

@@ -4,16 +4,16 @@
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/getting_started"
-            android:icon="@drawable/abc_vector_test"
+            android:icon="@drawable/ic_start_button"
             android:title="@string/getting_started" />
         <item
             android:id="@+id/team"
-            android:icon="@drawable/abc_vector_test"
+            android:icon="@drawable/ic_team"
             android:title="@string/team" />
 
         <item
             android:id="@+id/contact_us"
-            android:icon="@drawable/abc_vector_test"
+            android:icon="@drawable/ic_contact_24dp"
             android:title="@string/contact_us" />
     </group>
 </menu>
