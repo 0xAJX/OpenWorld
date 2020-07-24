@@ -71,7 +71,7 @@ class AllStoriesAdapter(private val context: Context) : RecyclerView.Adapter<All
             share.setOnClickListener {
                 stories[adapterPosition].image_location
                 val shareBottomSheetFragment = ShareBottomSheetFragment(stories[adapterPosition].image_location)
-                shareBottomSheetFragment.show((context as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.getTag())
+                shareBottomSheetFragment.show((context as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.tag)
             }
             /** Start shareBottomSheetFragment when share button is clicked  */
             /** Delete user story when delete is clicked  */

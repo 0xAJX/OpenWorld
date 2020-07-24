@@ -118,8 +118,8 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
         val scalingfactor = 0.85f
         /*params.height = (int)(1920 * scalingfactor);//(int)(height * scalingfactor);
         params.width = (int)(1080 * scalingfactor);//(int)(width * scalingfactor);
-        template.setLayoutParams(params);*/template.setScaleX(scalingfactor)
-        template.setScaleY(scalingfactor)
+        template.setLayoutParams(params);*/template.scaleX = scalingfactor
+        template.scaleY = scalingfactor
         /** Scaling the template down  */
         /** Add the template to template loader  */
         templateLoader.addView(template)
@@ -202,12 +202,12 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
                 val bundle = Bundle()
                 bundle.putInt("user_template_id", userTemplateID)
                 bundle.putInt("template_id", templateID)
-                bundle.putString("title", title.getText().toString())
+                bundle.putString("title", title.text.toString())
                 bundle.putStringArray("imageLocation", imageLocation)
                 bundle.putBoolean("isUpdate", isUpdate)
                 bundle.putInt("no_of_images", noOfImages)
                 val shareBottomSheetFragment = ShareBottomSheetFragment(bundle, storyBitmap, imageItems)
-                shareBottomSheetFragment.show(supportFragmentManager, shareBottomSheetFragment.getTag())
+                shareBottomSheetFragment.show(supportFragmentManager, shareBottomSheetFragment.tag)
 
                 //showPictureDialog();
 

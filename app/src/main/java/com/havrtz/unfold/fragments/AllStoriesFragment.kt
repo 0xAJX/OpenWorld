@@ -30,7 +30,7 @@ class AllStoriesFragment : Fragment() {
         recyclerView.addItemDecoration(EqualSpacingItemDecoration(16, EqualSpacingItemDecoration.HORIZONTAL))
         recyclerView.setHasFixedSize(true)
         val allStoriesAdapter = context?.let { AllStoriesAdapter(it) }
-        recyclerView.setAdapter(allStoriesAdapter)
+        recyclerView.adapter = allStoriesAdapter
 
         /** Get story view model and show data  */
         storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
