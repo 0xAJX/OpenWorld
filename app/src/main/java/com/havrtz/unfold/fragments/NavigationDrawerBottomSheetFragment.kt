@@ -1,5 +1,6 @@
 package com.havrtz.unfold.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import com.havrtz.unfold.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.navigation.NavigationView
+import com.havrtz.unfold.activities.OptionsActivity
 
 class NavigationDrawerBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -17,14 +19,22 @@ class NavigationDrawerBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private val mOnNavigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener { item ->
+        var intent = Intent(context, OptionsActivity::class.java)
+
         when (item.itemId) {
             R.id.getting_started -> {
+                intent.putExtra("view", "getting_started")
             }
-            R.id.team -> {
-            }
+//            R.id.team -> {
+//                intent.putExtra("view", "team")
+//            }
             R.id.contact_us -> {
+                intent.putExtra("view", "contact_us")
             }
         }
+
+        startActivity(intent)
+
         true
     }
 }

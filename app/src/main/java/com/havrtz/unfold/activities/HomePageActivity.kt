@@ -1,5 +1,6 @@
 package com.havrtz.unfold.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -30,6 +31,9 @@ class HomePageActivity : AppCompatActivity() {
                 navigationDrawerBottomSheetFragment.show(supportFragmentManager, navigationDrawerBottomSheetFragment.getTag())
             }
             R.id.navigation_notifications -> {
+                var intent = Intent(applicationContext, OptionsActivity::class.java)
+                intent.putExtra("view", "notification")
+                startActivity(intent)
             }
         }
         return true

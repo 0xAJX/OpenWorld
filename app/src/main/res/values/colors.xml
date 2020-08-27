@@ -11,6 +11,9 @@
     <color name="grey">#C0C0C0</color>
     <color name="dark_blue">#03121f</color>
     <color name="dark_blue_75">#BF03121f</color>
+    <color name="graylight">#fafafa</color>
+    <color name="starlight">#09c6df</color>
+    <color name="endblue">#0bcce6</color>
 </resources>
 
 

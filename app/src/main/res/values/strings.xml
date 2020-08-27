@@ -8,6 +8,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="contact_us">Contact Us</string>
+    <string name="contact_me">Contact Me</string>
     <string name="team">Team</string>
     <string name="getting_started">Getting Started</string>
     <string name="you_haven_t_created_any_story">You haven\'t created any story</string>
@@ -18,4 +19,7 @@
     <string name="facebook">Facebook</string>
     <string name="device">Device</string>
     <string name="story_title">Story Title</string>
+    <string name="error_page_not_found">ERROR PAGE NOT FOUND</string>
+    <string name="my_name">Abhishek Jadhav</string>
+    <string name="coming_soon">COMING SOON</string>
 </resources>
