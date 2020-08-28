@@ -12,163 +12,116 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <com.github.florent37.shapeofview.shapes.DiagonalView
             android:layout_width="match_parent"
-            android:layout_height="228dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/dark_blue"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            app:shape_diagonal_angle="10"
+            app:shape_diagonal_direction="left"
+            app:shape_diagonal_position="bottom">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/dark_blue"
+                android:orientation="vertical">
 
-            <com.github.florent37.shapeofview.shapes.CircleView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="90dp"
+                    android:fontFamily="@font/titillium_web"
+                    android:textSize="25sp"
+                    android:textColor="@color/white"
+                    android:text="@string/my_name"
+                    android:textStyle="bold">
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/palladium1" />
-            </com.github.florent37.shapeofview.shapes.CircleView>
+                </TextView>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:fontFamily="@font/titillium_web"
+                    android:textColor="@color/white"
+                    android:text="Full Stack Developer">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/titillium_web"
-                android:textColor="@color/white"
-                android:text="@string/my_name"
-                android:textStyle="bold">
+                </TextView>
 
-            </TextView>
+            </LinearLayout>
 
-        </LinearLayout>
+            <!-- YOUR CONTENT -->
+
+        </com.github.florent37.shapeofview.shapes.DiagonalView>
+
+        <com.github.florent37.shapeofview.shapes.CircleView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:elevation="10dp"
+            android:layout_marginTop="175dp">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/palladium1" />
+        </com.github.florent37.shapeofview.shapes.CircleView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="170dp">
+            android:layout_marginTop="210dp">
 
             <LinearLayout
-                android:layout_width="350dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp">
+
+                <ImageView
+                    android:layout_margin="20dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:onClick="openMail"
+                    android:src="@drawable/ic_mail_dark_blue" />
+
+                <ImageView
+                    android:layout_margin="20dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:onClick="openLinkedIn"
+                    android:src="@drawable/ic_linkedin" />
+
+                <ImageView
+                    android:layout_margin="20dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:onClick="openGithub"
+                    android:src="@drawable/ic_github" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical"
-                android:paddingLeft="15dp"
-
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="100dp"
+                android:orientation="horizontal"
                 >
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="40dp">
+                    android:fontFamily="@font/titillium_web"
+                    android:textSize="20sp"
+                    android:textColor="@color/dark_blue"
+                    android:text="Hi, I am a part time Android developer currently working at Brandmovers India. Please support me by following me on linkedIn and Github.">
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_email_dark_blue_24dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="15dp"
-                        android:text="abhishek.jadhav64@live.com"
-
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="40dp">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_phone_android_dark_blue_24dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="15dp"
-                        android:text="+91 9029395601"
-
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="40dp">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_person_add_dark_blue_24dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="15dp"
-                        android:text="LinkedIn"
-
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="40dp">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_file_download_dark_blue_24dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="15dp"
-                        android:text="Github"
-                        android:textSize="12dp" />
-
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginBottom="15dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <ImageView
-                        android:layout_centerInParent="true"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic_baseline_keyboard_backspace_50" />
-
-                </RelativeLayout>
+                </TextView>
 
             </LinearLayout>
 
