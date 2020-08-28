@@ -1,13 +1,13 @@
 # Unfold
 
-![](Images/all_stories.jpg)
+![](images/all_stories.jpg)
 
-![](Images/all_templates.jpg)
+![](images/all_templates.jpg)
 
-![](Images/template.jpg)
+![](images/template.jpg)
 
-![](Images/bottom_nav.jpg)
+![](images/bottom_nav.jpg)
 
-![](Images/full_screen.jpg)
+![](images/full_screen.jpg)
 
-![](Images/about_me.jpg)
+![](images/about_me.jpg)
