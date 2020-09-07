@@ -9,11 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.havrtz.unfold.R
 import com.havrtz.unfold.adapters.AllStoriesAdapter
 import com.havrtz.unfold.helpers.EqualSpacingItemDecoration
 import com.havrtz.unfold.models.Story
-import com.havrtz.unfold.R
-
 import com.havrtz.unfold.viewmodels.StoryViewModel
 import kotlinx.android.synthetic.main.all_stories_fragment.view.*
 
@@ -21,12 +20,20 @@ class AllStoriesFragment : Fragment() {
     lateinit var storyViewModel: StoryViewModel
     lateinit var recyclerView: RecyclerView
 
+    private val sColumnWidth: Double = 432.0 // assume cell width of 120dp
+
+    private fun calculateSize() {
+        val spanCount = Math.floor(recyclerView.getWidth() / sColumnWidth)
+        (recyclerView.getLayoutManager() as GridLayoutManager).spanCount = spanCount.toInt()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.all_stories_fragment, null)
         val textView = view.nostorytext
         recyclerView = view.findViewById(R.id.allstoriesrecyclerview)
 
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        //recyclerView.layoutManager = GridLayoutManager(context, 2)
+
         recyclerView.addItemDecoration(EqualSpacingItemDecoration(16, EqualSpacingItemDecoration.HORIZONTAL))
         recyclerView.setHasFixedSize(true)
         val allStoriesAdapter = context?.let { AllStoriesAdapter(it) }

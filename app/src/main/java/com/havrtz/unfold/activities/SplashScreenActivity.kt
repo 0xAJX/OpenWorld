@@ -28,7 +28,8 @@ class SplashScreenActivity : AppCompatActivity() {
                 //the current activity will get finished.
                 finish();
             }
-        }, SPLASH_SCREEN_TIME_OUT);*/ContentLoader.loadActivity(this, HomePageActivity())
+        }, SPLASH_SCREEN_TIME_OUT);*/
+        ContentLoader.loadActivity(this, HomePageActivity())
     }
 
     companion object {

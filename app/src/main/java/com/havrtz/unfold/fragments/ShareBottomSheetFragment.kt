@@ -1,5 +1,6 @@
 package com.havrtz.unfold.fragments
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
@@ -12,14 +13,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.havrtz.unfold.helpers.AppPackage
-import com.havrtz.unfold.models.Story
-import com.havrtz.unfold.models.StoryElement
-import com.havrtz.unfold.R
-import com.havrtz.unfold.viewmodels.StoryViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import com.havrtz.unfold.R
+import com.havrtz.unfold.helpers.AppPackage
+import com.havrtz.unfold.models.Story
+import com.havrtz.unfold.models.StoryElement
+import com.havrtz.unfold.viewmodels.StoryViewModel
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -84,7 +88,11 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
         true
     }
 
+
     fun onShare(packageName: String?) {
+
+        askPermission()
+
         val uri: Uri
         uri = if (bitmapLocation == null) {
             val path = MediaStore.Images.Media.insertImage(requireActivity().contentResolver,
@@ -102,7 +110,25 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
         startActivity(Intent.createChooser(share, "Share Your Story!"))
     }
 
-    fun saveImage(): String {
+    @AfterPermissionGranted(123)
+    private fun askPermission() {
+        val perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
+
+        } else {
+
+            EasyPermissions.requestPermissions(this, "We need permissions to store image",
+                    123, *perms)
+
+            AppSettingsDialog.Builder(this).build().show()
+        }
+    }
+
+
+    fun saveImage() {
+
+        askPermission()
+
         val bytes = ByteArrayOutputStream()
         bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
         val wallpaperDirectory = File(Environment.getExternalStorageDirectory().toString() + "/app/image/")
@@ -118,7 +144,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
             fo.write(bytes.toByteArray())
             MediaScannerConnection.scanFile(context, arrayOf(f.path), arrayOf("image/jpeg"), null)
             fo.close()
-            Log.d("TAG", "File Saved::--->" + f.absolutePath)
+            //Log.d("TAG", "File Saved::--->" + f.absolutePath)
             if (bundle!!.getBoolean("isUpdate")) {
                 //UpdateDB(f.getAbsolutePath());
             } else {
@@ -134,11 +160,10 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
 //                }
 //            });
             snackbar.show()
-            return f.absolutePath
+
         } catch (e1: IOException) {
             e1.printStackTrace()
         }
-        return ""
     }
 
     /*public void UpdateDB(String filepath) {
@@ -157,5 +182,17 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
         var storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
         storyViewModel.insert(text?.let { Story(bundle!!.getInt("template_id"), 0, it, filepath!!) })
         Log.d("storyview", storyViewModel.allStories.toString())
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+
+        }
     }
 }
