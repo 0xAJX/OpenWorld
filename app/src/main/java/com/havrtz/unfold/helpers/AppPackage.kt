@@ -9,7 +9,7 @@ object AppPackage {
     fun isPackageInstalled(packageName: String?, packageManager: PackageManager): Boolean {
         var found = true
         try {
-            packageManager.getPackageInfo(packageName, 0)
+            packageManager.getPackageInfo(packageName!!, 0)
         } catch (e: PackageManager.NameNotFoundException) {
             found = false
         }

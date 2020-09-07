@@ -1,5 +1,6 @@
 package com.havrtz.unfold.activities
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.graphics.*
@@ -21,6 +22,8 @@ import com.havrtz.unfold.fragments.ShareBottomSheetFragment
 import com.havrtz.unfold.models.StoryElement
 import com.havrtz.unfold.R
 import com.havrtz.unfold.viewmodels.TemplateViewModel
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.RuntimePermissions
 import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.concurrent.ExecutionException

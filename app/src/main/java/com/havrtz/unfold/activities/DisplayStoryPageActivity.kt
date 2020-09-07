@@ -60,7 +60,7 @@ class DisplayStoryPageActivity : AppCompatActivity() {
         mControlsView = findViewById(R.id.fullscreen_content_controls)
         //mContentView = findViewById(R.id.fullscreen_content);
         val byteArray = intent.getByteArrayExtra("demo_image")
-        val bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+        val bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray!!.size)
         val imageView = findViewById<ImageView>(R.id.demoimage)
         imageView.setImageBitmap(bmp)
 
