@@ -1,9 +1,12 @@
 package com.havrtz.unfold.fragments
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,23 +19,34 @@ import com.havrtz.unfold.models.Story
 import com.havrtz.unfold.viewmodels.StoryViewModel
 import kotlinx.android.synthetic.main.all_stories_fragment.view.*
 
+
 class AllStoriesFragment : Fragment() {
     lateinit var storyViewModel: StoryViewModel
-    lateinit var recyclerView: RecyclerView
 
     private val sColumnWidth: Double = 432.0 // assume cell width of 120dp
 
-    private fun calculateSize() {
+    private fun calculateSize(recyclerView: RecyclerView) {
         val spanCount = Math.floor(recyclerView.getWidth() / sColumnWidth)
-        (recyclerView.getLayoutManager() as GridLayoutManager).spanCount = spanCount.toInt()
+        (recyclerView.layoutManager as GridLayoutManager).spanCount = spanCount.toInt()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        lateinit var recyclerView: RecyclerView
         var view = inflater.inflate(R.layout.all_stories_fragment, null)
         val textView = view.nostorytext
         recyclerView = view.findViewById(R.id.allstoriesrecyclerview)
 
-        //recyclerView.layoutManager = GridLayoutManager(context, 2)
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                // get width and height of the view
+
+                recyclerView.layoutManager = GridLayoutManager(context, 2)
+
+                val spanCount = Math.floor(recyclerView.getWidth() / sColumnWidth)
+                (recyclerView.layoutManager as GridLayoutManager).spanCount = spanCount.toInt()
+            }
+        })
 
         recyclerView.addItemDecoration(EqualSpacingItemDecoration(16, EqualSpacingItemDecoration.HORIZONTAL))
         recyclerView.setHasFixedSize(true)

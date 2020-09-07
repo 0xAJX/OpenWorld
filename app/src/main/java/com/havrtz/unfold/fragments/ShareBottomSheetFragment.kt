@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -30,7 +31,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
-class ShareBottomSheetFragment : BottomSheetDialogFragment {
+class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.PermissionCallbacks {
     var bitmap: Bitmap? = null
     var bitmapLocation: String? = null
     var bundle: Bundle? = null
@@ -119,8 +120,6 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
 
             EasyPermissions.requestPermissions(this, "We need permissions to store image",
                     123, *perms)
-
-            AppSettingsDialog.Builder(this).build().show()
         }
     }
 
@@ -193,6 +192,13 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
 
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {}
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
         }
     }
 }
