@@ -71,8 +71,7 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
             /** Update feature removed temporarily  */
             /** Start shareBottomSheetFragment when share button is clicked  */
             share.setOnClickListener {
-                stories[adapterPosition].image_location
-                val shareBottomSheetFragment = ShareBottomSheetFragment(stories[adapterPosition].image_location)
+                val shareBottomSheetFragment = ShareBottomSheetFragment(getItem(adapterPosition)!!.image_location)
                 shareBottomSheetFragment.show((context as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.getTag())
             }
             /** Start shareBottomSheetFragment when share button is clicked  */
