@@ -51,13 +51,15 @@ class AllStoriesFragment : Fragment() {
         recyclerView.addItemDecoration(EqualSpacingItemDecoration(16, EqualSpacingItemDecoration.HORIZONTAL))
         recyclerView.setHasFixedSize(true)
         val allStoriesAdapter = context?.let { AllStoriesAdapter(it) }
-        recyclerView.setAdapter(allStoriesAdapter)
+        recyclerView.adapter = allStoriesAdapter
 
         /** Get story view model and show data  */
         storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
-        storyViewModel.allStories!!.observe(viewLifecycleOwner, Observer<List<Story?>?> { stories ->
+
+        storyViewModel.allStories.observe(viewLifecycleOwner, { stories ->
             if (allStoriesAdapter != null) {
-                allStoriesAdapter.setStories(stories as MutableList<Story>)
+                allStoriesAdapter.submitList(stories)
+
                 if (stories.size == 0) {
                     textView.visibility = View.VISIBLE
                 } else {

@@ -22,11 +22,7 @@ abstract class CollageDatabase : RoomDatabase() {
     abstract fun templateDao(): TemplateDao
     abstract fun userDao(): UserDao?
     private class PopulateDbAsyncTask(collageDatabase: CollageDatabase?) : AsyncTask<Void?, Void?, Void?>() {
-        private val templateDao: TemplateDao
-
-        init {
-            templateDao = collageDatabase!!.templateDao()
-        }
+        private val templateDao: TemplateDao = collageDatabase!!.templateDao()
 
         override fun doInBackground(vararg voids: Void?): Void? {
             templateDao.insert(Template(1, 1, ""))

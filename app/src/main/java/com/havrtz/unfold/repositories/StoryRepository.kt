@@ -3,14 +3,16 @@ package com.havrtz.unfold.repositories
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
+import androidx.paging.toLiveData
 import com.havrtz.unfold.daos.StoryDao
 import com.havrtz.unfold.databases.CollageDatabase
 import com.havrtz.unfold.models.Story
 
 class StoryRepository(application: Application?) {
-    lateinit var storyDao: StoryDao
+    private lateinit var storyDao: StoryDao
 
-    val allStories: LiveData<List<Story?>?>?
+    val allStories: LiveData<PagedList<Story>>
     fun insert(story: Story?) {
         InsertStoryAsyncTask(storyDao).execute(story)
     }
@@ -64,6 +66,6 @@ class StoryRepository(application: Application?) {
         if (database != null) {
             storyDao = database.storyDao()!!
         }
-        allStories = storyDao.allStories
+        allStories = storyDao.allStories.toLiveData(pageSize = 10)
     }
 }
