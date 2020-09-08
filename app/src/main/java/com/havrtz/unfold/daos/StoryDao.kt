@@ -1,6 +1,8 @@
 package com.havrtz.unfold.daos
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import androidx.paging.PagedList
 import androidx.room.*
 import com.havrtz.unfold.models.Story
 
@@ -19,5 +21,5 @@ interface StoryDao {
     fun deleteAllStories()
 
     @get:Query("SELECT * FROM stories ORDER BY id DESC")
-    val allStories: LiveData<List<Story?>?>?
+    val allStories: DataSource.Factory<Int, Story>
 }
