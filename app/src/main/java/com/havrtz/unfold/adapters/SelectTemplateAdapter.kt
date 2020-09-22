@@ -21,11 +21,11 @@ class SelectTemplateAdapter(private val context: Context) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = templates[position]
-        val template_image = context.resources.getIdentifier(
+        val templateImage = context.resources.getIdentifier(
                 "template" + item.id + "_foreground",
                 "mipmap",
                 context.packageName)
-        holder.templateImage.setImageResource(template_image)
+        holder.templateImage.setImageResource(templateImage)
     }
 
     fun setTemplates(templates: List<Template>) {
@@ -38,10 +38,9 @@ class SelectTemplateAdapter(private val context: Context) : RecyclerView.Adapter
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var templateImage: ImageView
+        var templateImage: ImageView = itemView.findViewById(R.id.templateimage)
 
         init {
-            templateImage = itemView.findViewById(R.id.templateimage)
             itemView.setOnClickListener {
                 val template = templates[adapterPosition]
                 val id = template.id

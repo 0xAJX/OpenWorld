@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.OptionsActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
 
         </activity>

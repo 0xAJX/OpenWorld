@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/gold</item>
+<!--        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>-->
     </style>
 
     <style name="PrimaryButton" parent="Theme.AppCompat">
@@ -33,5 +34,11 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
 
 </resources>
