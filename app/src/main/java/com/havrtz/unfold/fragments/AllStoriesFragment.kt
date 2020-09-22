@@ -1,8 +1,6 @@
 package com.havrtz.unfold.fragments
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.havrtz.unfold.R
 import com.havrtz.unfold.adapters.AllStoriesAdapter
+import com.havrtz.unfold.helpers.ColumnSizeCalculator
 import com.havrtz.unfold.helpers.EqualSpacingItemDecoration
 import com.havrtz.unfold.models.Story
 import com.havrtz.unfold.viewmodels.StoryViewModel
@@ -21,14 +20,7 @@ import kotlinx.android.synthetic.main.all_stories_fragment.view.*
 
 
 class AllStoriesFragment : Fragment() {
-    lateinit var storyViewModel: StoryViewModel
-
-    private val sColumnWidth: Double = 432.0 // assume cell width of 120dp
-
-    private fun calculateSize(recyclerView: RecyclerView) {
-        val spanCount = Math.floor(recyclerView.getWidth() / sColumnWidth)
-        (recyclerView.layoutManager as GridLayoutManager).spanCount = spanCount.toInt()
-    }
+    private lateinit var storyViewModel: StoryViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         lateinit var recyclerView: RecyclerView
@@ -39,12 +31,10 @@ class AllStoriesFragment : Fragment() {
         recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
                 // get width and height of the view
-
                 recyclerView.layoutManager = GridLayoutManager(context, 2)
-
-                val spanCount = Math.floor(recyclerView.getWidth() / sColumnWidth)
-                (recyclerView.layoutManager as GridLayoutManager).spanCount = spanCount.toInt()
+                (recyclerView.layoutManager as GridLayoutManager).spanCount = ColumnSizeCalculator.calculateSize(recyclerView.width)
             }
         })
 

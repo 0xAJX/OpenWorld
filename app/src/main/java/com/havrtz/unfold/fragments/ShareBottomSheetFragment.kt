@@ -21,6 +21,7 @@ import com.havrtz.unfold.R
 import com.havrtz.unfold.helpers.AppPackage
 import com.havrtz.unfold.models.Story
 import com.havrtz.unfold.models.StoryElement
+import com.havrtz.unfold.util.Constants.googlePlayUrl
 import com.havrtz.unfold.viewmodels.StoryViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -61,7 +62,6 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.Perm
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        val googlePlayUrl = "https://play.google.com/store/apps/details?id="
         when (item.itemId) {
             R.id.device_share -> {
                 saveImage()

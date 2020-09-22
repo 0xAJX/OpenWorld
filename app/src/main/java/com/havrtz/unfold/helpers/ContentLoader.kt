@@ -1,6 +1,7 @@
 package com.havrtz.unfold.helpers
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.AsyncTask
 import androidx.fragment.app.Fragment
@@ -31,7 +32,7 @@ object ContentLoader {
         var i: Intent? = null
 
         override fun onPostExecute(activity: Activity) {
-            activity.startActivity(i)
+            activity.startActivity(i, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
         }
 
         override fun onPreExecute() {}

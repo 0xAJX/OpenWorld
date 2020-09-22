@@ -1,12 +1,15 @@
 package com.havrtz.unfold.activities
 
-import android.content.ClipDescription
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.havrtz.unfold.R
+import com.havrtz.unfold.helpers.AppPackage
+import com.havrtz.unfold.util.Constants
 
 
 class OptionsActivity : AppCompatActivity() {
@@ -35,29 +38,50 @@ class OptionsActivity : AppCompatActivity() {
 
     fun openLinkedIn(view: View) {
 
-        var mLinkedInurlString: String = "abhishek-jadhav-36197898"
+        val appPackageName: String = "com.linkedin.android"
+        val mLinkedInurlString: String = "abhishek-jadhav-36197898"
 
-        val url = "https://www.linkedin.com/in/$mLinkedInurlString"
-        val linkedInAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        linkedInAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
-        startActivity(linkedInAppIntent)
+        if (AppPackage.isPackageInstalled(appPackageName, this.packageManager)) {
+            val url = "https://www.linkedin.com/in/$mLinkedInurlString"
+            val linkedInAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            linkedInAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
+            startActivity(linkedInAppIntent)
+        } else {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.googlePlayUrl + appPackageName)))
+        }
+
+
     }
 
     /** TODO: Only make it available on mail apps */
     fun openMail(view: View) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = ClipDescription.MIMETYPE_TEXT_PLAIN
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("abhishek.jadhav64@live.com"))
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT,"")
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "")
-        startActivity(Intent.createChooser(intent,"Send Email"))
+
+        val i = Intent(Intent.ACTION_SEND)
+        i.type = "message/rfc822"
+        i.putExtra(Intent.EXTRA_EMAIL, arrayOf("abhishek.jadhav64@live.com"))
+        i.putExtra(Intent.EXTRA_SUBJECT, "")
+        i.putExtra(Intent.EXTRA_TEXT, "")
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."))
+        } catch (ex: ActivityNotFoundException) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun openGithub(view: View) {
+        val appPackageName: String = "com.github.android"
         val uri = Uri.parse("https://github.com/i-am-0xbit") // missing 'http://' will cause crashed
 
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
+        if (AppPackage.isPackageInstalled(appPackageName, this.packageManager)) {
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        } else {
+            val url = "https://github.com/i-am-0xbit"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        }
+
     }
 
 }
