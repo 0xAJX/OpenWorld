@@ -21,7 +21,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:src="@drawable/ic_open_world"
+            android:src="@drawable/ow_logo"
             android:layout_gravity="center"
             android:layout_width="45dp"
             android:layout_height="45dp">
