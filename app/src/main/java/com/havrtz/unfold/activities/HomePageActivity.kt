@@ -28,7 +28,7 @@ class HomePageActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 val navigationDrawerBottomSheetFragment = NavigationDrawerBottomSheetFragment()
-                navigationDrawerBottomSheetFragment.show(supportFragmentManager, navigationDrawerBottomSheetFragment.getTag())
+                navigationDrawerBottomSheetFragment.show(supportFragmentManager, navigationDrawerBottomSheetFragment.tag)
             }
             R.id.navigation_notifications -> {
                 var intent = Intent(applicationContext, OptionsActivity::class.java)

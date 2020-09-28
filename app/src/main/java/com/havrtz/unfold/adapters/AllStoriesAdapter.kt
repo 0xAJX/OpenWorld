@@ -3,6 +3,7 @@ package com.havrtz.unfold.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.havrtz.unfold.fragments.ShareBottomSheetFragment
 import com.havrtz.unfold.models.Story
 import com.havrtz.unfold.R
@@ -33,7 +35,7 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
         val story = getItem(position)
         if (story != null) {
             holder.myStoryTitle.text = story.title
-            holder.myStoryImage.setImageURI(Uri.parse(story.image_location))
+            Glide.with(context).load(Uri.parse(story.image_location)).placeholder(R.drawable.image_unavailable).into(holder.myStoryImage)
         }
     }
 
@@ -72,7 +74,7 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
             /** Start shareBottomSheetFragment when share button is clicked  */
             share.setOnClickListener {
                 val shareBottomSheetFragment = ShareBottomSheetFragment(getItem(adapterPosition)!!.image_location)
-                shareBottomSheetFragment.show((context as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.getTag())
+                shareBottomSheetFragment.show((context as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.tag)
             }
             /** Start shareBottomSheetFragment when share button is clicked  */
             /** Delete user story when delete is clicked  */

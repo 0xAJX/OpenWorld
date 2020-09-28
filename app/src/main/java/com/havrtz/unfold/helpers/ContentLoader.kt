@@ -36,7 +36,7 @@ object ContentLoader {
         }
 
         override fun onPreExecute() {}
-        protected override fun onProgressUpdate(vararg values: Void?) {}
+        override fun onProgressUpdate(vararg values: Void?) {}
         override fun doInBackground(vararg activities: Activity?): Activity? {
             try {
                 Thread.sleep(500)
