@@ -4,22 +4,18 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="432px"
-        android:layout_height="768px"
-        android:layout_margin="16dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20px">
 
-            <ImageView
-                android:id="@+id/templateimage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_create_black_24dp" />
+        <ImageView
+            android:id="@+id/templateimage"
+            android:layout_width="432px"
+            android:layout_height="768px"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/template1_foreground" />
 
-        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

@@ -21,6 +21,7 @@ import com.havrtz.unfold.fragments.ShareBottomSheetFragment
 import com.havrtz.unfold.models.Story
 import com.havrtz.unfold.R
 import com.havrtz.unfold.viewmodels.StoryViewModel
+import java.io.File
 import java.util.*
 
 class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, AllStoriesAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -35,7 +36,7 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
         val story = getItem(position)
         if (story != null) {
             holder.myStoryTitle.text = story.title
-            Glide.with(context).load(Uri.parse(story.image_location)).placeholder(R.drawable.image_unavailable).into(holder.myStoryImage)
+            Glide.with(context).load(Uri.fromFile(File(story.image_location))).placeholder(R.drawable.image_unavailable).into(holder.myStoryImage)
         }
     }
 
@@ -45,16 +46,12 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var delete: ImageButton
-        var myStoryImage: ImageView
-        var myStoryTitle: TextView
-        var share: ImageButton
+        var delete: ImageButton = itemView.findViewById(R.id.mystorydelete)
+        var myStoryImage: ImageView = itemView.findViewById(R.id.mystoryimage)
+        var myStoryTitle: TextView = itemView.findViewById(R.id.mystorytitle)
+        var share: ImageButton = itemView.findViewById(R.id.mystoryshare)
 
         init {
-            delete = itemView.findViewById(R.id.mystorydelete)
-            myStoryTitle = itemView.findViewById(R.id.mystorytitle)
-            myStoryImage = itemView.findViewById(R.id.mystoryimage)
-            share = itemView.findViewById(R.id.mystoryshare)
             /** Update feature removed temporarily  */
 
             /*itemView.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +98,4 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
                                             newStory: Story) = oldStory == newStory
         }
     }
-
-
 }

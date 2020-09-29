@@ -18,6 +18,6 @@ object Constants {
     const val TEMPLATE_ID = "template_id"
     const val NO_OF_IMAGES = "no_of_images"
     const val TEMPLATE_RES = "template_res"
-    const val sColumnWidth: Double = 432.0 // assume cell width of 120dp
+    const val sColumnWidth: Double = 472.0 // assume cell width of 120dp
     const val googlePlayUrl = "https://play.google.com/store/apps/details?id="
 }

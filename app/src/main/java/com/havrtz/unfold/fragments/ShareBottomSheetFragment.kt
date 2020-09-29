@@ -1,9 +1,11 @@
 package com.havrtz.unfold.fragments
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
-import android.media.MediaScannerConnection
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -12,11 +14,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.snackbar.Snackbar
 import com.havrtz.unfold.R
 import com.havrtz.unfold.helpers.AppPackage
 import com.havrtz.unfold.models.Story
@@ -28,9 +28,9 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.File.separator
 import java.io.FileOutputStream
-import java.io.IOException
-import java.util.*
+import java.io.OutputStream
 
 class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.PermissionCallbacks {
     var bitmap: Bitmap? = null
@@ -123,47 +123,129 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.Perm
         }
     }
 
+    /// @param folderName can be your app's name
+    private fun saveImage() {
 
-    fun saveImage() {
-
-        askPermission()
-
+        val folderName: String = "OpenWorld"
         val bytes = ByteArrayOutputStream()
         bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
-        val wallpaperDirectory = File(Environment.getExternalStorageDirectory().toString() + "/app/image/")
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs()
-        }
-        try {
-            val f = File(wallpaperDirectory, Calendar.getInstance()
-                    .timeInMillis.toString() + ".jpg")
-            f.createNewFile()
-            val fo = FileOutputStream(f)
-            fo.write(bytes.toByteArray())
-            MediaScannerConnection.scanFile(context, arrayOf(f.path), arrayOf("image/jpeg"), null)
-            fo.close()
-            //Log.d("TAG", "File Saved::--->" + f.absolutePath)
-            if (bundle!!.getBoolean("isUpdate")) {
-                //UpdateDB(f.getAbsolutePath());
-            } else {
-                addToDB(f.absolutePath)
-            }
-            val snackbar = Snackbar.make(requireActivity().findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT)
-            //            .setAction("UNDO", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Respond to the click, such as by undoing the modification that caused
-//                    // this message to be displayed
-//                    //Log.d("here", "here");
-//                }
-//            });
-            snackbar.show()
 
-        } catch (e1: IOException) {
-            e1.printStackTrace()
+        val image = BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.toByteArray().size)
+
+        if (android.os.Build.VERSION.SDK_INT >= 29) {
+            val values = contentValues()
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/" + folderName)
+            values.put(MediaStore.Images.Media.IS_PENDING, true)
+            // RELATIVE_PATH and IS_PENDING are introduced in API 29.
+
+            val uri: Uri? = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            if (uri != null) {
+                saveImageToStream(image, requireContext().contentResolver.openOutputStream(uri))
+                values.put(MediaStore.Images.Media.IS_PENDING, false)
+                requireContext().contentResolver.update(uri, values, null, null)
+                Log.d("filename", getRealPathFromURI(uri).toString())
+                addToDB(getRealPathFromURI(uri).toString())
+
+            }
+        } else {
+            val directory = File(Environment.getExternalStorageDirectory().toString() + separator + folderName)
+            // getExternalStorageDirectory is deprecated in API 29
+
+            if (!directory.exists()) {
+                directory.mkdirs()
+            }
+            val fileName = System.currentTimeMillis().toString() + ".png"
+            val file = File(directory, fileName)
+            saveImageToStream(image, FileOutputStream(file))
+            if (file.absolutePath != null) {
+                val values = contentValues()
+                values.put(MediaStore.Images.Media.DATA, file.absolutePath)
+                // .DATA is deprecated in API 29
+                requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                addToDB(file.absolutePath)
+            }
+        }
+
+    }
+
+    private fun getRealPathFromURI(contentURI: Uri): String? {
+        val result: String?
+        val cursor: Cursor? = requireContext().getContentResolver().query(contentURI, null, null, null, null)
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.path
+        } else {
+            cursor.moveToFirst()
+            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            result = cursor.getString(idx)
+            cursor.close()
+        }
+        return result
+    }
+
+    private fun contentValues() : ContentValues {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        return values
+    }
+
+    private fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
+        if (outputStream != null) {
+            try {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                outputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
+
+//    fun saveImage() {
+//
+//        askPermission()
+//
+//        val bytes = ByteArrayOutputStream()
+//        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+//        val wallpaperDirectory = File(Environment.DIRECTORY_PICTURES + File.separator + "OpenWorld")
+//        // have the object build the directory structure, if needed.
+//        if (!wallpaperDirectory.exists()) {
+//            wallpaperDirectory.mkdirs()
+//        }
+//
+//        Log.d("file_absolute_path_1", Environment.DIRECTORY_PICTURES + File.separator + "OpenWorld")
+////        Log.d("file_absolute_path_3", MediaStore.)
+//
+//        try {
+//            val f = File(wallpaperDirectory, Calendar.getInstance()
+//                    .timeInMillis.toString() + ".jpg")
+//            f.createNewFile()
+//            val fo = FileOutputStream(f)
+//            fo.write(bytes.toByteArray())
+//            MediaScannerConnection.scanFile(context, arrayOf(f.path), arrayOf("image/jpeg"), null)
+//            fo.close()
+//            //Log.d("TAG", "File Saved::--->" + f.absolutePath)
+////            if (bundle!!.getBoolean("isUpdate")) {
+////                //UpdateDB(f.getAbsolutePath());
+////            } else {
+//                Log.d("file_absolute_path_2", f.absolutePath)
+//                addToDB(f.absolutePath)
+//            //}
+//            val snackbar = Snackbar.make(requireActivity().findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT)
+//            //            .setAction("UNDO", new View.OnClickListener() {
+////                @Override
+////                public void onClick(View v) {
+////                    // Respond to the click, such as by undoing the modification that caused
+////                    // this message to be displayed
+////                    //Log.d("here", "here");
+////                }
+////            });
+//            snackbar.show()
+//
+//        } catch (e1: IOException) {
+//            e1.printStackTrace()
+//        }
+//    }
 
     /*public void UpdateDB(String filepath) {
         databaseHandler.updateUserTemplate(bundle.getString("user_template_id"), bundle.getString("title"), filepath);
