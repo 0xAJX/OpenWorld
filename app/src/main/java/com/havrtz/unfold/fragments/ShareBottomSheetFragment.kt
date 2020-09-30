@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.havrtz.unfold.R
 import com.havrtz.unfold.helpers.AppPackage
 import com.havrtz.unfold.models.Story
@@ -126,44 +127,55 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.Perm
     /// @param folderName can be your app's name
     private fun saveImage() {
 
-        val folderName: String = "OpenWorld"
-        val bytes = ByteArrayOutputStream()
-        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+        askPermission()
 
-        val image = BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.toByteArray().size)
+        try {
+            val folderName: String = "OpenWorld"
+            val bytes = ByteArrayOutputStream()
+            bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
 
-        if (android.os.Build.VERSION.SDK_INT >= 29) {
-            val values = contentValues()
-            values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/" + folderName)
-            values.put(MediaStore.Images.Media.IS_PENDING, true)
-            // RELATIVE_PATH and IS_PENDING are introduced in API 29.
+            val image = BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.toByteArray().size)
 
-            val uri: Uri? = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-            if (uri != null) {
-                saveImageToStream(image, requireContext().contentResolver.openOutputStream(uri))
-                values.put(MediaStore.Images.Media.IS_PENDING, false)
-                requireContext().contentResolver.update(uri, values, null, null)
-                addToDB(getRealPathFromURI(uri))
-            }
-        } else {
-            val directory = File(Environment.getExternalStorageDirectory().toString() + separator + folderName)
-            // getExternalStorageDirectory is deprecated in API 29
-
-            if (!directory.exists()) {
-                directory.mkdirs()
-            }
-            val fileName = System.currentTimeMillis().toString() + ".png"
-            val file = File(directory, fileName)
-            saveImageToStream(image, FileOutputStream(file))
-            if (file.absolutePath != null) {
+            if (android.os.Build.VERSION.SDK_INT >= 29) {
                 val values = contentValues()
-                values.put(MediaStore.Images.Media.DATA, file.absolutePath)
-                // .DATA is deprecated in API 29
-                requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-                addToDB(file.absolutePath)
-            }
-        }
+                values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/" + folderName)
+                values.put(MediaStore.Images.Media.IS_PENDING, true)
+                // RELATIVE_PATH and IS_PENDING are introduced in API 29.
 
+                val uri: Uri? = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                if (uri != null) {
+                    saveImageToStream(image, requireContext().contentResolver.openOutputStream(uri))
+                    values.put(MediaStore.Images.Media.IS_PENDING, false)
+                    requireContext().contentResolver.update(uri, values, null, null)
+                    addToDB(getRealPathFromURI(uri))
+
+                    val snackbar = Snackbar.make(requireActivity().findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT)
+                    snackbar.show()
+                }
+            } else {
+                val directory = File(Environment.getExternalStorageDirectory().toString() + separator + folderName)
+                // getExternalStorageDirectory is deprecated in API 29
+
+                if (!directory.exists()) {
+                    directory.mkdirs()
+                }
+                val fileName = System.currentTimeMillis().toString() + ".png"
+                val file = File(directory, fileName)
+                saveImageToStream(image, FileOutputStream(file))
+                if (file.absolutePath != null) {
+                    val values = contentValues()
+                    values.put(MediaStore.Images.Media.DATA, file.absolutePath)
+                    // .DATA is deprecated in API 29
+                    requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                    addToDB(file.absolutePath)
+                    val snackbar = Snackbar.make(requireActivity().findViewById(R.id.templateloader), "Image Saved", Snackbar.LENGTH_SHORT)
+                    snackbar.show()
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            val snackbar = Snackbar.make(requireActivity().findViewById(R.id.templateloader), "Error Saving Image", Snackbar.LENGTH_SHORT)
+            snackbar.show()
+        }
     }
 
     private fun getRealPathFromURI(contentURI: Uri): String? {

@@ -72,7 +72,7 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
                 shareBottomSheetFragment.show((context as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.tag)
             }
             /** Start shareBottomSheetFragment when share button is clicked  */
-            /** Delete user story when delete is c`licked  */
+            /** Delete user story when delete is clicked  */
             delete.setOnClickListener {
                 val storyViewModel = ViewModelProvider(context as FragmentActivity).get(StoryViewModel::class.java)
                 storyViewModel.delete(getItem(adapterPosition))
