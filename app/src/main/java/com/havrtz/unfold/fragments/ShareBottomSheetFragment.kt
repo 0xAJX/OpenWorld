@@ -143,9 +143,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.Perm
                 saveImageToStream(image, requireContext().contentResolver.openOutputStream(uri))
                 values.put(MediaStore.Images.Media.IS_PENDING, false)
                 requireContext().contentResolver.update(uri, values, null, null)
-                Log.d("filename", getRealPathFromURI(uri).toString())
-                addToDB(getRealPathFromURI(uri).toString())
-
+                addToDB(getRealPathFromURI(uri))
             }
         } else {
             val directory = File(Environment.getExternalStorageDirectory().toString() + separator + folderName)

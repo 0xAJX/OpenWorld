@@ -1,9 +1,7 @@
 package com.havrtz.unfold.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
-import android.util.Log
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +15,12 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.havrtz.unfold.R
 import com.havrtz.unfold.fragments.ShareBottomSheetFragment
 import com.havrtz.unfold.models.Story
-import com.havrtz.unfold.R
 import com.havrtz.unfold.viewmodels.StoryViewModel
-import java.io.File
 import java.util.*
+
 
 class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, AllStoriesAdapter.ViewHolder>(DIFF_CALLBACK) {
     private var stories: MutableList<Story> = ArrayList()
@@ -36,11 +34,11 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
         val story = getItem(position)
         if (story != null) {
             holder.myStoryTitle.text = story.title
-            Glide.with(context).load(Uri.fromFile(File(story.image_location))).placeholder(R.drawable.image_unavailable).into(holder.myStoryImage)
+            Glide.with(context).load(BitmapFactory.decodeFile(story.image_location)).placeholder(R.drawable.image_unavailable).into(holder.myStoryImage)
         }
     }
 
-    fun setStories(stories: MutableList <Story>) {
+    fun setStories(stories: MutableList<Story>) {
         this.stories = stories
         notifyDataSetChanged()
     }
@@ -74,7 +72,7 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
                 shareBottomSheetFragment.show((context as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.tag)
             }
             /** Start shareBottomSheetFragment when share button is clicked  */
-            /** Delete user story when delete is clicked  */
+            /** Delete user story when delete is c`licked  */
             delete.setOnClickListener {
                 val storyViewModel = ViewModelProvider(context as FragmentActivity).get(StoryViewModel::class.java)
                 storyViewModel.delete(getItem(adapterPosition))
