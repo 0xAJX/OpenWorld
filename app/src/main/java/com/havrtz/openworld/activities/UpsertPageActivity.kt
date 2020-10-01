@@ -21,6 +21,7 @@ import com.havrtz.openworld.fragments.ShareBottomSheetFragment
 import com.havrtz.openworld.models.StoryElement
 import com.havrtz.openworld.R
 import com.havrtz.openworld.viewmodels.TemplateViewModel
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.concurrent.ExecutionException
@@ -187,7 +188,7 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
                 val byteArray = stream.toByteArray()
                 i.putExtra("demo_image", byteArray)
                 for (x in addImage.indices) {
-                    if (displayImage[x]!!.drawable == null) {
+                    if (displayImage[x]!!.getTag().toString() != "isUpdated") {
                         addImage[x]!!.imageAlpha = 255
                     }
                 }
@@ -283,12 +284,8 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
                     if (null != selectedImageUri) {
                         val path = getRealPathFromURI(selectedImageUri)
                         imageLocation[requestCode - 1] = path
-                        Log.d("image path", path + "")
-                        tempImage = findViewById(resources.getIdentifier(
-                                "displayimage$requestCode",
-                                "id",
-                                this.packageName))
-                        tempImage.setImageURI(selectedImageUri)
+                        displayImage[requestCode - 1]!!.setImageURI(selectedImageUri)
+                        displayImage[requestCode - 1]!!.setTag("isUpdated")
                         addImage[requestCode - 1]!!.imageAlpha = 0
                     }
                 }
@@ -299,8 +296,8 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
     /** Convert created story to image  */
     private fun getBitmapFromView(view: View?): Bitmap {
         //Define a bitmap with the same size as the view
-        Log.d("canvas", Integer.toString(view!!.width))
-        Log.d("canvas", Integer.toString(view.height))
+        Timber.tag("canvas").d(Integer.toString(view!!.width))
+        Timber.tag("canvas").d(Integer.toString(view.height))
         val returnedBitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
 
 
