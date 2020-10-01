@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/selectTemplateFragment"
-        android:name="com.havrtz.unfold.fragments.SelectTemplateFragment"
+        android:name="com.havrtz.openworld.fragments.SelectTemplateFragment"
         android:label="SelectTemplateFragment" >
         <action
             android:id="@+id/action_selectTemplateFragment_to_upsertPageActivity"
@@ -15,7 +15,7 @@
     </fragment>
     <activity
         android:id="@+id/upsertPageActivity"
-        android:name="com.havrtz.unfold.activities.UpsertPageActivity"
+        android:name="com.havrtz.openworld.activities.UpsertPageActivity"
         android:label="activity_upsert_page"
         tools:layout="@layout/activity_upsert_page" />
 </navigation>
