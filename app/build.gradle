@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "com.havrtz.unfold"
+        applicationId "com.havrtz.openworld"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
