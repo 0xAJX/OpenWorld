@@ -188,7 +188,7 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
                 val byteArray = stream.toByteArray()
                 i.putExtra("demo_image", byteArray)
                 for (x in addImage.indices) {
-                    if (displayImage[x]!!.getTag().toString() != "isUpdated") {
+                    if (displayImage[x]?.getTag().toString() != "isUpdated") {
                         addImage[x]!!.imageAlpha = 255
                     }
                 }
