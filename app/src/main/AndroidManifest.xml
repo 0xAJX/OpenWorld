@@ -13,6 +13,7 @@
         android:required="true" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_open_world_logo"
         android:label="@string/app_name"

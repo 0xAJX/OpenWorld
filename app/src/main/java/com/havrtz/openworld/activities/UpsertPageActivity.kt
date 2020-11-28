@@ -21,11 +21,13 @@ import com.havrtz.openworld.fragments.ShareBottomSheetFragment
 import com.havrtz.openworld.models.StoryElement
 import com.havrtz.openworld.R
 import com.havrtz.openworld.viewmodels.TemplateViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.concurrent.ExecutionException
 
+@AndroidEntryPoint
 class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickListener {
     lateinit var addImage: Array<ImageView?>
     lateinit var displayImage: Array<ImageView?>

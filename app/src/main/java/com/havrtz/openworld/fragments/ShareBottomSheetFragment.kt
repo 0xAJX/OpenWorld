@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -24,6 +25,7 @@ import com.havrtz.openworld.models.Story
 import com.havrtz.openworld.models.StoryElement
 import com.havrtz.openworld.util.Constants.googlePlayUrl
 import com.havrtz.openworld.viewmodels.StoryViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -33,6 +35,7 @@ import java.io.File.separator
 import java.io.FileOutputStream
 import java.io.OutputStream
 
+@AndroidEntryPoint
 class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.PermissionCallbacks {
     var bitmap: Bitmap? = null
     var bitmapLocation: String? = null
@@ -40,6 +43,7 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.Perm
     var appPackageName: String? = null
     var imageItems: List<StoryElement>? = null
     lateinit var imageLocation: Array<String>
+    private val storyViewModel: StoryViewModel by viewModels()
 
     constructor(bitmapLocation: String?) {
         this.bitmapLocation = bitmapLocation
@@ -270,7 +274,6 @@ class ShareBottomSheetFragment : BottomSheetDialogFragment, EasyPermissions.Perm
         if (bundle!!.getString("title")?.isEmpty()!! || text?.trim { it <= ' ' }?.length == 0) {
             text = "My Story"
         }
-        var storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
         storyViewModel.insert(text?.let { Story(bundle!!.getInt("template_id"), 0, it, filepath!!) })
         Log.d("storyview", storyViewModel.allStories.toString())
     }

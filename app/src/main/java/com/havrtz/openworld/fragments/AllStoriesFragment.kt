@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,15 +15,16 @@ import com.havrtz.openworld.adapters.AllStoriesAdapter
 import com.havrtz.openworld.helpers.ColumnSizeCalculator
 import com.havrtz.openworld.helpers.EqualSpacingItemDecoration
 import com.havrtz.openworld.viewmodels.StoryViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.all_stories_fragment.view.*
 
-
+@AndroidEntryPoint
 class AllStoriesFragment : Fragment() {
-    private lateinit var storyViewModel: StoryViewModel
+    private val storyViewModel: StoryViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         lateinit var recyclerView: RecyclerView
-        var view = inflater.inflate(R.layout.all_stories_fragment, null)
+        val view = inflater.inflate(R.layout.all_stories_fragment, null)
         val textView = view.nostorytext
         recyclerView = view.findViewById(R.id.allstoriesrecyclerview)
 
@@ -42,7 +44,6 @@ class AllStoriesFragment : Fragment() {
         recyclerView.adapter = allStoriesAdapter
 
         /** Get story view model and show data  */
-        storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
 
         storyViewModel.allStories.observe(viewLifecycleOwner, { stories ->
             if (allStoriesAdapter != null) {

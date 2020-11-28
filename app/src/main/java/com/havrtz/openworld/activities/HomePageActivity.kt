@@ -13,8 +13,10 @@ import com.havrtz.openworld.fragments.SelectTemplateFragment
 import com.havrtz.openworld.helpers.ContentLoader
 import com.havrtz.openworld.R
 import com.google.android.material.bottomappbar.BottomAppBar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_home_page.*
 
+@AndroidEntryPoint
 class HomePageActivity : AppCompatActivity() {
 
     var isAllStory = true

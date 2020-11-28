@@ -8,8 +8,9 @@ import androidx.paging.toLiveData
 import com.havrtz.openworld.daos.StoryDao
 import com.havrtz.openworld.databases.CollageDatabase
 import com.havrtz.openworld.models.Story
+import javax.inject.Inject
 
-class StoryRepository(application: Application?) {
+class StoryRepository @Inject constructor(application: Application?) {
     private lateinit var storyDao: StoryDao
 
     val allStories: LiveData<PagedList<Story>>

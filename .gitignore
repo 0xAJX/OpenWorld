@@ -68,6 +68,7 @@ freeline/
 freeline_project_description.json
 
 # fastlane
+fastlane
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
@@ -88,3 +89,4 @@ lint/tmp/
 *.hprof
 
 ./Gemfile
+GemFile
