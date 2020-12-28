@@ -29,6 +29,6 @@ class StoryViewModel @ViewModelInject constructor(private val repository: StoryR
     }
 
     fun deleteAllStories() {
-        repository.deleteAllStories()
+        repository.deleteAll()
     }
 }

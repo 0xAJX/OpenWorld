@@ -9,8 +9,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -19,14 +17,15 @@ import com.havrtz.openworld.R
 import com.havrtz.openworld.fragments.ShareBottomSheetFragment
 import com.havrtz.openworld.models.Story
 import com.havrtz.openworld.viewmodels.StoryViewModel
+import dagger.hilt.android.internal.managers.ViewComponentManager
 import java.util.*
 
 
-class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, AllStoriesAdapter.ViewHolder>(DIFF_CALLBACK) {
+class AllStoriesAdapter(private val context: Context, val storyViewModel: StoryViewModel) : PagedListAdapter<Story, AllStoriesAdapter.ViewHolder>(DIFF_CALLBACK) {
     private var stories: MutableList<Story> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.my_story_row, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, storyViewModel)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -43,7 +42,11 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun getStoryPosition(position: Int): Story {
+        return stories.get(position)
+    }
+
+    inner class ViewHolder(itemView: View, storyViewModel: StoryViewModel) : RecyclerView.ViewHolder(itemView) {
         var delete: ImageButton = itemView.findViewById(R.id.mystorydelete)
         var myStoryImage: ImageView = itemView.findViewById(R.id.mystoryimage)
         var myStoryTitle: TextView = itemView.findViewById(R.id.mystorytitle)
@@ -69,17 +72,22 @@ class AllStoriesAdapter(private val context: Context) : PagedListAdapter<Story, 
             /** Start shareBottomSheetFragment when share button is clicked  */
             share.setOnClickListener {
                 val shareBottomSheetFragment = ShareBottomSheetFragment(getItem(adapterPosition)!!.image_location)
-                shareBottomSheetFragment.show((context as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.tag)
+                shareBottomSheetFragment.show((activityContext() as AppCompatActivity).supportFragmentManager, shareBottomSheetFragment.tag)
             }
             /** Start shareBottomSheetFragment when share button is clicked  */
             /** Delete user story when delete is clicked  */
             delete.setOnClickListener {
-                val storyViewModel = ViewModelProvider(context as FragmentActivity).get(StoryViewModel::class.java)
                 storyViewModel.delete(getItem(adapterPosition))
-
                 notifyItemRemoved(adapterPosition)
             }
             /** Delete user story when delete is clicked  */
+        }
+
+        private fun activityContext(): Context? {
+            val context = itemView.context
+            return if (context is ViewComponentManager.FragmentContextWrapper) {
+                context.baseContext
+            } else context
         }
     }
 

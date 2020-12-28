@@ -7,30 +7,32 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.havrtz.openworld.R
 import com.havrtz.openworld.adapters.AllStoriesAdapter
+import com.havrtz.openworld.databinding.AllStoriesFragmentBinding
 import com.havrtz.openworld.helpers.ColumnSizeCalculator
 import com.havrtz.openworld.helpers.EqualSpacingItemDecoration
 import com.havrtz.openworld.viewmodels.StoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.all_stories_fragment.view.*
 
 @AndroidEntryPoint
 class AllStoriesFragment : Fragment() {
     private val storyViewModel: StoryViewModel by viewModels()
 
+    private var _binding: AllStoriesFragmentBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        lateinit var recyclerView: RecyclerView
-        val view = inflater.inflate(R.layout.all_stories_fragment, null)
-        val textView = view.nostorytext
-        recyclerView = view.findViewById(R.id.allstoriesrecyclerview)
+        _binding = AllStoriesFragmentBinding.inflate(layoutInflater)
+
+        val textView = binding.nostorytext
+        val recyclerView: RecyclerView = binding.allstoriesrecyclerview
 
         recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                 // get width and height of the view
                 recyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -40,7 +42,7 @@ class AllStoriesFragment : Fragment() {
 
         recyclerView.addItemDecoration(EqualSpacingItemDecoration(16, EqualSpacingItemDecoration.HORIZONTAL))
         recyclerView.setHasFixedSize(true)
-        val allStoriesAdapter = context?.let { AllStoriesAdapter(it) }
+        val allStoriesAdapter = context?.let { AllStoriesAdapter(it, storyViewModel) }
         recyclerView.adapter = allStoriesAdapter
 
         /** Get story view model and show data  */
@@ -58,6 +60,6 @@ class AllStoriesFragment : Fragment() {
         })
         /** Get story view model and show data  */
 
-        return view
+        return binding.root
     }
 }

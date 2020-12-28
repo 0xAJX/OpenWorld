@@ -6,47 +6,53 @@ import androidx.lifecycle.LiveData
 import com.havrtz.openworld.daos.StoryElementDao
 import com.havrtz.openworld.databases.CollageDatabase
 import com.havrtz.openworld.models.StoryElement
+import com.havrtz.openworld.models.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
-class StoryElementRepository(application: Application?) {
+class StoryElementRepository(application: Application?, override val coroutineContext: CoroutineContext) : CoroutineScope{
     lateinit var storyElementDao: StoryElementDao
     private val allStoryELements: LiveData<List<StoryElement>>? = null
+    private val scope = CoroutineScope(Dispatchers.Default)
+
 
     fun insert(storyElement: StoryElement?) {
-        InsertStoryElementAsyncTask(storyElementDao).execute(storyElement)
+        scope.launch {
+            insertStoryElement(storyElement)
+        }
     }
 
     fun update(storyElement: StoryElement?) {
-        UpdateStoryElementAsyncTask(storyElementDao).execute(storyElement)
+        scope.launch {
+            updateStoryElement(storyElement)
+        }
     }
 
     fun delete(storyElement: StoryElement?) {
-        DeleteStoryElementAsyncTask(storyElementDao).execute(storyElement)
+        scope.launch {
+            deleteStoryElement(storyElement)
+        }
     }
 
-    private class InsertStoryElementAsyncTask(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
-
-        override fun doInBackground(vararg storyElements: StoryElement?): Void? {
-            storyElementDao.insert(storyElements[0])
-            return null
+    private suspend fun insertStoryElement(storyElement: StoryElement?) {
+        withContext(Dispatchers.Default) {
+            storyElementDao.insert(storyElement)
         }
-
     }
 
-    private class UpdateStoryElementAsyncTask(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
-
-        override fun doInBackground(vararg storyElements: StoryElement?): Void? {
-            storyElementDao.update(storyElements[0])
-            return null
+    private suspend fun updateStoryElement(storyElement: StoryElement?) {
+        withContext(Dispatchers.Default) {
+            storyElementDao.update(storyElement)
         }
-
     }
 
-    private class DeleteStoryElementAsyncTask(private val storyElementDao: StoryElementDao) : AsyncTask<StoryElement?, Void?, Void?>() {
-        override fun doInBackground(vararg storyElements: StoryElement?): Void? {
-            storyElementDao.delete(storyElements[0])
-            return null
+    private suspend fun deleteStoryElement(storyElement: StoryElement?) {
+        withContext(Dispatchers.Default) {
+            storyElementDao.delete(storyElement)
         }
-
     }
 
     init {

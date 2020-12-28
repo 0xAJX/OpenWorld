@@ -5,22 +5,36 @@ import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import com.havrtz.openworld.daos.TemplateDao
 import com.havrtz.openworld.databases.CollageDatabase
+import com.havrtz.openworld.models.Story
+import com.havrtz.openworld.models.StoryElement
 import com.havrtz.openworld.models.Template
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.ExecutionException
 
 class TemplateRepository(application: Application?) {
     lateinit var templateDao: TemplateDao
     val allTemplates: LiveData<List<Template?>?>?
+    private val scope = CoroutineScope(Dispatchers.Default)
+
     fun insert(template: Template?) {
-        InsertTemplateAsyncTask(templateDao).execute(template)
+        scope.launch {
+            insertTemplate(template)
+        }
     }
 
     fun update(template: Template?) {
-        UpdateTemplateAsyncTask(templateDao).execute(template)
+        scope.launch {
+            updateTemplate(template)
+        }
     }
 
     fun delete(template: Template?) {
-        DeleteTemplateAsyncTask(templateDao).execute(template)
+        scope.launch {
+            deleteTemplate(template)
+        }
     }
 
     @Throws(ExecutionException::class, InterruptedException::class)
@@ -28,28 +42,22 @@ class TemplateRepository(application: Application?) {
         return GetTemplateByIdAsyncTask(templateDao).execute(id).get()
     }
 
-    private class InsertTemplateAsyncTask(private val templateDao: TemplateDao) : AsyncTask<Template?, Void?, Void?>() {
-        override fun doInBackground(vararg templates: Template?): Void? {
-            templateDao.insert(templates[0])
-            return null
+    private suspend fun insertTemplate(template: Template?) {
+        withContext(Dispatchers.Default) {
+            templateDao.insert(template)
         }
-
     }
 
-    private class UpdateTemplateAsyncTask(private val templateDao: TemplateDao) : AsyncTask<Template?, Void?, Void?>() {
-        override fun doInBackground(vararg templates: Template?): Void? {
-            templateDao.update(templates[0])
-            return null
+    private suspend fun updateTemplate(template: Template?) {
+        withContext(Dispatchers.Default) {
+            templateDao.update(template)
         }
-
     }
 
-    private class DeleteTemplateAsyncTask(private val templateDao: TemplateDao) : AsyncTask<Template?, Void?, Void?>() {
-        override fun doInBackground(vararg templates: Template?): Void? {
-            templateDao.delete(templates[0])
-            return null
+    private suspend fun deleteTemplate(template: Template?) {
+        withContext(Dispatchers.Default) {
+            templateDao.delete(template)
         }
-
     }
 
     private inner class GetTemplateByIdAsyncTask(private val templateDao: TemplateDao) : AsyncTask<Int?, Void?, Template>() {

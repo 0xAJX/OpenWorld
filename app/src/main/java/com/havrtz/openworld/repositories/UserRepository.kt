@@ -5,43 +5,50 @@ import android.os.AsyncTask
 import com.havrtz.openworld.daos.UserDao
 import com.havrtz.openworld.databases.CollageDatabase
 import com.havrtz.openworld.models.User
+import com.squareup.okhttp.Dispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UserRepository(application: Application?) {
-    lateinit var userDao: UserDao
+    private lateinit var userDao: UserDao
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     fun insert(user: User?) {
-        InsertUserAsyncTask(userDao).execute(user)
+        scope.launch {
+            insertUser(user)
+        }
     }
 
     fun update(user: User?) {
-        UpdateUserAsyncTask(userDao).execute(user)
+        scope.launch {
+            updateUser(user)
+        }
     }
 
     fun delete(user: User?) {
-        DeleteUserAsyncTask(userDao).execute(user)
-    }
-
-    private class InsertUserAsyncTask(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
-        override fun doInBackground(vararg users: User?): Void? {
-            userDao.insert(users[0])
-            return null
+        scope.launch {
+            deleteUser(user)
         }
     }
 
-    private class UpdateUserAsyncTask(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
-        override fun doInBackground(vararg users: User?): Void? {
-            userDao.update(users[0])
-            return null
+    private suspend fun insertUser(user: User?) {
+        withContext(Dispatchers.Default) {
+            userDao.delete(user)
         }
-
     }
 
-    private class DeleteUserAsyncTask(private val userDao: UserDao) : AsyncTask<User?, Void?, Void?>() {
-        override fun doInBackground(vararg users: User?): Void? {
-            userDao.delete(users[0])
-            return null
+    private suspend fun updateUser(user: User?) {
+        withContext(Dispatchers.Default) {
+            userDao.update(user)
         }
+    }
 
+    private suspend fun deleteUser(user: User?) {
+        withContext(Dispatchers.Default) {
+            userDao.delete(user)
+        }
     }
 
     init {

@@ -13,13 +13,15 @@ import com.havrtz.openworld.fragments.SelectTemplateFragment
 import com.havrtz.openworld.helpers.ContentLoader
 import com.havrtz.openworld.R
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.havrtz.openworld.databinding.ActivityHomePageBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_home_page.*
 
 @AndroidEntryPoint
 class HomePageActivity : AppCompatActivity() {
 
     var isAllStory = true
+    private lateinit var binding: ActivityHomePageBinding
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.bottom_nav_menu, menu)
         return true
@@ -42,7 +44,8 @@ class HomePageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home_page)
+        binding = ActivityHomePageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val bottomAppBar = findViewById<BottomAppBar>(R.id.bottombar)
         setSupportActionBar(bottomAppBar)
@@ -50,14 +53,14 @@ class HomePageActivity : AppCompatActivity() {
         toolbar.bringToFront()
         ContentLoader.loadFragment(AllStoriesFragment(), this)
 
-        fab.setOnClickListener(View.OnClickListener {
+        binding.fab.setOnClickListener(View.OnClickListener {
             isAllStory = if (isAllStory) {
                 ContentLoader.loadFragment(SelectTemplateFragment(), this@HomePageActivity)
-                fab?.setImageResource(R.drawable.ic_dashboard)
+                binding.fab.setImageResource(R.drawable.ic_dashboard)
                 false
             } else {
                 ContentLoader.loadFragment(AllStoriesFragment(), this@HomePageActivity)
-                fab?.setImageResource(R.drawable.ic_pencil)
+                binding.fab.setImageResource(R.drawable.ic_pencil)
                 true
             }
         })
