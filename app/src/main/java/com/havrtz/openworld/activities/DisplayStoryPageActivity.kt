@@ -64,6 +64,7 @@ class DisplayStoryPageActivity : AppCompatActivity() {
         val imageView = findViewById<ImageView>(R.id.demoimage)
         imageView.setImageBitmap(bmp)
 
+
         // Set up the user interaction to manually show or hide the system UI.
         /*mContentView.setOnClickListener(new View.OnClickListener() {
             @Override

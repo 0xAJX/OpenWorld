@@ -18,15 +18,6 @@ object ContentLoader {
         return true
     }
 
-    fun loadFragment(fragment: Fragment?, activity: Activity): Boolean {
-        if (fragment != null) {
-            val fragmentActivity = activity as FragmentActivity
-            fragmentActivity.supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(R.id.fragment_container, fragment).commit()
-            return true
-        }
-        return false
-    }
-
     /** TODO Make this class jump between activities  */
     private class ActivityLoader : AsyncTask<Activity?, Void?, Activity>() {
         var i: Intent? = null

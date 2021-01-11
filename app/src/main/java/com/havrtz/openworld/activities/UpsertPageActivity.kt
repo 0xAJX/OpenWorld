@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.navArgs
 import com.havrtz.openworld.fragments.ShareBottomSheetFragment
 import com.havrtz.openworld.models.StoryElement
 import com.havrtz.openworld.R
@@ -61,6 +62,8 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
     private val mid = PointF()
     var oldDist = 1f
 
+    private val args: UpsertPageActivityArgs by navArgs()
+
     /** Touch event variables  */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +83,7 @@ class UpsertPageActivity : AppCompatActivity(), OnTouchListener, View.OnClickLis
         }*/
         /** Check if it is create or update story  */
         /** Get no. of images from TemplateViewModel  */
-        templateID = intent.getIntExtra("template_id", 1)
+        templateID = args.templateId
         val templateViewModel = ViewModelProviders.of(this).get(TemplateViewModel::class.java)
         try {
             noOfImages = templateViewModel.getTemplateById(templateID).no_of_images

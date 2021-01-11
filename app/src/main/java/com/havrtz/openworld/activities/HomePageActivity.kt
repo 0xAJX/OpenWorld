@@ -7,6 +7,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.havrtz.openworld.fragments.AllStoriesFragment
 import com.havrtz.openworld.fragments.NavigationDrawerBottomSheetFragment
 import com.havrtz.openworld.fragments.SelectTemplateFragment
@@ -51,15 +53,17 @@ class HomePageActivity : AppCompatActivity() {
         setSupportActionBar(bottomAppBar)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.bringToFront()
-        ContentLoader.loadFragment(AllStoriesFragment(), this)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
         binding.fab.setOnClickListener(View.OnClickListener {
             isAllStory = if (isAllStory) {
-                ContentLoader.loadFragment(SelectTemplateFragment(), this@HomePageActivity)
+                navController.navigate(R.id.action_allStoriesFragment_to_selectTemplateFragment2)
                 binding.fab.setImageResource(R.drawable.ic_dashboard)
                 false
             } else {
-                ContentLoader.loadFragment(AllStoriesFragment(), this@HomePageActivity)
+                navController.navigate(R.id.action_selectTemplateFragment_to_allStoriesFragment)
                 binding.fab.setImageResource(R.drawable.ic_pencil)
                 true
             }

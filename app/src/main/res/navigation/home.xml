@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/template"
+    app:startDestination="@id/allStoriesFragment">
+    <fragment
+        android:id="@+id/selectTemplateFragment"
+        android:name="com.havrtz.openworld.fragments.SelectTemplateFragment"
+        android:label="SelectTemplateFragment" >
+        <action
+            android:id="@+id/action_selectTemplateFragment_to_upsertPageActivity"
+            app:destination="@id/upsertPageActivity" />
+        <action
+            android:id="@+id/action_selectTemplateFragment_to_allStoriesFragment"
+            app:destination="@id/allStoriesFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/upsertPageActivity"
+        android:name="com.havrtz.openworld.activities.UpsertPageActivity"
+        android:label="activity_upsert_page"
+        tools:layout="@layout/activity_upsert_page" >
+        <argument
+            android:name="template_id"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </activity>
+    <fragment
+        android:id="@+id/allStoriesFragment"
+        android:name="com.havrtz.openworld.fragments.AllStoriesFragment"
+        android:label="AllStoriesFragment" >
+        <action
+            android:id="@+id/action_allStoriesFragment_to_selectTemplateFragment2"
+            app:destination="@id/selectTemplateFragment" />
+    </fragment>
+</navigation>

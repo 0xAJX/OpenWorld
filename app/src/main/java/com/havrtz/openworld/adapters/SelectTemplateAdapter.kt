@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.havrtz.openworld.activities.UpsertPageActivity
 import com.havrtz.openworld.models.Template
 import com.havrtz.openworld.R
+import com.havrtz.openworld.fragments.SelectTemplateFragmentDirections
 import java.util.*
 
 class SelectTemplateAdapter(private val context: Context) : RecyclerView.Adapter<SelectTemplateAdapter.ViewHolder>() {
@@ -42,11 +44,11 @@ class SelectTemplateAdapter(private val context: Context) : RecyclerView.Adapter
 
         init {
             itemView.setOnClickListener {
+
                 val template = templates[adapterPosition]
-                val id = template.id
-                val i = Intent(context, UpsertPageActivity::class.java)
-                i.putExtra("template_id", id)
-                context.startActivity(i)
+                val action = SelectTemplateFragmentDirections.actionSelectTemplateFragmentToUpsertPageActivity(template.id)
+                Navigation.findNavController(itemView).navigate(action)
+
             }
         }
     }
