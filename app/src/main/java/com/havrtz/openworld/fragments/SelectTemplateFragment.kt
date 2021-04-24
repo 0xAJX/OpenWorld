@@ -16,6 +16,7 @@ import com.havrtz.openworld.models.Template
 import com.havrtz.openworld.R
 import com.havrtz.openworld.helpers.ColumnSizeCalculator
 import com.havrtz.openworld.helpers.EqualSpacingItemDecoration
+import com.havrtz.openworld.helpers.SpacesItemDecoration
 import com.havrtz.openworld.viewmodels.TemplateViewModel
 
 class SelectTemplateFragment : Fragment() {
@@ -38,7 +39,7 @@ class SelectTemplateFragment : Fragment() {
             }
         })
 
-        recyclerView.addItemDecoration(EqualSpacingItemDecoration(16, EqualSpacingItemDecoration.HORIZONTAL))
+        recyclerView.addItemDecoration(SpacesItemDecoration(30))
         recyclerView.setHasFixedSize(true)
 
         val selectTemplateAdapter = context?.let { SelectTemplateAdapter(it) }
