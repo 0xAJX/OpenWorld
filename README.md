@@ -12,7 +12,6 @@ Screenshots
     <td><img src="images/template.jpg" width="100%"><td>
   </tr>
   <tr>
-    <td><img src="images/about_me.jpg" width="100%"><td>
     <td><img src="images/fullscreen.jpg" width="100%"><td>
   </tr>
 </table>
